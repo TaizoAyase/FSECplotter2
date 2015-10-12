@@ -13,6 +13,7 @@ class Plotter():
     self.__fig = figure()
     self.__axes = self.__fig.add_subplot(111)
     self.__axes.hold(True) # superimporse the all plots
+    self.__plot_configs()
 
     # get the information of logfiles
     self.__logfiles = [ LogFile().parse(f) for f in logfiles ]
@@ -38,6 +39,8 @@ class Plotter():
     return None
 
   ### private methods
+  def __plot_configs(self):
+    self.__axes.grid()
 
 
 if __name__ == '__main__':
