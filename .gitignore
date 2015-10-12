@@ -1,1 +1,8 @@
-./test/*
+FSECplotter/.DS_Store
+.DS_Store
+test/
+test/*
+FSECplotter/__pycache__/
+__pycache__/
+.python-version
+.*.swp
