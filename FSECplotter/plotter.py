@@ -10,40 +10,39 @@ class Plotter():
     self.sec_to_plot = sec_name
 
     # setup plot env.
-    self.__fig = figure()
-    self.__axes = self.__fig.add_subplot(111)
-    self.__axes.hold(True) # superimporse the all plots
+    self.fig = figure()
+    self.axes = self.__fig.add_subplot(111)
+    self.axes.hold(True) # superimporse the all plots
 
     # get the information of logfiles
-    self.__logfiles = [ LogFile().parse(f) for f in logfiles ]
-    self.__data = [ log.find_section(sec_name).data() for log in self.__logfiles ]
-    self.__filenames = [ log.file_name for log in self.__logfiles ]
+    self.logfiles = [ LogFile().parse(f) for f in logfiles ]
+    self.data = [ log.find_section(sec_name).data() for log in self.logfiles ]
+    self.filenames = [ log.file_name for log in self.logfiles ]
 
   def make_plot(self):
     # at first, set flow rate for each logfile
-    [log.flowrate() for log in self.__logfiles]
+    [log.flowrate() for log in self.logfiles]
 
-    for (log, df) in zip(self.__logfiles, self.__data):
-      self.__axes.plot(df[:, 0] * log.flow_rate, df[:, 1])
+    for (log, df) in zip(self.logfiles, self.data):
+      self.axes.plot(df[:, 0] * log.flow_rate, df[:, 1])
 
-    self.__plot_configs()
-    self.__axes.grid()
-    self.__axes.legend(self.__filenames)
-    self.__axes.set_xlabel("Volume(ml)")
-    self.__axes.set_ylabel("FL intensity")
+    self.axes.grid()
+    self.axes.legend(self.filenames)
+    self.axes.set_xlabel("Volume(ml)")
+    self.axes.set_ylabel("FL intensity")
 
   def show_plot(self):
-    self.__fig.show()
+    self.fig.show()
 
   def save_plot(self, save_name):
-    self.__fig.savefig(save_name)
+    self.fig.savefig(save_name)
     return None
 
   def xlim(xmin, xmax):
-    self.__axes.xlim(xmin, xmax)
+    self.axes.xlim(xmin, xmax)
 
   def ylim(ymin, ymax):
-    self.__axes.ylim(ymin, ymax)
+    self.axes.ylim(ymin, ymax)
 
   ### private methods
 
