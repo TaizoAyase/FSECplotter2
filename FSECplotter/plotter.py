@@ -13,7 +13,6 @@ class Plotter():
     self.__fig = figure()
     self.__axes = self.__fig.add_subplot(111)
     self.__axes.hold(True) # superimporse the all plots
-    self.__plot_configs()
 
     # get the information of logfiles
     self.__logfiles = [ LogFile().parse(f) for f in logfiles ]
@@ -27,30 +26,24 @@ class Plotter():
     for (log, df) in zip(self.__logfiles, self.__data):
       self.__axes.plot(df[:, 0] * log.flow_rate, df[:, 1])
 
+    self.__plot_configs()
+    self.__axes.grid()
     self.__axes.legend(self.__filenames)
     self.__axes.set_xlabel("Volume(ml)")
     self.__axes.set_ylabel("FL intensity")
 
   def show_plot(self):
-    pass
+    self.__fig.show()
 
   def save_plot(self, save_name):
     self.__fig.savefig(save_name)
     return None
 
+  def xlim(xmin, xmax):
+    self.__axes.xlim(xmin, xmax)
+
+  def ylim(ymin, ymax):
+    self.__axes.ylim(ymin, ymax)
+
   ### private methods
-  def __plot_configs(self):
-    self.__axes.grid()
 
-
-if __name__ == '__main__':
-  from glob import glob
-
-  files = glob("./test/fixture/test*.txt")
-
-  detector = "B"
-  channel_no = 2
-  sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector, channel_no)
-  plt = Plotter(files, sec_name)
-  plt.make_plot()
-  plt.save_plot("test.png")
