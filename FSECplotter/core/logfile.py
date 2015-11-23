@@ -12,8 +12,8 @@ class LogFile:
   def __init__(self):
     self.sections = []
     self.file_name = None # file basename without extension
-    self.flow_rate = None
-    self.no_of_detectors = None
+    self.__flow_rate = None
+    self.__no_of_detectors = None
 
   def parse(self, filename):
     self.__parse_logfile(filename)
@@ -42,8 +42,8 @@ class LogFile:
   # if cannot, raise Error
   def flowrate(self):
     # if already set, end...
-    if self.flow_rate:
-      return self.flow_rate
+    if self.__flow_rate:
+      return self.__flow_rate
 
     methodfiles_ary = self.__get_params_ary("Original Files", "Method File")
 
@@ -51,16 +51,16 @@ class LogFile:
     pat = re.compile(r"\d\.\d+")
     matched_str = pat.findall(methodfiles_ary[0])
     if matched_str:
-      self.flow_rate = float(matched_str[0])
-      return self.flow_rate
+      self.__flow_rate = float(matched_str[0])
+      return self.__flow_rate
     else:
       raise NoMatchedFlowRateError
 
-  # returns # of detectors and set it to self.no_of_detectors
+  # returns # of detectors and set it to self.__no_of_detectors
   def num_of_detector(self):
     num_detectors_ary = self.__get_params_ary("Configuration", "# of Detectors")
-    self.no_of_detectors = int(num_detectors_ary[0])
-    return self.no_of_detectors
+    self.__no_of_detectors = int(num_detectors_ary[0])
+    return self.__no_of_detectors
     
 
   ### private methods

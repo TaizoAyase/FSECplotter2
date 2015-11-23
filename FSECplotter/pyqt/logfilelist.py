@@ -42,9 +42,10 @@ class LogfileModel(QtGui.QStandardItemModel):
 
   def delete_item(self, row_num):
     # We also remove the item from logfile array
-    self.removeRow(row_num)
+    target_row = self.takeRow(row_num)
+    #self.removeRow(row_num)
 
-  def mimeData( self, indexes ):
+  def mimeData(self, indexes):
     mimedata = QtCore.QMimeData() # create Mime Data
     urllist  = []
     for index in indexes:
@@ -52,25 +53,20 @@ class LogfileModel(QtGui.QStandardItemModel):
       if index.column() != 0:
         continue
  
-      item     = self.itemFromIndex( index )
+      item     = self.itemFromIndex(index)
       filepath = item.text()
       # windows requires "/" in top
       # this not affect unix env.
       # and the urllist require the QUrl obj., 
       # cast the string to QUrl
-      urllist.append( QtCore.QUrl('/' + filepath) )
-    mimedata.setUrls( urllist )
+      urllist.append(QtCore.QUrl('/' + filepath))
+    mimedata.setUrls(urllist)
  
     return mimedata
 
   def get_current_data(self):
-    # data_ary format is [ [filename], [flow_rate], [[x, y]] ]
-    #data = [[], [], []]
     data = {'filenames': [], 'flow_rates': [], 'data': []}
     for i in range(self.rowCount()):
-      # TODO: get this params. from list
-      #detector = self.item[xxx]
-      #channel_no = self.item[xxx]
       detector = self.item(i, 3).text()
       channel_no = int(self.item(i, 4).text())
       sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector, channel_no)
@@ -78,6 +74,7 @@ class LogfileModel(QtGui.QStandardItemModel):
       # set data ary
       data['filenames'].append(self.item(i, 1).text())
       data['flow_rates'].append(self.item(i, 2).text())
+      # TODO: change this finding logic
       data['data'].append(self.logfiles[i].find_section(sec_name).data())
 
     return data
