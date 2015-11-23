@@ -11,7 +11,7 @@ class Plotter():
 
     # setup plot env.
     self.fig = figure()
-    self.axes = self.__fig.add_subplot(111)
+    self.axes = self.fig.add_subplot(111)
     self.axes.hold(True) # superimporse the all plots
 
     # get the information of logfiles

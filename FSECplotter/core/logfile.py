@@ -11,12 +11,13 @@ from .section import Section
 class LogFile:
   def __init__(self):
     self.sections = []
-    self.file_name = None
+    self.file_name = None # file basename without extension
     self.flow_rate = None
     self.no_of_detectors = None
 
   def parse(self, filename):
     self.__parse_logfile(filename)
+    # remove extension from file basename
     filename, ext = os.path.splitext( os.path.basename(filename) )
     self.file_name = filename
     return self
@@ -44,7 +45,7 @@ class LogFile:
     if self.flow_rate:
       return self.flow_rate
 
-    methodfiles_ary= self.__get_params_ary("Original Files", "Method File")
+    methodfiles_ary = self.__get_params_ary("Original Files", "Method File")
 
     # search float in file name
     pat = re.compile(r"\d\.\d+")
@@ -64,11 +65,11 @@ class LogFile:
 
   ### private methods
 
-  def __parse_logfile(self, f_name):
+  def __parse_logfile(self, f_path):
     header_pattern = re.compile(r"\[.+\]")
     
     header_flag = False
-    with codecs.open(f_name, "r", "shift_jis") as f:
+    with codecs.open(f_path, "r", "shift_jis") as f:
       for line in f: 
         # search the header line
         if re.match(header_pattern, line):
