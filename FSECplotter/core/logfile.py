@@ -34,8 +34,8 @@ class LogFile:
     pat = re.compile(secname)
     name_ary = [x.name() for x in self.sections]
     index = [i for i, name in enumerate(name_ary) if pat.search(name)]
-    if len(index) > 1:
-      raise
+    if not index:
+      raise NoSectionError
     return self.sections[index[0]]
 
   # get flow rate from the file name of method file 
@@ -101,4 +101,7 @@ class LogFile:
 
 ### exception
 class NoMatchedFlowRateError(Exception):
+  pass
+
+class NoSectionError(Exception):
   pass

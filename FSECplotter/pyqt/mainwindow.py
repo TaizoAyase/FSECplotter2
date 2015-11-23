@@ -74,7 +74,14 @@ class MainWindow(QtWidgets.QMainWindow):
     self.setWindowTitle("FSEC file viewer Demo")
 
   def redraw(self):
-    data = self.model.get_current_data()
+    try:
+      data = self.model.get_current_data()
+    except NoSectionError as e:
+      # if invalid section was selected, display the warning window.
+      mes = e.args[0]
+      QtWidgets.QMessageBox.warning(self, "FSEC plotter2", mes, 
+        QtWidgets.QMessageBox.Ok)
+      return
     self.plotarea.plot_fig(data)
 
   def delete_file(self):

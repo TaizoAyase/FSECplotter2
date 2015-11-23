@@ -73,10 +73,14 @@ class LogfileModel(QtGui.QStandardItemModel):
 
       # set data ary
       filename = self.item(i, 1).text()
-      data['filenames'].append(filename)
-      data['flow_rates'].append(self.item(i, 2).text())
       # TODO: change this finding logic
-      data['data'].append(self.logfiles[filename].find_section(sec_name).data())
+      try:
+        data['data'].append(self.logfiles[filename].find_section(sec_name).data())
+        data['filenames'].append(filename)
+        data['flow_rates'].append(self.item(i, 2).text())
+      except NoSectionError:
+        mes = "In the file '%s', section named '%s' is not exist." % (filename, sec_name)
+        raise NoSectionError(mes)
 
     return data
 
