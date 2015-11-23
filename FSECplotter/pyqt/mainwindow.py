@@ -73,7 +73,6 @@ class MainWindow(QtWidgets.QMainWindow):
     self.setWindowTitle("FSEC file viewer Demo")
 
   def redraw(self):
-    print(self.model.logfiles)
     data = self.model.get_current_data()
     self.plotarea.plot_fig(data)
 
@@ -81,7 +80,6 @@ class MainWindow(QtWidgets.QMainWindow):
     # TODO implement
     current_index = self.selection_model.currentIndex()
     current_row = current_index.row()
-    print(current_row)
     self.model.delete_item(current_row)
 
 
