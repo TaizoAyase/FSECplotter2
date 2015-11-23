@@ -19,7 +19,7 @@ class LogfileModel(QtGui.QStandardItemModel):
 
   def __init__(self, row, col, parent = None):
     super(LogfileModel, self).__init__(row, col, parent)
-    self.logfiles = []
+    self.logfiles = {}
 
   def add_item(self, filename):
     new_log = self.__append_logfile(filename)
@@ -28,7 +28,7 @@ class LogfileModel(QtGui.QStandardItemModel):
     order = row + 1 # set plot order
     data_ary = [order, 
                 new_log.file_name, 
-                new_log.flow_rate, 
+                new_log.flowrate(), 
                 self.Default_Detector, 
                 self.Default_Channel]
 
@@ -72,10 +72,11 @@ class LogfileModel(QtGui.QStandardItemModel):
       sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector, channel_no)
 
       # set data ary
-      data['filenames'].append(self.item(i, 1).text())
+      filename = self.item(i, 1).text()
+      data['filenames'].append(filename)
       data['flow_rates'].append(self.item(i, 2).text())
       # TODO: change this finding logic
-      data['data'].append(self.logfiles[i].find_section(sec_name).data())
+      data['data'].append(self.logfiles[filename].find_section(sec_name).data())
 
     return data
 
@@ -90,7 +91,8 @@ class LogfileModel(QtGui.QStandardItemModel):
       logfile.flowrate()
     except NoMatchedFlowRateError:
       logfile.flow_rate = 0
-    self.logfiles.append(logfile)
+
+    self.logfiles[logfile.file_name] = logfile
     return logfile
 
 
