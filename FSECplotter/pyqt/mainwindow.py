@@ -47,18 +47,27 @@ class MainWindow(QtWidgets.QMainWindow):
     self.redraw_button.setText("Redraw")
 
     # set add and delete button
+    self.open_button = QtWidgets.QPushButton(self.centralWidget)
+    self.open_button.setObjectName("Open button")
+    self.open_button.setText("Open file")
+
     self.delete_button = QtWidgets.QPushButton(self.centralWidget)
     self.delete_button.setObjectName("Delete button")
     self.delete_button.setText("Remove file")
 
     # signale slot definition
     self.redraw_button.clicked.connect(self.redraw)
+    self.open_button.clicked.connect(self.open_file)
     self.delete_button.clicked.connect(self.delete_file)
 
     # layout
+    self.horiLay1 = QtWidgets.QHBoxLayout()
+    self.horiLay1.addWidget(self.open_button)
+    self.horiLay1.addWidget(self.delete_button)
+
     self.verLay1 = QtWidgets.QVBoxLayout()
     self.verLay1.addWidget(self.treeview)
-    self.verLay1.addWidget(self.delete_button)
+    self.verLay1.addLayout(self.horiLay1)
 
     self.verLay2 = QtWidgets.QVBoxLayout()
     self.verLay2.addWidget(self.plotarea)
@@ -83,6 +92,12 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.Ok)
       return
     self.plotarea.plot_fig(data)
+
+  def open_file(self):
+    filename = QtWidgets.QFileDialog.getOpenFileNames(
+      self, "Open file", os.path.expanduser('~'))
+    for f in filename[0]:
+      self.model.add_item(f)
 
   def delete_file(self):
     # TODO implement
