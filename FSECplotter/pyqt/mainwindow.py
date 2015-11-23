@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from .logfilelist import *
@@ -35,7 +36,7 @@ class MainWindow(QtWidgets.QMainWindow):
     self.plotarea.plot_fig(data)
 
     # TreeView setting
-    self.treeview.setColumnWidth(1, 140)
+    #self.treeview.setColumnWidth(1, 140)
     self.treeview.setSelectionMode(
       QtWidgets.QAbstractItemView.ExtendedSelection
     )
