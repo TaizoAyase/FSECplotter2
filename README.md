@@ -21,5 +21,3 @@ This repository includes test files in `test/fixture` directory
 
 +   `mini_test?.txt` :
     test files for mini column (GE Healthcare Superdex200 increase 5/150)
- 
- 
