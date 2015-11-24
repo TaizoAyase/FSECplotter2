@@ -35,6 +35,9 @@ class LogfileModel(QtGui.QStandardItemModel):
     for i in range(len(data_ary)):
       # create new Item and set texts in data_ary
       item = QtGui.QStandardItem()
+      if i == 0:
+        item.setCheckable(True)
+        item.setCheckState(2) # take value of 0, 1 or 2 
       item.setText(str(data_ary[i]))
       item.setBackground(COLOR_LIST[row%2])
 
@@ -84,6 +87,37 @@ class LogfileModel(QtGui.QStandardItemModel):
 
     return data
 
+  def on_displayname_changed(self):
+    # in initial call, skip
+    if self.rowCount() == 0:
+      return
+
+    # this method is called when the current item was being settin-up
+    # if the filename object is not difined, following code will raise Arg.Error
+    # to avoid this, skip when the item is now set
+    if not self.item(self.rowCount() - 1, 1):
+      return
+
+    # get oldnames from logfile_array
+    old_names = set(self.logfiles.keys())
+    # get changed names from items
+    new_names = set([self.item(i, 1).text() for i in range(self.rowCount())])
+    # diff. array
+    sub = old_names - new_names
+
+    # if diff is not exist, skip 
+    if len(sub) == 0:
+      return
+    # the length of diff > 1, this should not occur
+    elif len(sub) > 1:
+      raise MoreThanOneItemsChangedError
+
+    # change the key of target file
+    changed = sub.pop()
+    changed_logfile = self.logfiles.pop(changed)
+    new_name = (new_names - old_names).pop()
+    self.logfiles[new_name] = changed_logfile
+
   # private methods
 
   def __append_logfile(self, filename):
@@ -128,3 +162,7 @@ class LogfileListView(QtWidgets.QTreeView):
     else:
       event.ignore()
 
+
+class MoreThanOneItemsChangedError(Exception):
+  pass
+    

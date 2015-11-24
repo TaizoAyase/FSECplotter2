@@ -41,12 +41,11 @@ class MainWindow(QtWidgets.QMainWindow):
       QtWidgets.QAbstractItemView.ExtendedSelection
     )
 
-    # set redraw button
+    # set buttons
     self.redraw_button = QtWidgets.QPushButton(self.centralWidget)
     self.redraw_button.setObjectName("Redraw button")
     self.redraw_button.setText("Redraw")
 
-    # set add and delete button
     self.open_button = QtWidgets.QPushButton(self.centralWidget)
     self.open_button.setObjectName("Open button")
     self.open_button.setText("Open file")
@@ -55,19 +54,32 @@ class MainWindow(QtWidgets.QMainWindow):
     self.delete_button.setObjectName("Delete button")
     self.delete_button.setText("Remove file")
 
+    self.move_up_button = QtWidgets.QPushButton(self.centralWidget)
+    self.move_up_button.setObjectName("Move-up button")
+    self.move_up_button.setText("Move up")
+    self.move_down_button = QtWidgets.QPushButton(self.centralWidget)
+    self.move_down_button.setObjectName("Move-down button")
+    self.move_down_button.setText("Move down")
+
     # signale slot definition
     self.redraw_button.clicked.connect(self.redraw)
     self.open_button.clicked.connect(self.open_file)
     self.delete_button.clicked.connect(self.delete_file)
+    self.move_up_button.clicked.connect(self.move_up_selected)
+    self.move_down_button.clicked.connect(self.move_down_selected)
+
+    self.model.itemChanged.connect(self.model.on_displayname_changed)
 
     # layout
-    self.horiLay1 = QtWidgets.QHBoxLayout()
-    self.horiLay1.addWidget(self.open_button)
-    self.horiLay1.addWidget(self.delete_button)
+    self.gridLay1 = QtWidgets.QGridLayout()
+    self.gridLay1.addWidget(self.open_button, 0, 0, 1, 1)
+    self.gridLay1.addWidget(self.delete_button, 0, 1, 1, 1)
+    self.gridLay1.addWidget(self.move_up_button, 1, 0, 1, 1)
+    self.gridLay1.addWidget(self.move_down_button, 1, 1, 1, 1)
 
     self.verLay1 = QtWidgets.QVBoxLayout()
     self.verLay1.addWidget(self.treeview)
-    self.verLay1.addLayout(self.horiLay1)
+    self.verLay1.addLayout(self.gridLay1)
 
     self.verLay2 = QtWidgets.QVBoxLayout()
     self.verLay2.addWidget(self.plotarea)
@@ -94,6 +106,8 @@ class MainWindow(QtWidgets.QMainWindow):
     self.plotarea.plot_fig(data)
 
   def open_file(self):
+    # open the file selection dialog
+    # enable multiple selection
     filename = QtWidgets.QFileDialog.getOpenFileNames(
       self, "Open file", os.path.expanduser('~'))
     for f in filename[0]:
@@ -104,6 +118,12 @@ class MainWindow(QtWidgets.QMainWindow):
     current_index = self.selection_model.currentIndex()
     current_row = current_index.row()
     self.model.delete_item(current_row)
+
+  def move_up_selected(self):
+    pass
+
+  def move_down_selected(self):
+    pass
 
 
 if __name__ == '__main__':
