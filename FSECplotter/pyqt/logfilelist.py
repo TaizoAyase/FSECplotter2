@@ -20,6 +20,8 @@ class LogfileModel(QtGui.QStandardItemModel):
   def __init__(self, row, col, parent = None):
     super(LogfileModel, self).__init__(row, col, parent)
     self.logfiles = {}
+    
+    self.itemChanged.connect(self.on_displayname_changed)
 
   def add_item(self, filename):
     new_log = self.__append_logfile(filename)
@@ -135,7 +137,7 @@ class LogfileModel(QtGui.QStandardItemModel):
 
 
 class LogfileListView(QtWidgets.QTreeView):
-  """docstring for LogfileListView"""
+  """List view for LogfileListView"""
   def __init__(self, parent = None):
     super(LogfileListView, self).__init__(parent)
     self.setAcceptDrops(True)

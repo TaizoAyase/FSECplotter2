@@ -68,8 +68,6 @@ class MainWindow(QtWidgets.QMainWindow):
     self.move_up_button.clicked.connect(self.move_up_selected)
     self.move_down_button.clicked.connect(self.move_down_selected)
 
-    self.model.itemChanged.connect(self.model.on_displayname_changed)
-
     # layout
     self.gridLay1 = QtWidgets.QGridLayout()
     self.gridLay1.addWidget(self.open_button, 0, 0, 1, 1)
