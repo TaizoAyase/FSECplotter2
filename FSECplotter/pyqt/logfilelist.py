@@ -20,19 +20,20 @@ class LogfileModel(QtGui.QStandardItemModel):
   def __init__(self, row, col, parent = None):
     super(LogfileModel, self).__init__(row, col, parent)
     self.logfiles = {}
+    self.__id_count = 1
 
     # set header data
-    self.headers = ('Order', 'Filename', 'Flow rate(ml/min)', 'Detector', 'Channel')
+    self.headers = ('Id', 'Filename', 'Flow rate(ml/min)', 'Detector', 'Channel')
     for i, item in enumerate(self.headers):
       self.setHeaderData(i, QtCore.Qt.Horizontal, item)
-
-    self.itemChanged.connect(self.on_displayname_changed)
 
   def add_item(self, filename):
     new_log = self.__append_logfile(filename)
 
     row = self.rowCount()
     order = row + 1 # set plot order
+    order = self.__id_count
+    self.__id_count += 1
     data_ary = [order, 
                 new_log.file_name, 
                 new_log.flowrate(), 
@@ -50,10 +51,16 @@ class LogfileModel(QtGui.QStandardItemModel):
 
       self.setItem(row, i, item)
 
+  def move_item(self, current_index, shift):
+    pass
+
   def delete_item(self, row_num):
     # We also remove the item from logfile array
     target_row = self.takeRow(row_num)
-    #self.removeRow(row_num)
+    del_id = target_row[0].text()
+    del_logfile = self.logfiles.pop(int(del_id))
+    del target_row
+    del del_logfile
 
   def mimeData(self, indexes):
     mimedata = QtCore.QMimeData() # create Mime Data
@@ -65,6 +72,7 @@ class LogfileModel(QtGui.QStandardItemModel):
  
       item     = self.itemFromIndex(index)
       filepath = item.text()
+
       # windows requires "/" in top
       # this not affect unix env.
       # and the urllist require the QUrl obj., 
@@ -79,6 +87,7 @@ class LogfileModel(QtGui.QStandardItemModel):
     for i in range(self.rowCount()):
       if self.item(i, 0).checkState() == 0:
         continue
+      log_id = int(self.item(i, 0).text())
       detector = self.item(i, 3).text()
       channel_no = int(self.item(i, 4).text())
       sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector, channel_no)
@@ -86,7 +95,8 @@ class LogfileModel(QtGui.QStandardItemModel):
       # set data ary
       filename = self.item(i, 1).text()
       try:
-        data['data'].append(self.logfiles[filename].find_section(sec_name).data())
+        data_table = self.logfiles[log_id].find_section(sec_name).data()
+        data['data'].append(data_table)
         data['filenames'].append(filename)
         data['flow_rates'].append(self.item(i, 2).text())
       except NoSectionError:
@@ -94,37 +104,6 @@ class LogfileModel(QtGui.QStandardItemModel):
         raise NoSectionError(mes)
 
     return data
-
-  def on_displayname_changed(self):
-    # in initial call, skip
-    if self.rowCount() == 0:
-      return
-
-    # this method is called when the current item was being settin-up
-    # if the filename object is not difined, following code will raise Arg.Error
-    # to avoid this, skip when the item is now set
-    if not self.item(self.rowCount() - 1, 1):
-      return
-
-    # get oldnames from logfile_array
-    old_names = set(self.logfiles.keys())
-    # get changed names from items
-    new_names = set([self.item(i, 1).text() for i in range(self.rowCount())])
-    # diff. array
-    sub = old_names - new_names
-
-    # if diff is not exist, skip 
-    if len(sub) == 0:
-      return
-    # the length of diff > 1, this should not occur
-    elif len(sub) > 1:
-      raise MoreThanOneItemsChangedError
-
-    # change the key of target file
-    changed = sub.pop()
-    changed_logfile = self.logfiles.pop(changed)
-    new_name = (new_names - old_names).pop()
-    self.logfiles[new_name] = changed_logfile
 
   # private methods
 
@@ -138,7 +117,7 @@ class LogfileModel(QtGui.QStandardItemModel):
     except NoMatchedFlowRateError:
       logfile.flow_rate = 0
 
-    self.logfiles[logfile.file_name] = logfile
+    self.logfiles[self.__id_count] = logfile
     return logfile
 
 
@@ -148,7 +127,7 @@ class LogfileListView(QtWidgets.QTreeView):
     super(LogfileListView, self).__init__(parent)
     self.setAcceptDrops(True)
     self.setDragEnabled(True)
-    #self.setSortingEnabled(True)
+    self.setSortingEnabled(True)
     self.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
 
   def dragEnterEvent(self, event):
@@ -171,9 +150,6 @@ class LogfileListView(QtWidgets.QTreeView):
       event.ignore()
 
 
-class MoreThanOneItemsChangedError(Exception):
-  pass
-    
 
 if __name__ == '__main__':
   import sys

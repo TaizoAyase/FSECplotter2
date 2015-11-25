@@ -109,16 +109,25 @@ class MainWindow(QtWidgets.QMainWindow):
       self.model.add_item(f)
 
   def delete_file(self):
-    # TODO implement
+    # TODO: check this implementation
+    # this method for get index is correct?
     current_index = self.selection_model.currentIndex()
     current_row = current_index.row()
     self.model.delete_item(current_row)
 
   def move_up_selected(self):
-    pass
+    # TODO: check this implementation
+    # this method for get index is correct?
+    current_index = self.selection_model.currentIndex()
+    current_row = current_index.row()
+    self.model.move_item(current_row, 1)
 
   def move_down_selected(self):
-    pass
+    # TODO: check this implementation
+    # this method for get index is correct?
+    current_index = self.selection_model.currentIndex()
+    current_row = current_index.row()
+    self.model.move_item(current_row, -1)
 
 
 if __name__ == '__main__':
