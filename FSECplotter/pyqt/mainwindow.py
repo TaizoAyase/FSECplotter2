@@ -90,7 +90,7 @@ class MainWindow(QtWidgets.QMainWindow):
     self.setCentralWidget(self.centralWidget)
 
     self.resize(1200, 600)
-    self.setWindowTitle("FSEC file viewer Demo")
+    self.setWindowTitle("FSEC plotter 2")
 
   def redraw(self):
     try:

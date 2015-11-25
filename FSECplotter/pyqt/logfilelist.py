@@ -72,13 +72,14 @@ class LogfileModel(QtGui.QStandardItemModel):
   def get_current_data(self):
     data = {'filenames': [], 'flow_rates': [], 'data': []}
     for i in range(self.rowCount()):
+      if self.item(i, 0).checkState() == 0:
+        continue
       detector = self.item(i, 3).text()
       channel_no = int(self.item(i, 4).text())
       sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector, channel_no)
 
       # set data ary
       filename = self.item(i, 1).text()
-      # TODO: change this finding logic
       try:
         data['data'].append(self.logfiles[filename].find_section(sec_name).data())
         data['filenames'].append(filename)
