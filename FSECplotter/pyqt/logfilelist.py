@@ -55,15 +55,14 @@ class LogfileModel(QtGui.QStandardItemModel):
     next_row_num = current_index + int(shift)
 
     # if the top or bottom item is selected, beep and ignore
-    print(current_index)
-    print(next_row_num)
-    print(self.rowCount())
     if next_row_num < 0 or next_row_num == self.rowCount():
       QtWidgets.QApplication.beep()
-      return
+      return current_index
 
+    # pop the row and insert to new position
     target_row = self.takeRow(current_index)
     self.insertRow(next_row_num, target_row)
+    return next_row_num
 
   def delete_item(self, row_num):
     # We also remove the item from logfile array
