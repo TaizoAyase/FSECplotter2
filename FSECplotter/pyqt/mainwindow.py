@@ -62,6 +62,8 @@ class MainWindow(QtWidgets.QMainWindow):
     self.redraw_button.clicked.connect(self.redraw)
     self.open_button.clicked.connect(self.open_file)
     self.delete_button.clicked.connect(self.delete_file)
+    # TODO:these two signal-slot connection can be written with lambda
+    # connect(lambda: self.move_selected(arg))
     self.move_up_button.clicked.connect(self.move_up_selected)
     self.move_down_button.clicked.connect(self.move_down_selected)
 
@@ -120,14 +122,14 @@ class MainWindow(QtWidgets.QMainWindow):
     # this method for get index is correct?
     current_index = self.selection_model.currentIndex()
     current_row = current_index.row()
-    self.model.move_item(current_row, 1)
+    self.model.move_item(current_row, -1)
 
   def move_down_selected(self):
     # TODO: check this implementation
     # this method for get index is correct?
     current_index = self.selection_model.currentIndex()
     current_row = current_index.row()
-    self.model.move_item(current_row, -1)
+    self.model.move_item(current_row, 1)
 
 
 if __name__ == '__main__':

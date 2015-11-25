@@ -52,7 +52,9 @@ class LogfileModel(QtGui.QStandardItemModel):
       self.setItem(row, i, item)
 
   def move_item(self, current_index, shift):
-    pass
+    target_row = self.takeRow(current_index)
+    next_row_num = current_index + int(shift)
+    self.insertRow(next_row_num, target_row)
 
   def delete_item(self, row_num):
     # We also remove the item from logfile array
