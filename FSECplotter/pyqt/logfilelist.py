@@ -52,8 +52,17 @@ class LogfileModel(QtGui.QStandardItemModel):
       self.setItem(row, i, item)
 
   def move_item(self, current_index, shift):
-    target_row = self.takeRow(current_index)
     next_row_num = current_index + int(shift)
+
+    # if the top or bottom item is selected, beep and ignore
+    print(current_index)
+    print(next_row_num)
+    print(self.rowCount())
+    if next_row_num < 0 or next_row_num == self.rowCount():
+      QtWidgets.QApplication.beep()
+      return
+
+    target_row = self.takeRow(current_index)
     self.insertRow(next_row_num, target_row)
 
   def delete_item(self, row_num):
