@@ -20,7 +20,12 @@ class LogfileModel(QtGui.QStandardItemModel):
   def __init__(self, row, col, parent = None):
     super(LogfileModel, self).__init__(row, col, parent)
     self.logfiles = {}
-    
+
+    # set header data
+    self.headers = ('Order', 'Filename', 'Flow rate(ml/min)', 'Detector', 'Channel')
+    for i, item in enumerate(self.headers):
+      self.setHeaderData(i, QtCore.Qt.Horizontal, item)
+
     self.itemChanged.connect(self.on_displayname_changed)
 
   def add_item(self, filename):
@@ -169,3 +174,15 @@ class LogfileListView(QtWidgets.QTreeView):
 class MoreThanOneItemsChangedError(Exception):
   pass
     
+
+if __name__ == '__main__':
+  import sys
+  app = QtWidgets.QApplication(sys.argv)
+  
+  win = LogfileListView()
+  model = LogfileModel(0, 5, win)
+  win.setModel(model)
+
+  win.show()
+
+  app.exec_()

@@ -27,9 +27,6 @@ class MainWindow(QtWidgets.QMainWindow):
     # set ItemModel to treeview widget
     self.treeview.setModel(self.model)
     self.treeview.setSelectionModel(self.selection_model)
-    headers = ('Order', 'Filename', 'Flow rate(ml/min)', 'Detector', 'Channel')
-    for i, item in enumerate(headers):
-      self.model.setHeaderData(i, QtCore.Qt.Horizontal, item)
 
     # make first plot
     data = self.model.get_current_data()
