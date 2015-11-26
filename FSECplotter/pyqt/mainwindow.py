@@ -58,14 +58,19 @@ class MainWindow(QtWidgets.QMainWindow):
     self.move_down_button.setObjectName("Move-down button")
     self.move_down_button.setText("Move down")
 
+    self.savefig_button = QtWidgets.QPushButton(self.centralWidget)
+    self.savefig_button.setObjectName("Save Fig. button")
+    self.savefig_button.setText("Save Fig.")
+
     # signal slot definition
     self.redraw_button.clicked.connect(self.redraw)
     self.open_button.clicked.connect(self.open_file)
     self.delete_button.clicked.connect(self.delete_file)
     self.move_up_button.clicked.connect(lambda: self.move_selected(-1))
     self.move_down_button.clicked.connect(lambda: self.move_selected(1))
+    self.savefig_button.clicked.connect(self.save_figure)
 
-    # layout
+    # left-hand layout
     self.gridLay1 = QtWidgets.QGridLayout()
     self.gridLay1.addWidget(self.open_button, 0, 0, 1, 1)
     self.gridLay1.addWidget(self.delete_button, 0, 1, 1, 1)
@@ -76,9 +81,14 @@ class MainWindow(QtWidgets.QMainWindow):
     self.verLay1.addWidget(self.treeview)
     self.verLay1.addLayout(self.gridLay1)
 
+    # right-hand layout
+    self.gridLay2 = QtWidgets.QGridLayout()
+    self.gridLay2.addWidget(self.redraw_button, 0, 0, 1, 1)
+    self.gridLay2.addWidget(self.savefig_button, 0, 1, 1, 1)
+
     self.verLay2 = QtWidgets.QVBoxLayout()
     self.verLay2.addWidget(self.plotarea)
-    self.verLay2.addWidget(self.redraw_button)
+    self.verLay2.addLayout(self.gridLay2)
 
     self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
     self.horizontalLayout.addLayout(self.verLay1)
@@ -134,6 +144,9 @@ class MainWindow(QtWidgets.QMainWindow):
 
     self.selection_model.setCurrentIndex(left_idx, QtCore.QItemSelectionModel.Rows)
     self.selection_model.select(row_selection, QtCore.QItemSelectionModel.Select)
+
+  def save_figure(self):
+    pass
 
 
 if __name__ == '__main__':

@@ -40,6 +40,7 @@ class PlotArea(FigureCanvas):
       y = data_ary['data'][i][:, 1]
       self.axes.plot(x, y)
 
+    #self.axes.legend(data_ary['filenames'], bbox_to_anchor=(1.05, 1), loc = 2)
     self.axes.legend(data_ary['filenames'])
     self.axes.set_xlabel("Volume(ml)")
     self.axes.set_ylabel("FL intensity(AU)")
