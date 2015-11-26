@@ -58,7 +58,7 @@ class MainWindow(QtWidgets.QMainWindow):
     self.move_down_button.setObjectName("Move-down button")
     self.move_down_button.setText("Move down")
 
-    # signale slot definition
+    # signal slot definition
     self.redraw_button.clicked.connect(self.redraw)
     self.open_button.clicked.connect(self.open_file)
     self.delete_button.clicked.connect(self.delete_file)
@@ -118,7 +118,22 @@ class MainWindow(QtWidgets.QMainWindow):
   def move_selected(self, shift):
     current_index = self.selection_model.currentIndex()
     current_row = current_index.row()
-    self.model.move_item(current_row, int(shift))
+    if current_row == -1:
+      QtWidgets.QApplication.beep()
+      return
+
+    moved_to = self.model.move_item(current_row, int(shift))
+
+    # set selection to moved row
+    self.selection_model.clear()
+
+    left_idx = self.model.index(moved_to, 0, QtCore.QModelIndex())
+    right_idx = self.model.index(moved_to, self.model.columnCount() - 1)
+    row_selection = QtCore.QItemSelection()
+    row_selection.select(left_idx, right_idx)
+
+    self.selection_model.setCurrentIndex(left_idx, QtCore.QItemSelectionModel.Rows)
+    self.selection_model.select(row_selection, QtCore.QItemSelectionModel.Select)
 
 
 if __name__ == '__main__':

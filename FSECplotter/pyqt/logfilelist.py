@@ -137,7 +137,7 @@ class LogfileListView(QtWidgets.QTreeView):
     super(LogfileListView, self).__init__(parent)
     self.setAcceptDrops(True)
     self.setDragEnabled(True)
-    self.setSortingEnabled(True)
+    #self.setSortingEnabled(True)
     self.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
 
   def dragEnterEvent(self, event):
