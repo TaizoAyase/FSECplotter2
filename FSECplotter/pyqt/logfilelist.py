@@ -178,7 +178,7 @@ class LogfileListWidget(QtWidgets.QWidget):
     # TreeView setting
     #self.treeview.setColumnWidth(1, 140)
     self.treeview.setSelectionMode(
-      QtWidgets.QAbstractItemView.ExtendedSelection
+      QtWidgets.QAbstractItemView.ContiguousSelection
     )
     self.selection_model.clear()
 
@@ -230,8 +230,10 @@ class LogfileListWidget(QtWidgets.QWidget):
       current_row = self.__get_current_index()
     except IndexOutOfRangeError:
       return
+
     self.model.delete_item(current_row)
     self.selection_model.clear()
+    self.__select_row(current_row)
 
   def move_selected(self, shift):
     try:
@@ -242,14 +244,7 @@ class LogfileListWidget(QtWidgets.QWidget):
 
     # set selection to moved row
     self.selection_model.clear()
-
-    left_idx = self.model.index(moved_to, 0, QtCore.QModelIndex())
-    right_idx = self.model.index(moved_to, self.model.columnCount() - 1)
-    row_selection = QtCore.QItemSelection()
-    row_selection.select(left_idx, right_idx)
-
-    self.selection_model.setCurrentIndex(left_idx, QtCore.QItemSelectionModel.Rows)
-    self.selection_model.select(row_selection, QtCore.QItemSelectionModel.Select)
+    self.__select_row(moved_to)
 
   # private methods
 
@@ -260,6 +255,16 @@ class LogfileListWidget(QtWidgets.QWidget):
       QtWidgets.QApplication.beep()
       raise IndexOutOfRangeError
     return current_row
+
+  def __select_row(self, row_idx):
+    left_idx = self.model.index(row_idx, 0, QtCore.QModelIndex())
+    right_idx = self.model.index(row_idx, self.model.columnCount() - 1)
+    row_selection = QtCore.QItemSelection()
+    row_selection.select(left_idx, right_idx)
+
+    self.selection_model.setCurrentIndex(left_idx, QtCore.QItemSelectionModel.Rows)
+    self.selection_model.select(row_selection, QtCore.QItemSelectionModel.Select)
+ 
 
 
 class IndexOutOfRangeError(Exception):
