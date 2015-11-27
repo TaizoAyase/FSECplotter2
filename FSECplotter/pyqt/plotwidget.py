@@ -45,3 +45,6 @@ class PlotArea(FigureCanvas):
     self.axes.set_xlabel("Volume(ml)")
     self.axes.set_ylabel("FL intensity(AU)")
     self.draw()
+
+  def save_fig_to(self, filepath):
+    self.fig.savefig(filepath)

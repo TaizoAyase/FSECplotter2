@@ -226,20 +226,18 @@ class LogfileListWidget(QtWidgets.QWidget):
       self.model.add_item(f)
 
   def delete_file(self):
-    # TODO: check this implementation
-    # this method for get index is correct?
-    current_index = self.selection_model.currentIndex()
-    current_row = current_index.row()
+    try:
+      current_row = self.__get_current_index()
+    except IndexOutOfRangeError:
+      return
     self.model.delete_item(current_row)
     self.selection_model.clear()
 
   def move_selected(self, shift):
-    current_index = self.selection_model.currentIndex()
-    current_row = current_index.row()
-    if current_row == -1:
-      QtWidgets.QApplication.beep()
+    try:
+      current_row = self.__get_current_index()
+    except IndexOutOfRangeError:
       return
-
     moved_to = self.model.move_item(current_row, int(shift))
 
     # set selection to moved row
@@ -253,6 +251,20 @@ class LogfileListWidget(QtWidgets.QWidget):
     self.selection_model.setCurrentIndex(left_idx, QtCore.QItemSelectionModel.Rows)
     self.selection_model.select(row_selection, QtCore.QItemSelectionModel.Select)
 
+  # private methods
+
+  def __get_current_index(self):
+    current_index = self.selection_model.currentIndex()
+    current_row = current_index.row()
+    if current_row == -1:
+      QtWidgets.QApplication.beep()
+      raise IndexOutOfRangeError
+    return current_row
+
+
+class IndexOutOfRangeError(Exception):
+  pass
+    
 
 if __name__ == '__main__':
   import sys
