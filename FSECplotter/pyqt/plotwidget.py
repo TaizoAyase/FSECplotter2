@@ -61,3 +61,8 @@ class PlotArea(FigureCanvas):
     else:
       self.x_max = float(x_max)
 
+    # avoid the illegal range setting 
+    if self.x_min > self.x_max:
+      self.x_max = self.x_min + 1.0
+
+    return self.x_min, self.x_max

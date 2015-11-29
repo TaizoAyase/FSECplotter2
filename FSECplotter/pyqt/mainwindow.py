@@ -95,8 +95,10 @@ class MainWindow(QtWidgets.QMainWindow):
         QtWidgets.QMessageBox.Ok)
       return
 
-    self.plotarea.set_xlim(
+    x_min, x_max = self.plotarea.set_xlim(
       self.xlim_min_box.text(), self.xlim_max_box.text())
+    self.xlim_min_box.setText(str(x_min))
+    self.xlim_max_box.setText(str(x_max))
     self.plotarea.plot_fig(data)
 
   def save_figure(self):
