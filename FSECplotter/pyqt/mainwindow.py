@@ -20,9 +20,6 @@ class MainWindow(QtWidgets.QMainWindow):
     self.treeview = LogfileListWidget(self.centralWidget)
     self.plotarea = PlotArea(self.centralWidget)   
 
-    # make first plot
-    self.redraw()
-
     # set buttons
     self.redraw_button = QtWidgets.QPushButton(self.centralWidget)
     self.redraw_button.setObjectName("Redraw button")
@@ -40,10 +37,12 @@ class MainWindow(QtWidgets.QMainWindow):
     self.xlim_min_box_label = QtWidgets.QLabel("x min:")
     self.xlim_min_box = QtWidgets.QLineEdit(self.centralWidget)
     self.xlim_min_box_label.setBuddy(self.xlim_min_box)
+    self.xlim_min_box.setText("0")
 
     self.xlim_max_box_label = QtWidgets.QLabel("x max:")
     self.xlim_max_box = QtWidgets.QLineEdit(self.centralWidget)
     self.xlim_max_box_label.setBuddy(self.xlim_max_box)
+    self.xlim_max_box.setText("30")
 
     self.double_valid = QtGui.QDoubleValidator()
     self.xlim_min_box.setValidator(self.double_valid)
@@ -83,6 +82,9 @@ class MainWindow(QtWidgets.QMainWindow):
     self.resize(1200, 600)
     self.setWindowTitle("FSEC plotter 2")
 
+    # make first plot
+    self.redraw()
+
   def redraw(self):
     try:
       data = self.treeview.model.get_current_data()
@@ -92,6 +94,9 @@ class MainWindow(QtWidgets.QMainWindow):
       QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes, 
         QtWidgets.QMessageBox.Ok)
       return
+
+    self.plotarea.set_xlim(
+      self.xlim_min_box.text(), self.xlim_max_box.text())
     self.plotarea.plot_fig(data)
 
   def save_figure(self):

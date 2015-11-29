@@ -41,6 +41,7 @@ class PlotArea(FigureCanvas):
       self.axes.plot(x, y)
 
     #self.axes.legend(data_ary['filenames'], bbox_to_anchor=(1.05, 1), loc = 2)
+    self.axes.set_xlim(self.x_min, self.x_max)
     self.axes.legend(data_ary['filenames'])
     self.axes.set_xlabel("Volume(ml)")
     self.axes.set_ylabel("FL intensity(AU)")
@@ -48,3 +49,15 @@ class PlotArea(FigureCanvas):
 
   def save_fig_to(self, filepath):
     self.fig.savefig(filepath)
+
+  def set_xlim(self, x_min, x_max):
+    if not x_min:
+      self.x_min = 0.
+    else:
+      self.x_min = float(x_min)
+
+    if not x_max:
+      self.x_max = 30.
+    else:
+      self.x_max = float(x_max)
+
