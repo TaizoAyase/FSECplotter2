@@ -36,20 +36,43 @@ class MainWindow(QtWidgets.QMainWindow):
     self.quick_save_button.setObjectName("Quick Save button")
     self.quick_save_button.setText("Quick Save")
 
+    # set textbox
+    self.xlim_min_box_label = QtWidgets.QLabel("x min:")
+    self.xlim_min_box = QtWidgets.QLineEdit(self.centralWidget)
+    self.xlim_min_box_label.setBuddy(self.xlim_min_box)
+
+    self.xlim_max_box_label = QtWidgets.QLabel("x max:")
+    self.xlim_max_box = QtWidgets.QLineEdit(self.centralWidget)
+    self.xlim_max_box_label.setBuddy(self.xlim_max_box)
+
+    self.double_valid = QtGui.QDoubleValidator()
+    self.xlim_min_box.setValidator(self.double_valid)
+    self.xlim_max_box.setValidator(self.double_valid)
+
     # signal slot definition
     self.redraw_button.clicked.connect(self.redraw)
     self.savefig_button.clicked.connect(self.save_figure)
     self.quick_save_button.clicked.connect(self.quick_save_figure)
 
     # right-hand layout
-    self.gridLay1 = QtWidgets.QGridLayout()
-    self.gridLay1.addWidget(self.redraw_button, 0, 0, 1, 1)
-    self.gridLay1.addWidget(self.savefig_button, 0, 1, 1, 1)
-    self.gridLay1.addWidget(self.quick_save_button, 0, 2, 1, 1)
+    self.horiLay1 = QtWidgets.QHBoxLayout()
+    self.horiLay1.addWidget(self.xlim_min_box_label)
+    self.horiLay1.addWidget(self.xlim_min_box)
+    self.horiLay1.addWidget(self.xlim_max_box_label)
+    self.horiLay1.addWidget(self.xlim_max_box)
+
+    self.horiLay2= QtWidgets.QHBoxLayout()
+    self.horiLay2.addWidget(self.redraw_button)
+    self.horiLay2.addWidget(self.savefig_button)
+    self.horiLay2.addWidget(self.quick_save_button)
+
+    self.buttons_layout = QtWidgets.QVBoxLayout()
+    self.buttons_layout.addLayout(self.horiLay1)
+    self.buttons_layout.addLayout(self.horiLay2)
 
     self.verLay1 = QtWidgets.QVBoxLayout()
     self.verLay1.addWidget(self.plotarea)
-    self.verLay1.addLayout(self.gridLay1)
+    self.verLay1.addLayout(self.buttons_layout)
 
     self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
     self.horizontalLayout.addWidget(self.treeview)
@@ -75,7 +98,6 @@ class MainWindow(QtWidgets.QMainWindow):
     filename = QtWidgets.QFileDialog.getSaveFileName(
       self, "Save file", os.path.expanduser('~') + "/plot.png", 
       filter = "images (*.png *.jpg *.pdf)")
-    print(filename)
     file_save_to = filename[0]
     self.plotarea.save_fig_to(file_save_to)
 
