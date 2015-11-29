@@ -240,9 +240,8 @@ class LogfileListWidget(QtWidgets.QWidget):
       current_row = self.__get_current_index()
     except IndexOutOfRangeError:
       return
-    moved_to = self.model.move_item(current_row, int(shift))
 
-    # set selection to moved row
+    moved_to = self.model.move_item(current_row, int(shift))
     self.selection_model.clear()
     self.__select_row(moved_to)
 
