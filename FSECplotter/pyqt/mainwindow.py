@@ -5,10 +5,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from .logfilelist import *
 from .plotwidget import *
 
-from glob import glob
-
-TEST_FILES = glob("./test/fixture/test*.txt")
-
 
 class MainWindow(QtWidgets.QMainWindow):
   def __init__(self, parent = None):
