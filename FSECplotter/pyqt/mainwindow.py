@@ -98,6 +98,7 @@ class MainWindow(QtWidgets.QMainWindow):
     self.plotarea.plot_fig(data)
 
   def save_figure(self):
+    # TODO:キャンセルボタンを推した場合、".png"というファイルが生成されてしまう
     filename = QtWidgets.QFileDialog.getSaveFileName(
       self, "Save file", os.path.expanduser('~') + "/plot.png", 
       filter = "images (*.png *.jpg *.pdf)")

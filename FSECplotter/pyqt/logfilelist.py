@@ -72,6 +72,7 @@ class LogfileModel(QtGui.QStandardItemModel):
     del target_row
     del del_logfile
 
+  #TODO: Windows版のPathへの対応
   def mimeData(self, indexes):
     mimedata = QtCore.QMimeData() # create Mime Data
     urllist  = []
