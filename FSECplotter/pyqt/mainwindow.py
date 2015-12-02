@@ -1,20 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyQt5 import QtCore, QtGui, QtWidgets
 from .logfilelist import *
 from .plotwidget import *
-
-from glob import glob
-
-TEST_FILES = glob("./test/fixture/test*.txt")
 
 
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        #layout = QtWidgets.QVBoxLayout(self)
         self.centralWidget = QtWidgets.QWidget(self)
 
         # set list view and plot widgets
@@ -104,13 +98,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def save_figure(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(
-            self, "Save file", os.path.expanduser('~') + "/plot.png",
-            filter="images (*.png *.jpg *.pdf)")
-        file_save_to = filename[0]
-        self.plotarea.save_fig_to(file_save_to)
+            self, "Save file", os.path.join(os.path.expanduser('~'), "plot.png"))
+
+        if filename[0]:
+            self.plotarea.save_fig_to(filename[0])
 
     def quick_save_figure(self):
-        file_save_to = os.path.expanduser('~') + "/plot.png"
+        file_save_to = os.path.join(os.path.expanduser('~'), "plot.png")
         self.plotarea.save_fig_to(file_save_to)
 
 

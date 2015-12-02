@@ -33,7 +33,6 @@ class LogfileModel(QtGui.QStandardItemModel):
         new_log = self.__append_logfile(filename)
 
         row = self.rowCount()
-        order = row + 1  # set plot order
         order = self.__id_count
         self.__id_count += 1
         data_ary = [order,
@@ -183,7 +182,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.treeview.setSelectionModel(self.selection_model)
 
         # TreeView setting
-        #self.treeview.setColumnWidth(1, 140)
+        # self.treeview.setColumnWidth(1, 140)
         self.treeview.setSelectionMode(
             QtWidgets.QAbstractItemView.ContiguousSelection
         )
