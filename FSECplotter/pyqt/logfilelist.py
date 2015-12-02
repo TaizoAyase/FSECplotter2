@@ -4,6 +4,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.logfile import *
 import os
+import platform
 
 COLOR_LIST = [
   QtGui.QBrush(QtGui.QColor(255, 255, 255)),
@@ -90,7 +91,7 @@ class LogfileModel(QtGui.QStandardItemModel):
       # cast the string to QUrl
       urllist.append(QtCore.QUrl('/' + filepath))
     mimedata.setUrls(urllist)
- 
+
     return mimedata
 
   def get_current_data(self):
@@ -141,6 +142,8 @@ class LogfileListView(QtWidgets.QTreeView):
     #self.setSortingEnabled(True)
     self.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
 
+    self.__windows_flag = platform.system() == "Windows"
+
   def dragEnterEvent(self, event):
     mimedata = event.mimeData()
     if mimedata.hasUrls():
@@ -155,7 +158,11 @@ class LogfileListView(QtWidgets.QTreeView):
     if mimedata.hasUrls():
       urllist = mimedata.urls()
       for url in urllist:
-        model.add_item(url.path())
+        # remove first slash if runs on windows
+        # or, do nothing
+        filepath = url.path()[1:] if self.__windows_flag else url.path()
+
+        model.add_item(filepath)
       event.accept()
     else:
       event.ignore()
