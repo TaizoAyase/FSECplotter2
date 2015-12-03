@@ -46,7 +46,7 @@ class PlotArea(FigureCanvas):
 
         # self.axes.legend(data_ary['filenames'], bbox_to_anchor=(1.05, 1), loc = 2)
         self.axes.set_xlim(self.x_min, self.x_max)
-        self.axes.legend(loc=3, mode="expand", borderaxespad=0., bbox_to_anchor=(0., 1.02, 1., .102))
+        self.axes.legend(loc=3, mode="expand", borderaxespad=0., bbox_to_anchor=(0., 1.02, 1., .102), prop={'size': 'small'})
         self.axes.set_xlabel("Volume(ml)")
         self.axes.set_ylabel("FL intensity(AU)")
         self.draw()
