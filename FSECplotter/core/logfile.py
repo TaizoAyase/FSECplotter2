@@ -59,13 +59,6 @@ class LogFile:
         else:
             raise NoMatchedFlowRateError
 
-    # returns # of detectors and set it to self.__no_of_detectors
-    def num_of_detector(self):
-        num_detectors_ary = self.__get_params_ary(
-            "Configuration", "# of Detectors")
-        self.__no_of_detectors = int(num_detectors_ary[0])
-        return self.__no_of_detectors
-
     # private methods
 
     def __parse_logfile(self, f_path):
@@ -78,7 +71,6 @@ class LogFile:
                 if re.match(header_pattern, line):
                     sec = Section(line)
                     header_flag = True
-                    next
 
                 # search the end of the section
                 if re.match(r"^\s+$", line):
@@ -86,7 +78,7 @@ class LogFile:
                         header_flag = False
                         self.append_section(sec)
                         del sec
-                    next
+
                 sec.append_data(line) if 'sec' in locals() else None
 
     def __sub_parenthesis(self, section_name):
