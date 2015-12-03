@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyQt5 import QtCore, QtGui, QtWidgets
 from .logfilelist import *
 from .plotwidget import *
 
@@ -10,7 +9,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        #layout = QtWidgets.QVBoxLayout(self)
         self.centralWidget = QtWidgets.QWidget(self)
 
         # set list view and plot widgets

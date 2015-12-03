@@ -34,7 +34,6 @@ class LogfileModel(QtGui.QStandardItemModel):
         new_log = self.__append_logfile(filename)
 
         row = self.rowCount()
-        order = row + 1  # set plot order
         order = self.__id_count
         self.__id_count += 1
         data_ary = [order,
@@ -75,7 +74,6 @@ class LogfileModel(QtGui.QStandardItemModel):
         del target_row
         del del_logfile
 
-    # TODO: Windows版のPathへの対応
     def mimeData(self, indexes):
         mimedata = QtCore.QMimeData()  # create Mime Data
         urllist = []
@@ -166,8 +164,7 @@ class LogfileListView(QtWidgets.QTreeView):
             for url in urllist:
                 # remove first slash if runs on windows
                 # or, do nothing
-                filepath = url.path()[
-                    1:] if self.__windows_flag else url.path()
+                filepath = url.path()[1:] if self.__windows_flag else url.path()
 
                 model.add_item(filepath)
             event.accept()
@@ -192,7 +189,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.treeview.setSelectionModel(self.selection_model)
 
         # TreeView setting
-        #self.treeview.setColumnWidth(1, 140)
+        # self.treeview.setColumnWidth(1, 140)
         self.treeview.setSelectionMode(
             QtWidgets.QAbstractItemView.ContiguousSelection
         )
