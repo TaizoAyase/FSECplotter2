@@ -36,20 +36,20 @@ class PlotArea(FigureCanvas):
         # set color map object
         self.__cm = matplotlib.cm.gist_rainbow
 
-    def plot_fig(self, data_ary):
+    def plot_fig(self, current_data):
         self.axes.clear()
         self.axes.grid()
 
         # iterate for the length of dataset( len(filename) )
-        num_data = len(data_ary['filenames'])
-        num_color = data_ary['total_data']
+        num_data = len(current_data['filenames'])
+        num_color = current_data['total_data']
         self.axes.set_color_cycle(
             [self.__cm(1.*i/num_color) for i in range(num_color)])
         for i in range(num_data):
-            x = data_ary['data'][i][:, 0] * float(data_ary['flow_rates'][i])
-            y = data_ary['data'][i][:, 1]
-            self.axes.plot(x, y, label=data_ary['filenames'][i],
-                           visible=data_ary['enable_flags'][i])
+            x = current_data['data'][i][:, 0] * float(current_data['flow_rates'][i])
+            y = current_data['data'][i][:, 1]
+            self.axes.plot(x, y, label=current_data['filenames'][i],
+                           visible=current_data['enable_flags'][i])
 
         self.axes.set_xlim(self.x_min, self.x_max)
         self.axes.legend(loc=3, mode="expand",
