@@ -4,5 +4,6 @@ FSECplotter/__pycache__/
 FSECplotter/pyqt/__pycache__/
 __pycache__/
 osx_build/
+win_build/
 .python-version
 .*.swp
