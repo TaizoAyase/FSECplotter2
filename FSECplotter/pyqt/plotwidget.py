@@ -42,8 +42,9 @@ class PlotArea(FigureCanvas):
 
         # iterate for the length of dataset( len(filename) )
         num_data = len(data_ary['filenames'])
+        num_color = data_ary['total_data']
         self.axes.set_color_cycle(
-          [self.__cm(1.*i/num_data) for i in range(num_data)])
+            [self.__cm(1.*i/num_color) for i in range(num_color)])
         for i in range(num_data):
             x = data_ary['data'][i][:, 0] * float(data_ary['flow_rates'][i])
             y = data_ary['data'][i][:, 1]
@@ -56,7 +57,7 @@ class PlotArea(FigureCanvas):
                          prop={'size': 'small'})
         self.axes.set_xlabel("Volume(ml)")
         self.axes.set_ylabel("FL intensity(AU)")
-k        self.draw()
+        self.draw()
 
     def save_fig_to(self, filepath):
         self.fig.savefig(filepath, bbox_inches='tight')

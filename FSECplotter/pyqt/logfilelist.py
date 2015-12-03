@@ -96,10 +96,14 @@ class LogfileModel(QtGui.QStandardItemModel):
 
     def get_current_data(self):
         data = {'filenames': [], 'flow_rates': [], 'data': []}
+        data['total_data'] = self.rowCount()
         for i in range(self.rowCount()):
+            # if check box is off, skip
             if self.item(i, 0).checkState() == 0:
                 continue
+
             log_id = int(self.item(i, 0).text())
+
             detector = self.item(i, 3).text()
             channel_no = int(self.item(i, 4).text())
             sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector,
