@@ -33,23 +33,30 @@ class PlotArea(FigureCanvas):
         self.x_min = 0
         self.x_max = 30
 
+        # set color map object
+        self.__cm = matplotlib.cm.gist_rainbow
+
     def plot_fig(self, data_ary):
         self.axes.clear()
         self.axes.grid()
 
         # iterate for the length of dataset( len(filename) )
         num_data = len(data_ary['filenames'])
+        self.axes.set_color_cycle(
+          [self.__cm(1.*i/num_data) for i in range(num_data)])
         for i in range(num_data):
             x = data_ary['data'][i][:, 0] * float(data_ary['flow_rates'][i])
             y = data_ary['data'][i][:, 1]
             self.axes.plot(x, y, label=data_ary['filenames'][i])
 
-        # self.axes.legend(data_ary['filenames'], bbox_to_anchor=(1.05, 1), loc = 2)
         self.axes.set_xlim(self.x_min, self.x_max)
-        self.axes.legend(loc=3, mode="expand", borderaxespad=0., bbox_to_anchor=(0., 1.02, 1., .102), prop={'size': 'small'})
+        self.axes.legend(loc=3, mode="expand",
+                         borderaxespad=0.,
+                         bbox_to_anchor=(0., 1.02, 1., .102),
+                         prop={'size': 'small'})
         self.axes.set_xlabel("Volume(ml)")
         self.axes.set_ylabel("FL intensity(AU)")
-        self.draw()
+k        self.draw()
 
     def save_fig_to(self, filepath):
         self.fig.savefig(filepath, bbox_inches='tight')
