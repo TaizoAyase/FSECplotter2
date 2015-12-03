@@ -95,12 +95,16 @@ class LogfileModel(QtGui.QStandardItemModel):
         return mimedata
 
     def get_current_data(self):
-        data = {'filenames': [], 'flow_rates': [], 'data': []}
+        data = {}
         data['total_data'] = self.rowCount()
+        data['filenames'] = []
+        data['flow_rates'] = []
+        data['data'] = []
+        data['enable_flags'] = []
+
         for i in range(self.rowCount()):
-            # if check box is off, skip
-            if self.item(i, 0).checkState() == 0:
-                continue
+            enable = self.item(i, 0).checkState() == 2
+            data['enable_flags'].append(enable)
 
             log_id = int(self.item(i, 0).text())
 

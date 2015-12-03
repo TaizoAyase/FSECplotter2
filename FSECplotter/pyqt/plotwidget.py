@@ -48,7 +48,8 @@ class PlotArea(FigureCanvas):
         for i in range(num_data):
             x = data_ary['data'][i][:, 0] * float(data_ary['flow_rates'][i])
             y = data_ary['data'][i][:, 1]
-            self.axes.plot(x, y, label=data_ary['filenames'][i])
+            self.axes.plot(x, y, label=data_ary['filenames'][i],
+                           visible=data_ary['enable_flags'][i])
 
         self.axes.set_xlim(self.x_min, self.x_max)
         self.axes.legend(loc=3, mode="expand",
