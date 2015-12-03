@@ -4,6 +4,12 @@ The interactive plotting application for FSEC.
 
 In current version, compatible with only Shimazu HPLC.
 
+How to install (for OSX users)
+----------------
+0. Install [homebrew](http://brew.sh/)
+1. Execute `brew install python3 qt5 pyqt5`
+2. Execute `pip3 install -r requirements.txt`
+
 
 How to use
 -----------
