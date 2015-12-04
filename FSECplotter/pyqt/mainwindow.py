@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .logfilelist import *
+from FSECplotter.pyqt.widgets.logfilelist import *
 from .plotwidget import *
 
 
