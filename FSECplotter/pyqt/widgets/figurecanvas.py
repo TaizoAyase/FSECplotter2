@@ -12,7 +12,7 @@ from matplotlib.figure import Figure
 
 
 # FigureCanvas inherits QWidget
-class PlotArea(FigureCanvas):
+class Figurecanvas(FigureCanvas):
 
     def __init__(self, parent=None, width=4, height=3, dpi=100):
         # set matplitlib figure object
@@ -21,7 +21,7 @@ class PlotArea(FigureCanvas):
         self.axes.hold(True)
 
         # call constructor of FigureCanvas
-        super(PlotArea, self).__init__(self.fig)
+        super(Figurecanvas, self).__init__(self.fig)
         self.setParent(parent)
 
         # expand plot area as large as possible
