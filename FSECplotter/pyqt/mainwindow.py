@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from FSECplotter.pyqt.widgets.logfilelist import *
-from .plotwidget import *
+from FSECplotter.pyqt.widgets.plotwidget import *
 
 
 class MainWindow(QtWidgets.QMainWindow):
