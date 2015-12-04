@@ -4,7 +4,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.logfile import *
 import os
-import platform
 
 COLOR_LIST = [
     QtGui.QBrush(QtGui.QColor(255, 255, 255)),
