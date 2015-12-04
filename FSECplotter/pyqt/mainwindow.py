@@ -9,17 +9,22 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.centralWidget = QtWidgets.QWidget(self)
+        #self.centralWidget = QtWidgets.QWidget(self)
+        self.splitter = QtWidgets.QSplitter(self)
 
         # set list view and plot widgets
         self.treeview = LogfileListWidget(self)
         self.plotarea = PlotArea(self.treeview.model, self)
 
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
-        self.horizontalLayout.addWidget(self.treeview)
-        self.horizontalLayout.addWidget(self.plotarea)
+        #self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
+        #self.horizontalLayout.addWidget(self.treeview)
+        #self.horizontalLayout.addWidget(self.plotarea)
 
-        self.setCentralWidget(self.centralWidget)
+        self.splitter.addWidget(self.treeview)
+        self.splitter.addWidget(self.plotarea)
+
+        #self.setCentralWidget(self.centralWidget)
+        self.setCentralWidget(self.splitter)
 
         self.resize(1200, 600)
         self.setWindowTitle("FSEC plotter 2")
