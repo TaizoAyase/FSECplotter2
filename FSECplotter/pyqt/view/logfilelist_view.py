@@ -4,7 +4,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.logfile import *
 from FSECplotter.pyqt.models.logfilelist_model import *
-import os
 import platform
 
 
