@@ -12,73 +12,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.centralWidget = QtWidgets.QWidget(self)
 
         # set list view and plot widgets
-        self.treeview = LogfileListWidget(self.centralWidget)
-        self.plotarea = PlotArea(self.centralWidget)
-
-        # set buttons
-        self.redraw_button = QtWidgets.QPushButton(self.centralWidget)
-        self.redraw_button.setObjectName("Redraw button")
-        self.redraw_button.setText("Redraw")
-
-        self.savefig_button = QtWidgets.QPushButton(self.centralWidget)
-        self.savefig_button.setObjectName("Save Fig. button")
-        self.savefig_button.setText("Save Fig. As ...")
-
-        self.quick_save_button = QtWidgets.QPushButton(self.centralWidget)
-        self.quick_save_button.setObjectName("Quick Save button")
-        self.quick_save_button.setText("Quick Save")
-
-        # set textbox
-        self.xlim_min_box_label = QtWidgets.QLabel("x min:")
-        self.xlim_min_box = QtWidgets.QLineEdit(self.centralWidget)
-        self.xlim_min_box_label.setBuddy(self.xlim_min_box)
-        self.xlim_min_box.setText("0")
-
-        self.xlim_max_box_label = QtWidgets.QLabel("x max:")
-        self.xlim_max_box = QtWidgets.QLineEdit(self.centralWidget)
-        self.xlim_max_box_label.setBuddy(self.xlim_max_box)
-        self.xlim_max_box.setText("30")
-
-        self.double_valid = QtGui.QDoubleValidator()
-        self.xlim_min_box.setValidator(self.double_valid)
-        self.xlim_max_box.setValidator(self.double_valid)
-
-        # signal slot definition
-        self.redraw_button.clicked.connect(self.redraw)
-        self.savefig_button.clicked.connect(self.save_figure)
-        self.quick_save_button.clicked.connect(self.quick_save_figure)
-
-        # right-hand layout
-        self.horiLay1 = QtWidgets.QHBoxLayout()
-        self.horiLay1.addWidget(self.xlim_min_box_label)
-        self.horiLay1.addWidget(self.xlim_min_box)
-        self.horiLay1.addWidget(self.xlim_max_box_label)
-        self.horiLay1.addWidget(self.xlim_max_box)
-
-        self.horiLay2 = QtWidgets.QHBoxLayout()
-        self.horiLay2.addWidget(self.redraw_button)
-        self.horiLay2.addWidget(self.savefig_button)
-        self.horiLay2.addWidget(self.quick_save_button)
-
-        self.buttons_layout = QtWidgets.QVBoxLayout()
-        self.buttons_layout.addLayout(self.horiLay1)
-        self.buttons_layout.addLayout(self.horiLay2)
-
-        self.verLay1 = QtWidgets.QVBoxLayout()
-        self.verLay1.addWidget(self.plotarea)
-        self.verLay1.addLayout(self.buttons_layout)
+        self.treeview = LogfileListWidget(self)
+        self.plotarea = PlotArea(self)
 
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
         self.horizontalLayout.addWidget(self.treeview)
-        self.horizontalLayout.addLayout(self.verLay1)
+        self.horizontalLayout.addWidget(self.plotarea)
 
         self.setCentralWidget(self.centralWidget)
 
         self.resize(1200, 600)
         self.setWindowTitle("FSEC plotter 2")
 
+        # signal slot definition
+        self.plotarea.redraw_button.clicked.connect(self.redraw)
+        self.plotarea.savefig_button.clicked.connect(self.save_figure)
+        self.plotarea.quick_save_button.clicked.connect(self.quick_save_figure)
+
         # make first plot
-        self.redraw()
+        #self.redraw()
 
     def redraw(self):
         try:
@@ -90,11 +42,11 @@ class MainWindow(QtWidgets.QMainWindow):
                                           QtWidgets.QMessageBox.Ok)
             return
 
-        x_min, x_max = self.plotarea.set_xlim(
+        x_min, x_max = self.figcanvas.set_xlim(
             self.xlim_min_box.text(), self.xlim_max_box.text())
         self.xlim_min_box.setText(str(x_min))
         self.xlim_max_box.setText(str(x_max))
-        self.plotarea.plot_fig(data)
+        self.figcanvas.plot_fig(data)
 
     def save_figure(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(
@@ -104,12 +56,11 @@ class MainWindow(QtWidgets.QMainWindow):
         # if filename is empty string, do nothing
         if not file_save_to:
             return
-        self.plotarea.save_fig_to(file_save_to)
+        self.figcanvas.save_fig_to(file_save_to)
 
     def quick_save_figure(self):
         file_save_to = os.path.expanduser('~') + "/plot.png"
-        self.plotarea.save_fig_to(file_save_to)
-
+        self.figcanvas.save_fig_to(file_save_to)
 
 if __name__ == '__main__':
     import sys

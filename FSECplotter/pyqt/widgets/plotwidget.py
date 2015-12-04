@@ -1,81 +1,77 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
+sys.path.append("/Users/takemotomizuki/Documents/Dropbox/python/FSECplotter_py")
 from PyQt5 import QtCore, QtGui, QtWidgets
-import numpy as np
-
-# force matplotlib to use PyQt5 backends
-import matplotlib
-matplotlib.use("Qt5Agg")
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
+from FSECplotter.pyqt.widgets.figurecanvas import *
+from FSECplotter.core.logfile import NoSectionError
 
 
 # FigureCanvas inherits QWidget
-class PlotArea(FigureCanvas):
+class PlotArea(QtWidgets.QWidget):
 
-    def __init__(self, parent=None, width=4, height=3, dpi=100):
-        # set matplitlib figure object
-        self.fig = Figure(figsize=(width, height), dpi=dpi)
-        self.axes = self.fig.add_subplot(111)
-        self.axes.hold(True)
-
+    def __init__(self, parent=None):
         # call constructor of FigureCanvas
-        super(PlotArea, self).__init__(self.fig)
-        self.setParent(parent)
+        super(PlotArea, self).__init__(parent)
 
-        # expand plot area as large as possible
-        FigureCanvas.setSizePolicy(self,
-                                   QtWidgets.QSizePolicy.Expanding,
-                                   QtWidgets.QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
+        self.figcanvas = Figurecanvas(self)
 
-        self.x_min = 0
-        self.x_max = 30
+        # set buttons
+        self.redraw_button = QtWidgets.QPushButton(self)
+        self.redraw_button.setObjectName("Redraw button")
+        self.redraw_button.setText("Redraw")
 
-        # set color map object
-        self.__cm = matplotlib.cm.gist_rainbow
+        self.savefig_button = QtWidgets.QPushButton(self)
+        self.savefig_button.setObjectName("Save Fig. button")
+        self.savefig_button.setText("Save Fig. As ...")
 
-    def plot_fig(self, current_data):
-        self.axes.clear()
-        self.axes.grid()
+        self.quick_save_button = QtWidgets.QPushButton(self)
+        self.quick_save_button.setObjectName("Quick Save button")
+        self.quick_save_button.setText("Quick Save")
 
-        # iterate for the length of dataset( len(filename) )
-        num_data = len(current_data['filenames'])
-        num_color = current_data['total_data']
-        self.axes.set_color_cycle(
-            [self.__cm(1.*i/num_color) for i in range(num_color)])
-        for i in range(num_data):
-            x = current_data['data'][i][:, 0] * float(current_data['flow_rates'][i])
-            y = current_data['data'][i][:, 1]
-            self.axes.plot(x, y, label=current_data['filenames'][i],
-                           visible=current_data['enable_flags'][i])
+        # set textbox
+        self.xlim_min_box_label = QtWidgets.QLabel("x min:")
+        self.xlim_min_box = QtWidgets.QLineEdit(self)
+        self.xlim_min_box_label.setBuddy(self.xlim_min_box)
+        self.xlim_min_box.setText("0")
 
-        self.axes.set_xlim(self.x_min, self.x_max)
-        self.axes.legend(loc=3, mode="expand",
-                         borderaxespad=0.,
-                         bbox_to_anchor=(0., 1.02, 1., .102),
-                         prop={'size': 'small'})
-        self.axes.set_xlabel("Volume(ml)")
-        self.axes.set_ylabel("FL intensity(AU)")
-        self.draw()
+        self.xlim_max_box_label = QtWidgets.QLabel("x max:")
+        self.xlim_max_box = QtWidgets.QLineEdit(self)
+        self.xlim_max_box_label.setBuddy(self.xlim_max_box)
+        self.xlim_max_box.setText("30")
 
-    def save_fig_to(self, filepath):
-        self.fig.savefig(filepath, bbox_inches='tight')
+        self.double_valid = QtGui.QDoubleValidator()
+        self.xlim_min_box.setValidator(self.double_valid)
+        self.xlim_max_box.setValidator(self.double_valid)
 
-    def set_xlim(self, x_min, x_max):
-        if not x_min:
-            self.x_min = 0.
-        else:
-            self.x_min = float(x_min)
+        # right-hand layout
+        self.horiLay1 = QtWidgets.QHBoxLayout()
+        self.horiLay1.addWidget(self.xlim_min_box_label)
+        self.horiLay1.addWidget(self.xlim_min_box)
+        self.horiLay1.addWidget(self.xlim_max_box_label)
+        self.horiLay1.addWidget(self.xlim_max_box)
 
-        if not x_max:
-            self.x_max = 30.
-        else:
-            self.x_max = float(x_max)
+        self.horiLay2 = QtWidgets.QHBoxLayout()
+        self.horiLay2.addWidget(self.redraw_button)
+        self.horiLay2.addWidget(self.savefig_button)
+        self.horiLay2.addWidget(self.quick_save_button)
 
-        # avoid the illegal range setting
-        if self.x_min > self.x_max:
-            self.x_max = self.x_min + 1.0
+        self.buttons_layout = QtWidgets.QVBoxLayout()
+        self.buttons_layout.addLayout(self.horiLay1)
+        self.buttons_layout.addLayout(self.horiLay2)
 
-        return self.x_min, self.x_max
+        self.verLay1 = QtWidgets.QVBoxLayout(self)
+        self.verLay1.addWidget(self.figcanvas)
+        self.verLay1.addLayout(self.buttons_layout)
+
+
+if __name__ == '__main__':
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+
+    win = PlotArea()
+
+    win.show()
+
+    app.exec_()
