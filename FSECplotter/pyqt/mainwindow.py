@@ -52,6 +52,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.quickSaveAction.setStatusTip("One click save.")
         self.quickSaveAction.triggered.connect(self.plotarea.quick_save_figure)
 
+        # remove all list items
+        self.removeAllItemsAction = QtWidgets.QAction("Remove all files", self)
+        self.removeAllItemsAction.setStatusTip("Remove all files from list.")
+        self.removeAllItemsAction.triggered.connect(self.treeview.delete_all_files)
+
         # app quit
         self.quitAction = QtWidgets.QAction("Quit", self)
         self.quitAction.setShortcut("Ctrl+Q")
@@ -70,6 +75,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileMenu.addAction(self.openAction)
         self.fileMenu.addAction(self.saveAsAction)
         self.fileMenu.addAction(self.quickSaveAction)
+        self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.removeAllItemsAction)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.quitAction)
 
