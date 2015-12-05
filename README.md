@@ -24,7 +24,7 @@ How to use
 0. Start app with `python FSECplotter2.py`
 1. Drag and Drop the FSEC logfile(s) to the left-side widget. 
 Or, press "Open File" button and select logfiles.
-2. Press "Redraw" button.
+2. Chromatograms will appear in right half widget.
 3. To save figure, press "Save Fig. As..." button to select filename to save. 
 PNG, JPG, PDF formats can be selected.
 4. "Quick Save" button saves figure as `plot.png` in your home directory.
