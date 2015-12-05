@@ -25,6 +25,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         self.createActions()
         self.createMenus()
+        self.createStatusBar()
 
     def createActions(self):
         # file-menu
@@ -45,6 +46,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.quickSaveAction.setShortcut("Ctrl+S")
         self.quickSaveAction.setStatusTip("One click save.")
         self.quickSaveAction.triggered.connect(self.plotarea.quick_save_figure)
+
+        # remove all list items
+        self.removeAllItemsAction = QtWidgets.QAction("Remove all files", self)
+        self.removeAllItemsAction.setStatusTip("Remove all files from list.")
+        self.removeAllItemsAction.triggered.connect(self.treeview.delete_all_files)
 
         # app quit
         self.quitAction = QtWidgets.QAction("Quit", self)
@@ -67,14 +73,28 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileMenu.addAction(self.saveAsAction)
         self.fileMenu.addAction(self.quickSaveAction)
         self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.removeAllItemsAction)
+        self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.quitAction)
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tool")
         self.toolMenu.addAction(self.tsAction)
 
+    def createStatusBar(self):
+        self.fomulaLabel = QtWidgets.QLabel()
+        self.fomulaLabel.setIndent(3)
+
+        self.statusBar().addWidget(self.fomulaLabel)
+
+        self.updateStatusBar()
+
+    def updateStatusBar(self):
+        self.fomulaLabel.setText("")
+
     def fsec_ts(self):
         pass
+
 
 if __name__ == '__main__':
     import sys

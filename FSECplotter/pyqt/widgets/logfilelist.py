@@ -84,6 +84,10 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.selection_model.clear()
         self.__select_row(current_row)
 
+    def delete_all_files(self):
+        while self.model.rowCount() > 0:
+            self.model.delete_item(0)
+
     def move_selected(self, shift):
         try:
             current_row = self.__get_current_index()
