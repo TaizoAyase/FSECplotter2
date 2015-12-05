@@ -18,8 +18,7 @@ class LogfileModel(QtGui.QStandardItemModel):
     Default_Detector = "B"
     Default_Channel = 2
 
-    # custom signal
-    itemAddedComplete = QtCore.pyqtSignal()
+    # override itemChanged signal
     itemChanged = QtCore.pyqtSignal()
 
     def __init__(self, row, col, parent=None):
@@ -56,7 +55,7 @@ class LogfileModel(QtGui.QStandardItemModel):
 
             self.setItem(row, i, item)
 
-        self.itemAddedComplete.emit()
+        self.itemChanged.emit()
 
     def move_item(self, current_index, shift):
         next_row_num = current_index + int(shift)
