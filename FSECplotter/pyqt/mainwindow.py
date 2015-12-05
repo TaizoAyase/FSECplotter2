@@ -1,114 +1,99 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from .logfilelist import *
-from .plotwidget import *
+from FSECplotter.pyqt.widgets.logfilelist import *
+from FSECplotter.pyqt.widgets.plotwidget import *
 
 
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        self.centralWidget = QtWidgets.QWidget(self)
+        self.splitter = QtWidgets.QSplitter(self)
 
         # set list view and plot widgets
-        self.treeview = LogfileListWidget(self.centralWidget)
-        self.plotarea = PlotArea(self.centralWidget)
+        self.treeview = LogfileListWidget(self)
+        self.plotarea = PlotArea(self.treeview.model, self)
 
-        # set buttons
-        self.redraw_button = QtWidgets.QPushButton(self.centralWidget)
-        self.redraw_button.setObjectName("Redraw button")
-        self.redraw_button.setText("Redraw")
+        self.splitter.addWidget(self.treeview)
+        self.splitter.addWidget(self.plotarea)
 
-        self.savefig_button = QtWidgets.QPushButton(self.centralWidget)
-        self.savefig_button.setObjectName("Save Fig. button")
-        self.savefig_button.setText("Save Fig. As ...")
-
-        self.quick_save_button = QtWidgets.QPushButton(self.centralWidget)
-        self.quick_save_button.setObjectName("Quick Save button")
-        self.quick_save_button.setText("Quick Save")
-
-        # set textbox
-        self.xlim_min_box_label = QtWidgets.QLabel("x min:")
-        self.xlim_min_box = QtWidgets.QLineEdit(self.centralWidget)
-        self.xlim_min_box_label.setBuddy(self.xlim_min_box)
-        self.xlim_min_box.setText("0")
-
-        self.xlim_max_box_label = QtWidgets.QLabel("x max:")
-        self.xlim_max_box = QtWidgets.QLineEdit(self.centralWidget)
-        self.xlim_max_box_label.setBuddy(self.xlim_max_box)
-        self.xlim_max_box.setText("30")
-
-        self.double_valid = QtGui.QDoubleValidator()
-        self.xlim_min_box.setValidator(self.double_valid)
-        self.xlim_max_box.setValidator(self.double_valid)
-
-        # signal slot definition
-        self.redraw_button.clicked.connect(self.redraw)
-        self.savefig_button.clicked.connect(self.save_figure)
-        self.quick_save_button.clicked.connect(self.quick_save_figure)
-
-        # right-hand layout
-        self.horiLay1 = QtWidgets.QHBoxLayout()
-        self.horiLay1.addWidget(self.xlim_min_box_label)
-        self.horiLay1.addWidget(self.xlim_min_box)
-        self.horiLay1.addWidget(self.xlim_max_box_label)
-        self.horiLay1.addWidget(self.xlim_max_box)
-
-        self.horiLay2 = QtWidgets.QHBoxLayout()
-        self.horiLay2.addWidget(self.redraw_button)
-        self.horiLay2.addWidget(self.savefig_button)
-        self.horiLay2.addWidget(self.quick_save_button)
-
-        self.buttons_layout = QtWidgets.QVBoxLayout()
-        self.buttons_layout.addLayout(self.horiLay1)
-        self.buttons_layout.addLayout(self.horiLay2)
-
-        self.verLay1 = QtWidgets.QVBoxLayout()
-        self.verLay1.addWidget(self.plotarea)
-        self.verLay1.addLayout(self.buttons_layout)
-
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
-        self.horizontalLayout.addWidget(self.treeview)
-        self.horizontalLayout.addLayout(self.verLay1)
-
-        self.setCentralWidget(self.centralWidget)
+        self.setCentralWidget(self.splitter)
 
         self.resize(1200, 600)
         self.setWindowTitle("FSEC plotter 2")
 
-        # make first plot
-        self.redraw()
+        self.createActions()
+        self.createMenus()
+        self.createStatusBar()
 
-    def redraw(self):
-        try:
-            data = self.treeview.model.get_current_data()
-        except NoSectionError as e:
-            # if invalid section was selected, display the warning window.
-            mes = e.args[0]
-            QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
-                                          QtWidgets.QMessageBox.Ok)
-            return
+    def createActions(self):
+        # file-menu
+        # open
+        self.openAction = QtWidgets.QAction("Open", self)
+        self.openAction.setShortcut("Ctrl+O")
+        self.openAction.setStatusTip("Open the new log file.")
+        self.openAction.triggered.connect(self.treeview.open_file)
 
-        x_min, x_max = self.plotarea.set_xlim(
-            self.xlim_min_box.text(), self.xlim_max_box.text())
-        self.xlim_min_box.setText(str(x_min))
-        self.xlim_max_box.setText(str(x_max))
-        self.plotarea.plot_fig(data)
+        # save figure
+        self.saveAsAction = QtWidgets.QAction("Save fig as ...", self)
+        self.saveAsAction.setShortcut("Ctrl+Shift+S")
+        self.saveAsAction.setStatusTip("Save current figure as new name.")
+        self.saveAsAction.triggered.connect(self.plotarea.save_figure)
 
-    def save_figure(self):
-        filename = QtWidgets.QFileDialog.getSaveFileName(
-            self, "Save file", os.path.expanduser('~') + "/plot.png",
-            filter="images (*.png *.jpg *.pdf)")
-        file_save_to = filename[0]
-        # if filename is empty string, do nothing
-        if not file_save_to:
-            return
-        self.plotarea.save_fig_to(file_save_to)
+        # quick save fig
+        self.quickSaveAction = QtWidgets.QAction("Quick save", self)
+        self.quickSaveAction.setShortcut("Ctrl+S")
+        self.quickSaveAction.setStatusTip("One click save.")
+        self.quickSaveAction.triggered.connect(self.plotarea.quick_save_figure)
 
-    def quick_save_figure(self):
-        file_save_to = os.path.expanduser('~') + "/plot.png"
-        self.plotarea.save_fig_to(file_save_to)
+        # remove all list items
+        self.removeAllItemsAction = QtWidgets.QAction("Remove all files", self)
+        self.removeAllItemsAction.setStatusTip("Remove all files from list.")
+        self.removeAllItemsAction.triggered.connect(self.treeview.delete_all_files)
+
+        # app quit
+        self.quitAction = QtWidgets.QAction("Quit", self)
+        self.quitAction.setShortcut("Ctrl+Q")
+        self.quitAction.setStatusTip("Quit app.")
+        self.quitAction.triggered.connect(
+            QtWidgets.QApplication.closeAllWindows)
+
+        # tools-menu
+        # fsec-ts
+        self.tsAction = QtWidgets.QAction("calc Tm", self)
+        self.tsAction.setStatusTip(
+            "Calc Tm from FSEC-TS data.(Not implemented yet)")
+        self.tsAction.triggered.connect(self.fsec_ts)
+
+    def createMenus(self):
+        # file menu
+        self.fileMenu = self.menuBar().addMenu("File")
+        self.fileMenu.addAction(self.openAction)
+        self.fileMenu.addAction(self.saveAsAction)
+        self.fileMenu.addAction(self.quickSaveAction)
+        self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.removeAllItemsAction)
+        self.fileMenu.addSeparator()
+        self.fileMenu.addAction(self.quitAction)
+
+        # tool menu
+        self.toolMenu = self.menuBar().addMenu("Tool")
+        self.toolMenu.addAction(self.tsAction)
+
+    def createStatusBar(self):
+        self.fomulaLabel = QtWidgets.QLabel()
+        self.fomulaLabel.setIndent(3)
+
+        self.statusBar().addWidget(self.fomulaLabel)
+
+        self.updateStatusBar()
+
+    def updateStatusBar(self):
+        self.fomulaLabel.setText("")
+
+    def fsec_ts(self):
+        pass
 
 
 if __name__ == '__main__':
