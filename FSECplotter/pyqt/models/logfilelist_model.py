@@ -32,8 +32,11 @@ class LogfileModel(QtGui.QStandardItemModel):
         for i, item in enumerate(self.headers):
             self.setHeaderData(i, QtCore.Qt.Horizontal, item)
 
+        self.current_dir = os.path.expanduser("~")
+
     def add_item(self, filename):
-        new_log = self.__append_logfile(filename)
+        abspath = os.path.abspath(filename)
+        new_log = self.__append_logfile(abspath)
 
         row = self.rowCount()
         order = self.__id_count
@@ -56,6 +59,7 @@ class LogfileModel(QtGui.QStandardItemModel):
             self.setItem(row, i, item)
 
         self.itemChanged.emit()
+        self.current_dir = os.path.dirname(abspath)
 
     def move_item(self, current_index, shift):
         next_row_num = current_index + int(shift)
@@ -139,10 +143,9 @@ class LogfileModel(QtGui.QStandardItemModel):
 
     # private methods
 
-    def __append_logfile(self, filename):
-        abspath = os.path.abspath(filename)
+    def __append_logfile(self, filepath):
         logfile = LogFile()
-        logfile.parse(abspath)
+        logfile.parse(filepath)
         # Try to set flowrate of log
         try:
             logfile.flowrate()
