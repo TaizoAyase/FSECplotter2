@@ -85,21 +85,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu.addAction(self.tsAction)
 
     def createStatusBar(self):
-        self.locationLabel = QtWidgets.QLabel(" W999 ")
-        self.locationLabel.setAlignment(QtCore.Qt.AlignHCenter)
-        self.locationLabel.setMinimumSize(self.locationLabel.sizeHint())
-
         self.fomulaLabel = QtWidgets.QLabel()
         self.fomulaLabel.setIndent(3)
 
-        self.statusBar().addWidget(self.locationLabel)
         self.statusBar().addWidget(self.fomulaLabel)
 
         self.updateStatusBar()
 
     def updateStatusBar(self):
-        self.locationLabel.setText("test")
-        self.fomulaLabel.setText("testtest")
+        self.fomulaLabel.setText("")
 
     def fsec_ts(self):
         pass
