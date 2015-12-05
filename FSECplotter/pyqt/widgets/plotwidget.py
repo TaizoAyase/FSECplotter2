@@ -24,7 +24,7 @@ class PlotArea(QtWidgets.QWidget):
 
         self.savefig_button = QtWidgets.QPushButton(self)
         self.savefig_button.setObjectName("Save Fig. button")
-        self.savefig_button.setText("Save Fig. As ...")
+        self.savefig_button.setText("Save Fig As ...")
 
         self.quick_save_button = QtWidgets.QPushButton(self)
         self.quick_save_button.setObjectName("Quick Save button")
@@ -65,10 +65,12 @@ class PlotArea(QtWidgets.QWidget):
         self.verLay1.addWidget(self.figcanvas)
         self.verLay1.addLayout(self.buttons_layout)
 
-        # signal slot definition
+        # signal slot connection
         self.redraw_button.clicked.connect(self.redraw)
         self.savefig_button.clicked.connect(self.save_figure)
         self.quick_save_button.clicked.connect(self.quick_save_figure)
+        self.xlim_min_box.textChanged.connect(self.redraw)
+        self.xlim_max_box.textChanged.connect(self.redraw)
 
     def redraw(self):
         try:
@@ -80,10 +82,8 @@ class PlotArea(QtWidgets.QWidget):
                                           QtWidgets.QMessageBox.Ok)
             return
 
-        x_min, x_max = self.figcanvas.set_xlim(
-            self.xlim_min_box.text(), self.xlim_max_box.text())
-        self.xlim_min_box.setText(str(x_min))
-        self.xlim_max_box.setText(str(x_max))
+        self.figcanvas.set_xlim(self.xlim_min_box.text(), 
+                                self.xlim_max_box.text())
         self.figcanvas.plot_fig(data)
 
     def save_figure(self):
