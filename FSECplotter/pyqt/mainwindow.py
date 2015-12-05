@@ -50,7 +50,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # remove all list items
         self.removeAllItemsAction = QtWidgets.QAction("Remove all files", self)
         self.removeAllItemsAction.setStatusTip("Remove all files from list.")
-        self.removeAllItemsAction.triggered.connect(self.treeview.delete_all_files)
+        self.removeAllItemsAction.triggered.connect(
+            self.treeview.delete_all_files)
 
         # app quit
         self.quitAction = QtWidgets.QAction("Quit", self)

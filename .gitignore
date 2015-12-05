@@ -5,5 +5,7 @@ FSECplotter/pyqt/__pycache__/
 __pycache__/
 osx_build/
 win_build/
+test/*.png
+test/fixture/*.png
 .python-version
 .*.swp
