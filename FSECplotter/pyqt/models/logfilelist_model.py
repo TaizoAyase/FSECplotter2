@@ -18,6 +18,10 @@ class LogfileModel(QtGui.QStandardItemModel):
     Default_Detector = "B"
     Default_Channel = 2
 
+    # custom signal
+    itemAddedComplete = QtCore.pyqtSignal()
+    itemChanged = QtCore.pyqtSignal()
+
     def __init__(self, row, col, parent=None):
         super(LogfileModel, self).__init__(row, col, parent)
         self.logfiles = {}
@@ -52,6 +56,8 @@ class LogfileModel(QtGui.QStandardItemModel):
 
             self.setItem(row, i, item)
 
+        self.itemAddedComplete.emit()
+
     def move_item(self, current_index, shift):
         next_row_num = current_index + int(shift)
 
@@ -63,6 +69,9 @@ class LogfileModel(QtGui.QStandardItemModel):
         # pop the row and insert to new position
         target_row = self.takeRow(current_index)
         self.insertRow(next_row_num, target_row)
+
+        self.itemChanged.emit()
+
         return next_row_num
 
     def delete_item(self, row_num):
@@ -72,6 +81,8 @@ class LogfileModel(QtGui.QStandardItemModel):
         del_logfile = self.logfiles.pop(int(del_id))
         del target_row
         del del_logfile
+
+        self.itemChanged.emit()
 
     def mimeData(self, indexes):
         mimedata = QtCore.QMimeData()  # create Mime Data

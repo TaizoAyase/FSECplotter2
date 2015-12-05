@@ -71,6 +71,8 @@ class PlotArea(QtWidgets.QWidget):
         self.quick_save_button.clicked.connect(self.quick_save_figure)
         self.xlim_min_box.textChanged.connect(self.redraw)
         self.xlim_max_box.textChanged.connect(self.redraw)
+        self.model.itemAddedComplete.connect(self.redraw)
+        self.model.itemChanged.connect(self.redraw)
 
     def redraw(self):
         try:
