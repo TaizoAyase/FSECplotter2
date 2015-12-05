@@ -23,6 +23,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(1200, 600)
         self.setWindowTitle("FSEC plotter 2")
 
+        sefl.readSettings()
         self.createActions()
         self.createMenus()
         self.createStatusBar()
@@ -92,6 +93,12 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def updateStatusBar(self):
         self.fomulaLabel.setText("")
+
+    def readSettings(self):
+        pass
+
+    def writeSettings(self):
+        pass
 
     def fsec_ts(self):
         pass
