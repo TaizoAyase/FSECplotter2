@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(1200, 600)
         self.setWindowTitle("FSEC plotter 2")
 
-        sefl.readSettings()
+        self.readSettings()
         self.createActions()
         self.createMenus()
         self.createStatusBar()
@@ -80,7 +80,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileMenu.addAction(self.quitAction)
 
         # tool menu
-        self.toolMenu = self.menuBar().addMenu("Tool")
+        self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
 
     def createStatusBar(self):
@@ -93,6 +93,28 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def updateStatusBar(self):
         self.fomulaLabel.setText("")
+
+    def closeEvent(self, event):
+        if self.okToContinue():
+            self.writeSettings()
+            event.accept()
+        else:
+            event.ignore()
+
+    def okToContinue(self):
+        if self.plotarea.modified:
+            ret = QtWidgets.QMessageBox.warning(self, "FSECplotter2", 
+              "The figure has been modified.\nDo you want to save your changes?",
+              QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel,
+              QtWidgets.QMessageBox.Cancel)
+
+            if ret == QtWidgets.QMessageBox.Yes:
+                self.plotarea.save_figure()
+                return True
+            elif ret == QtWidgets.QMessageBox.Cancel:
+                return False
+
+        return True
 
     def readSettings(self):
         pass

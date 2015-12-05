@@ -73,6 +73,9 @@ class PlotArea(QtWidgets.QWidget):
         self.xlim_max_box.textChanged.connect(self.redraw)
         self.model.itemChanged.connect(self.redraw)
 
+        # modified flag
+        self.modified = False
+
     def redraw(self):
         try:
             data = self.model.get_current_data()
@@ -86,6 +89,7 @@ class PlotArea(QtWidgets.QWidget):
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
         self.figcanvas.plot_fig(data)
+        self.modified = True
 
     def save_figure(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(
@@ -96,10 +100,12 @@ class PlotArea(QtWidgets.QWidget):
         if not file_save_to:
             return
         self.figcanvas.save_fig_to(file_save_to)
+        self.modified = False
 
     def quick_save_figure(self):
         file_save_to = os.path.expanduser('~') + "/plot.png"
         self.figcanvas.save_fig_to(file_save_to)
+        self.modified = False
 
 
 if __name__ == '__main__':
