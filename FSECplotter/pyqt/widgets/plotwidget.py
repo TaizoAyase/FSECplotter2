@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.figurecanvas import *
 from FSECplotter.core.logfile import NoSectionError
@@ -88,8 +89,9 @@ class PlotArea(QtWidgets.QWidget):
         self.figcanvas.plot_fig(data)
 
     def save_figure(self):
+        defalt_plot_name = time.strftime("%y%m%d_%H%M%S") + "_plot.png"
         filename = QtWidgets.QFileDialog.getSaveFileName(
-            self, "Save file", self.model.current_dir + "/plot.png",
+            self, "Save file", self.model.current_dir + "/" + defalt_plot_name,
             filter="images (*.png *.jpg *.pdf)")
         file_save_to = filename[0]
         # if filename is empty string, do nothing
@@ -98,7 +100,8 @@ class PlotArea(QtWidgets.QWidget):
         self.figcanvas.save_fig_to(file_save_to)
 
     def quick_save_figure(self):
-        file_save_to = self.model.current_dir + "/plot.png"
+        defalt_plot_name = time.strftime("%y%m%d_%H%M%S") + "_plot.png"
+        file_save_to = self.model.current_dir + "/" + defalt_plot_name
         self.figcanvas.save_fig_to(file_save_to)
 
 
