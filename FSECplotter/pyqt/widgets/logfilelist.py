@@ -26,7 +26,6 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.treeview.setSelectionModel(self.selection_model)
 
         # TreeView setting
-        # self.treeview.setColumnWidth(1, 140)
         self.treeview.setSelectionMode(
             QtWidgets.QAbstractItemView.ContiguousSelection
         )

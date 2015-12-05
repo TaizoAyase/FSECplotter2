@@ -12,7 +12,7 @@ COLOR_LIST = [
 
 
 class LogfileModel(QtGui.QStandardItemModel):
-    """ The class that has logfile-ary. 
+    """ The class that has logfile-ary.
         Also this is a model for ListView. """
 
     Default_Detector = "B"

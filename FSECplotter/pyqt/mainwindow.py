@@ -9,21 +9,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
-        #self.centralWidget = QtWidgets.QWidget(self)
         self.splitter = QtWidgets.QSplitter(self)
 
         # set list view and plot widgets
         self.treeview = LogfileListWidget(self)
         self.plotarea = PlotArea(self.treeview.model, self)
 
-        #self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralWidget)
-        #self.horizontalLayout.addWidget(self.treeview)
-        #self.horizontalLayout.addWidget(self.plotarea)
-
         self.splitter.addWidget(self.treeview)
         self.splitter.addWidget(self.plotarea)
 
-        #self.setCentralWidget(self.centralWidget)
         self.setCentralWidget(self.splitter)
 
         self.resize(1200, 600)
@@ -33,6 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.createMenus()
 
     def createActions(self):
+        # file-menu
         # open
         self.openAction = QtWidgets.QAction("Open", self)
         self.openAction.setShortcut("Ctrl+O")
@@ -55,12 +50,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.quitAction = QtWidgets.QAction("Quit", self)
         self.quitAction.setShortcut("Ctrl+Q")
         self.quitAction.setStatusTip("Quit app.")
-        self.quitAction.triggered.connect(QtWidgets.QApplication.closeAllWindows)
+        self.quitAction.triggered.connect(
+            QtWidgets.QApplication.closeAllWindows)
 
-        # tools
+        # tools-menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
-        self.tsAction.setStatusTip("Calc Tm from FSEC-TS data.")
+        self.tsAction.setStatusTip(
+            "Calc Tm from FSEC-TS data.(Not implemented yet)")
         self.tsAction.triggered.connect(self.fsec_ts)
 
     def createMenus(self):

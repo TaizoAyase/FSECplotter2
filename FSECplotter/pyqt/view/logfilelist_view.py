@@ -35,7 +35,8 @@ class LogfileListView(QtWidgets.QTreeView):
             for url in urllist:
                 # remove first slash if runs on windows
                 # or, do nothing
-                filepath = url.path()[1:] if self.__windows_flag else url.path()
+                path = url.path()
+                filepath = path[1:] if self.__windows_flag else path
 
                 model.add_item(filepath)
             event.accept()

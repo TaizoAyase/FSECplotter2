@@ -46,9 +46,10 @@ class Figurecanvas(FigureCanvas):
         self.axes.set_color_cycle(
             [self.__cm(1.*i/num_color) for i in range(num_color)])
         for i in range(num_data):
-            x = current_data['data'][i][:, 0] * float(current_data['flow_rates'][i])
+            volume_x = current_data['data'][i][:, 0]
+            time_x = volume_x * float(current_data['flow_rates'][i])
             y = current_data['data'][i][:, 1]
-            self.axes.plot(x, y, label=current_data['filenames'][i],
+            self.axes.plot(time_x, y, label=current_data['filenames'][i],
                            visible=current_data['enable_flags'][i])
 
         self.axes.set_xlim(self.x_min, self.x_max)

@@ -82,7 +82,7 @@ class PlotArea(QtWidgets.QWidget):
                                           QtWidgets.QMessageBox.Ok)
             return
 
-        self.figcanvas.set_xlim(self.xlim_min_box.text(), 
+        self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
         self.figcanvas.plot_fig(data)
 
