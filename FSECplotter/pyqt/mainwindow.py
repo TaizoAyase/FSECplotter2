@@ -4,6 +4,8 @@
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
 
+ORG_NAME = "TaizoAyase" # temporary org. name
+APP_NAME = "FSECplotter2"
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -21,7 +23,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.splitter)
 
         self.resize(1200, 600)
-        self.setWindowTitle("FSEC plotter 2")
+        self.setWindowTitle(APP_NAME)
 
         self.readSettings()
         self.createActions()
@@ -103,7 +105,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def okToContinue(self):
         if self.plotarea.modified:
-            ret = QtWidgets.QMessageBox.warning(self, "FSECplotter2", 
+            ret = QtWidgets.QMessageBox.warning(self, APP_NAME, 
               "The figure has been modified.\nDo you want to save your changes?",
               QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel,
               QtWidgets.QMessageBox.Cancel)
@@ -120,7 +122,9 @@ class MainWindow(QtWidgets.QMainWindow):
         pass
 
     def writeSettings(self):
-        pass
+        settings = QtCore.QSettings(ORG_NAME, APP_NAME)
+
+        settings.setValue()
 
     def fsec_ts(self):
         pass
