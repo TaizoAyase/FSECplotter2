@@ -34,6 +34,9 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         self.current_dir = os.path.expanduser("~")
 
+        # signal - slot connection
+        self.itemChanged.connect(self.__update_background_color)
+
     def add_item(self, filename):
         abspath = os.path.abspath(filename)
         new_log = self.__append_logfile(abspath)
@@ -154,3 +157,9 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         self.logfiles[self.__id_count] = logfile
         return logfile
+
+    def __update_background_color(self):
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
+                item = self.item(row, col)
+                item.setBackground(COLOR_LIST[row % 2])
