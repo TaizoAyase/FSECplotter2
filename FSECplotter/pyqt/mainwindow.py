@@ -60,6 +60,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.quitAction.triggered.connect(
             QtWidgets.QApplication.closeAllWindows)
 
+        # edit menu
+        # redraw
+        self.redrawAction = QtWidgets.QAction("Rdraw", self)
+        self.redrawAction.setShortcut("Ctrl+R")
+        self.redrawAction.setStatusTip("Force redraw plot.")
+        self.redrawAction.triggered.connect(self.plotarea.redraw)
+
         # tools-menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
@@ -77,6 +84,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileMenu.addAction(self.removeAllItemsAction)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.quitAction)
+
+        # edit menu
+        self.editMenu = self.menuBar().addMenu("Edit")
+        self.editMenu.addAction(self.redrawAction)
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tool")
