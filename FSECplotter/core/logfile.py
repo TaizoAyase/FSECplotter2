@@ -29,6 +29,17 @@ class LogFile:
         self.sections.append(section)
         return self.sections
 
+    def num_detectors(self):
+        num_detectors_ary = self.__get_params_ary(
+            "Configuration", "# of Detectors")
+        self.__no_of_detectors = int(num_detectors_ary[0])
+        return self.__no_of_detectors
+
+    def num_channels(self):
+        num_channels_ary = self.__get_params_ary(
+            "Configuration", "# of Channels")
+        self.__no_of_channels = num_channels_ary
+
     # return section that match the RE of section_name
     def find_section(self, section_name):
         # first, replace "()" to "\(\)"
