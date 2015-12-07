@@ -23,7 +23,7 @@ class LogFileTestCase(TestCase):
         eq_(sec.name(), "[Sample Information]")
 
     def test_flowrate(self):
-        eq_(self.log.flowrate(), 0.5)
+        eq_(self.log.flowrate, 0.5)
 
     def test_num_detectors(self):
         eq_(self.log.num_detectors(), 2)

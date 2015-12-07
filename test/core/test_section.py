@@ -29,8 +29,7 @@ class SectionTestCase(TestCase):
     def test_add_data_not_converted_to_numpy(self):
         sec = Section(self.header)
         sec.append_data(self.data_line)
-        eq_(sec.data()[0][0], 0.01667)
-        eq_(sec.data()[0][0], 4)
+        ok_(sec.data() is None)
 
     def test_add_data(self):
         sec = Section(self.header)
@@ -48,4 +47,4 @@ class SectionTestCase(TestCase):
     def test_add_param_access_to_data(self):
         sec = Section(self.header)
         sec.append_data(self.param_line)
-        eq_(len(sec.data()), 0)
+        ok_(sec.data() is None)

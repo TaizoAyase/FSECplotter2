@@ -11,7 +11,6 @@ class Section:
     def __init__(self, header_str):
         self.__section_name = header_str.strip("\r\n")
         self.__parameters = []
-        # self.__data_table = np.array([[0, 0]])
         self.__data_table = []
         self.__np_data_table = None
 
@@ -30,8 +29,6 @@ class Section:
 
         # if can, this is the time table part
         ary_f = [float(ary[0]), float(ary[1])]
-        # tmp = np.r_[self.__data_table, [[ary_f[0], ary_f[1]]]]
-        # self.__data_table = tmp
         self.__data_table.append([ary_f[0], ary_f[1]])
         return self
 
@@ -43,6 +40,9 @@ class Section:
         return self.__section_name
 
     def data(self):
+        if self.__np_data_table is None:
+            return None
+
         if self.__np_data_table.any():
             return self.__np_data_table
         return self.__data_table

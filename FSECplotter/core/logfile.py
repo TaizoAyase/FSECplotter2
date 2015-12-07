@@ -14,7 +14,7 @@ class LogFile:
     def __init__(self):
         self.sections = []
         self.file_name = None  # file basename without extension
-        self.__flow_rate = None
+        self.flowrate = None
         self.__no_of_detectors = None
 
     def parse(self, filename):
@@ -22,6 +22,7 @@ class LogFile:
         # remove extension from file basename
         filename, ext = os.path.splitext(os.path.basename(filename))
         self.file_name = filename
+        self.__set_flowrate()
         return self
 
     def append_section(self, section):
@@ -52,13 +53,11 @@ class LogFile:
             raise NoSectionError
         return self.sections[index[0]]
 
+    # private methods
+
     # get flow rate from the file name of method file
     # if cannot, raise Error
-    def flowrate(self):
-        # if already set, end...
-        if self.__flow_rate:
-            return self.__flow_rate
-
+    def __set_flowrate(self):
         methodfiles_ary = self.__get_params_ary(
             "Original Files", "Method File")
 
@@ -66,12 +65,9 @@ class LogFile:
         pat = re.compile(r"\d\.\d+")
         matched_str = pat.findall(methodfiles_ary[0])
         if matched_str:
-            self.__flow_rate = float(matched_str[0])
-            return self.__flow_rate
+            self.flowrate = float(matched_str[0])
         else:
             raise NoMatchedFlowRateError
-
-    # private methods
 
     def __parse_logfile(self, f_path):
         header_pattern = re.compile(r"\[.+\]")
