@@ -38,7 +38,8 @@ class LogFile:
     def num_channels(self):
         num_channels_ary = self.__get_params_ary(
             "Configuration", "# of Channels")
-        self.__no_of_channels = num_channels_ary
+        self.__no_of_channels = int(num_channels_ary[-1])
+        return self.__no_of_channels
 
     # return section that match the RE of section_name
     def find_section(self, section_name):
@@ -100,9 +101,9 @@ class LogFile:
         params_ary = self.find_section(section_name).params()
         for par in params_ary:
             if param_name in par:
-                rm_name_ary = par.copy()
-                rm_name_ary.pop(0)
-                return rm_name_ary
+                tmp_name_ary = par.copy() # deep copy of list
+                tmp_name_ary.pop(0) # remove param name
+                return tmp_name_ary
 
 
 # exception
