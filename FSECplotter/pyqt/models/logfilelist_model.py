@@ -15,9 +15,6 @@ class LogfileModel(QtGui.QStandardItemModel):
     """ The class that has logfile-ary.
         Also this is a model for ListView. """
 
-    Default_Detector = "B"
-    Default_Channel = 2
-
     # override itemChanged signal
     itemChanged = QtCore.pyqtSignal()
 
@@ -41,14 +38,17 @@ class LogfileModel(QtGui.QStandardItemModel):
         abspath = os.path.abspath(filename)
         new_log = self.__append_logfile(abspath)
 
+        default_detector = "B" if new_log.num_detectors == 2 else "A"
+        default_channel = 1
+
         row = self.rowCount()
         order = self.__id_count
         self.__id_count += 1
         data_ary = [order,
                     new_log.file_name,
                     new_log.flowrate,
-                    self.Default_Detector,
-                    self.Default_Channel]
+                    default_detector,
+                    default_channel]
 
         for i in range(len(data_ary)):
             # create new Item and set texts in data_ary
