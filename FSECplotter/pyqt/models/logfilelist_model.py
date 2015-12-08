@@ -46,7 +46,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         self.__id_count += 1
         data_ary = [order,
                     new_log.file_name,
-                    new_log.flowrate(),
+                    new_log.flowrate,
                     self.Default_Detector,
                     self.Default_Channel]
 
@@ -151,7 +151,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         logfile.parse(filepath)
         # Try to set flowrate of log
         try:
-            logfile.flowrate()
+            logfile.flowrate
         except NoMatchedFlowRateError:
             logfile.flow_rate = 0
 
