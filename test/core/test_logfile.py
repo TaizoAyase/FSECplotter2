@@ -14,7 +14,7 @@ class LogFileTestCase(TestCase):
     def tearDown(self):
         pass
 
-    def test_load_file(self):
+    def test_loaded_file(self):
         eq_(self.log.file_name, "test_1")
         ok_(self.log.sections is not None)
 
@@ -26,8 +26,12 @@ class LogFileTestCase(TestCase):
         eq_(self.log.flowrate, 0.5)
 
     def test_num_detectors(self):
-        eq_(self.log.num_detectors(), 2)
+        eq_(self.log.num_detectors, 2)
 
     def test_num_channels(self):
-        eq_(self.log.num_channels(), 2)
+        eq_(self.log.num_channels, 2)
+
+    @raises(NoSectionError)
+    def test_nonexisting_section_access(self):
+        self.log.find_section("This Section Does not exist")
 

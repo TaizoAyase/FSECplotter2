@@ -7,5 +7,7 @@ osx_build/
 win_build/
 test/*.png
 test/fixture/*.png
+.coverage
+cover/
 .python-version
 .*.swp
