@@ -144,6 +144,11 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         return data
 
+    def change_all_check_state(self, check_state):
+        for i in range(self.rowCount()):
+            checkable_item = self.item(i, 0)
+            checkable_item.setCheckState(check_state)
+
     # private methods
 
     def __append_logfile(self, filepath):
