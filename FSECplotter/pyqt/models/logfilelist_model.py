@@ -148,12 +148,10 @@ class LogfileModel(QtGui.QStandardItemModel):
 
     def __append_logfile(self, filepath):
         logfile = LogFile()
-        logfile.parse(filepath)
-        # Try to set flowrate of log
         try:
-            logfile.flowrate
+            logfile.parse(filepath)
         except NoMatchedFlowRateError:
-            logfile.flow_rate = 0
+            logfile.flowrate = 0
 
         self.logfiles[self.__id_count] = logfile
         return logfile
