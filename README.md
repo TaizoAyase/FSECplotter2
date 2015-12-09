@@ -2,7 +2,7 @@ FSECplotter2
 =============
 The interactive plotting application for FSEC.
 
-In current version, compatible with only Shimazu HPLC.
+In current version, compatible with Shimadzu HPLC and Hitachi HPLC.
 
 How to install (for OSX users)
 ----------------
