@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.core.logfile import *
+from FSECplotter.core.factory import LogfileFactory
 import os
 
 # list background color

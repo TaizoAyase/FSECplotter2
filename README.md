@@ -33,7 +33,7 @@ PNG, JPG, PDF formats can be selected.
 
 Test files
 ------------
-This repository includes test files in `test/fixture` directory
+This repository includes test files for Shimadzu HPLC in `test/fixture/shimadzu` directory
 
 +   `test?.txt` :
     test files for large column (GE Healthcare Superose6 increase 10/300)
@@ -41,8 +41,21 @@ This repository includes test files in `test/fixture` directory
 +   `mini_test?.txt` :
     test files for mini column (GE Healthcare Superdex200 increase 5/150)
 
+Or, for Hitach HPCL, use the test files in `test/fixture/hitachi` directory
+
++   `*.rw?` :
+    for wave length 1 or 2
+
 Packaging
 -----------
 Use [Pyinstaller](http://www.pyinstaller.org/), for example:
 
 `pyinstaller --windowed --onefile FSECplotter2.py`
+
+
+For Another HPLC
+------------------
+To extend for another HPLC,
+
+0. Extend the `Logfile` class in `FSECplotter/core/logfile.py`, and implement `data()` and `_parse()` method.
+1. Add dispatch code to `LogfileFactory.create()` method in `FSECplotter/core/logfile`.

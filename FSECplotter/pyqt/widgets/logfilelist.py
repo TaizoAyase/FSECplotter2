@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.core.logfile import *
 from FSECplotter.pyqt.models.logfilelist_model import *
 from FSECplotter.pyqt.view.logfilelist_view import *
 import os
