@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.logfile import *
 import os
 
+# list background color
 COLOR_LIST = [
     QtGui.QBrush(QtGui.QColor(255, 255, 255)),
     QtGui.QBrush(QtGui.QColor(240, 240, 240))
@@ -45,7 +46,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         order = self.__id_count
         self.__id_count += 1
         data_ary = [order,
-                    new_log.file_name,
+                    new_log.filename,
                     new_log.flowrate,
                     default_detector,
                     default_channel]
@@ -126,14 +127,14 @@ class LogfileModel(QtGui.QStandardItemModel):
 
             detector = self.item(i, 3).text()
             channel_no = int(self.item(i, 4).text())
-            sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector,
-                                                              channel_no)
+            #sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector,
+                                                              #channel_no)
 
             # set data ary
             filename = self.item(i, 1).text()
+            kwargs = {'detector':detector, 'channel':channel_no}
             try:
-                data_table = self.logfiles[
-                    log_id].find_section(sec_name).data()
+                data_table = self.logfiles[log_id].data(**kwargs)
                 data['data'].append(data_table)
                 data['filenames'].append(filename)
                 data['flow_rates'].append(self.item(i, 2).text())
@@ -147,9 +148,8 @@ class LogfileModel(QtGui.QStandardItemModel):
     # private methods
 
     def __append_logfile(self, filepath):
-        logfile = LogFile()
         try:
-            logfile.parse(filepath)
+            logfile = ShimadzuLogFile(filepath)
         except NoMatchedFlowRateError:
             logfile.flowrate = 0
 

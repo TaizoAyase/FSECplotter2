@@ -5,22 +5,19 @@ from FSECplotter.core.logfile import *
 from unittest import TestCase
 from nose.tools import ok_, eq_, raises
 
-class LogFileTestCase(TestCase):
+class ShimazuLogFileTestCase(TestCase):
     def setUp(self):
-        self.testfile = "./test/fixture/test_1.txt"
-        self.log = LogFile()
-        self.log.parse(self.testfile)
+        self.testfile = "./test/fixture/shimadzu/test_1.txt"
+        self.log = ShimadzuLogFile(self.testfile)
 
     def tearDown(self):
         pass
 
-    def test_loaded_file(self):
-        eq_(self.log.file_name, "test_1")
-        ok_(self.log.sections is not None)
+    def test_loaded_filename(self):
+        eq_(self.log.filename, "test_1")
 
-    def test_fine_section(self):
-        sec = self.log.find_section("Sample Information")
-        eq_(sec.name(), "[Sample Information]")
+    def test_has_section(self):
+        ok_(self.log.sections is not None)
 
     def test_flowrate(self):
         eq_(self.log.flowrate, 0.5)
@@ -31,7 +28,40 @@ class LogFileTestCase(TestCase):
     def test_num_channels(self):
         eq_(self.log.num_channels, 2)
 
+    def test_return_data(self):
+        import numpy
+        d = self.log.data(**{'detector':'B', 'channel':2})
+        eq_(type(d), numpy.ndarray)
+
     @raises(NoSectionError)
     def test_nonexisting_section_access(self):
-        self.log.find_section("This Section Does not exist")
+        self.log.data(**{'detector':'B', 'channel':3})
 
+
+class HitachiLogfileTestCase(TestCase):
+    def setUp(self):
+        self.testfile = "./test/fixture/hitachi/00000001.rw1"
+        self.log = HitachiLogFile(self.testfile)
+
+    def tearDown(self):
+        pass
+        
+    def test_loaded_filename(self):
+        eq_(self.log.filename, '00000001')
+
+    def test_loaded_samplename(self):
+        eq_(self.log.sample_name, 'A2a')
+
+    def test_flowrate_is_none(self):
+        ok_(self.log.flowrate == 1.0)
+
+    def test_num_detector_is_none(self):
+        ok_(self.log.num_detectors is None)
+
+    def test_num_channels_is_none(self):
+        ok_(self.log.num_channels is None)
+
+    def test_return_data(self):
+        import numpy
+        d = self.log.data(**{})
+        eq_(type(d), numpy.ndarray)  
