@@ -19,8 +19,6 @@ class HitachiLogFile(Logfile):
 
     def _parse(self, filename):
         f = open(filename, 'rb')
-        #if f.read(12) == b"\x0b\x00D2000Chrom":
-            #return self.__parse_logfile_hitachi(f)
 
         SamplingPeriod = 400  # msec
         RFUConversionFactor = 0.00025

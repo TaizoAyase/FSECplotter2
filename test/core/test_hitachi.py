@@ -14,7 +14,7 @@ class HitachiLogfileTestCase(TestCase):
 
     def tearDown(self):
         pass
-        
+
     def test_loaded_filename(self):
         eq_(self.log.filename, '00000001')
 
@@ -33,4 +33,4 @@ class HitachiLogfileTestCase(TestCase):
     def test_return_data(self):
         import numpy
         d = self.log.data(**{})
-        eq_(type(d), numpy.ndarray)  
+        eq_(type(d), numpy.ndarray)

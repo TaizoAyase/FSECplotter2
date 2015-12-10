@@ -4,6 +4,7 @@
 from FSECplotter.core.shimadzu import *
 from FSECplotter.core.hitachi import *
 
+
 class LogfileFactory():
 
     def create(self, filename):

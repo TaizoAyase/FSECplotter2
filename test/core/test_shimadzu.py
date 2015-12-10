@@ -33,12 +33,12 @@ class ShimazuLogFileTestCase(TestCase):
 
     def test_return_data(self):
         import numpy
-        d = self.log.data(**{'detector':'B', 'channel':2})
+        d = self.log.data(**{'detector': 'B', 'channel': 2})
         eq_(type(d), numpy.ndarray)
 
     @raises(NoSectionError)
     def test_nonexisting_section_access(self):
-        self.log.data(**{'detector':'B', 'channel':3})
+        self.log.data(**{'detector': 'B', 'channel': 3})
 
 
 class SectionTestCase(TestCase):

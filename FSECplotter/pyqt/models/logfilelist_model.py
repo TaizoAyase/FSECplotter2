@@ -128,12 +128,10 @@ class LogfileModel(QtGui.QStandardItemModel):
 
             detector = self.item(i, 3).text()
             channel_no = int(self.item(i, 4).text())
-            #sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector,
-                                                              #channel_no)
 
             # set data ary
             filename = self.item(i, 1).text()
-            kwargs = {'detector':detector, 'channel':channel_no}
+            kwargs = {'detector': detector, 'channel': channel_no}
             try:
                 data_table = self.logfiles[log_id].data(**kwargs)
                 data['data'].append(data_table)

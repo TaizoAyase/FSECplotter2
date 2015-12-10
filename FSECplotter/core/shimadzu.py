@@ -48,7 +48,7 @@ class ShimadzuLogFile(Logfile):
         self.__set_num_detectors()
         self.__set_num_channels()
 
-   # private methods
+    # private methods
 
     def __append_section(self, section):
         section.convert_to_npary()
