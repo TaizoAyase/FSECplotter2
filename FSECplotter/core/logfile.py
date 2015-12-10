@@ -11,8 +11,12 @@ from abc import ABCMeta, abstractmethod
 
 class LogfileFactory():
 
-    def create(self):
-        pass
+    def create(self, filename):
+        with open(filename, 'rb') as f:
+            if f.read(12) == b"\x0b\x00D2000Chrom":
+                return HitachiLogFile(filename)
+            else:
+                return ShimadzuLogFile(filename)
         
 
 class AbstractLogfile(metaclass=ABCMeta):
@@ -138,7 +142,7 @@ class HitachiLogFile(AbstractLogfile):
         self.sample_name = None
         super().__init__(filename)
 
-    def data(self, *param):
+    def data(self, **param):
         # param is not used
         return self.__data
 
@@ -155,7 +159,7 @@ class HitachiLogFile(AbstractLogfile):
         f.seek(0)
         data = f.read()
         f.close()
-        
+
         pos = data.index(b"VialName") + len(b"VialName") + 5
         length = data[pos] - 1  # I'm not sure if this will exceed FF
         self.sample_name = data[(pos + 2):(pos + 2 + length)].decode("ascii")

@@ -22,6 +22,7 @@ class LogfileModel(QtGui.QStandardItemModel):
     def __init__(self, row, col, parent=None):
         super(LogfileModel, self).__init__(row, col, parent)
         self.logfiles = {}
+        self.logfile_factory = LogfileFactory()
         self.__id_count = 1
 
         # set header data
@@ -149,7 +150,7 @@ class LogfileModel(QtGui.QStandardItemModel):
 
     def __append_logfile(self, filepath):
         try:
-            logfile = ShimadzuLogFile(filepath)
+            logfile = self.logfile_factory.create(filepath)
         except NoMatchedFlowRateError:
             logfile.flowrate = 0
 

@@ -5,10 +5,12 @@ from FSECplotter.core.logfile import *
 from unittest import TestCase
 from nose.tools import ok_, eq_, raises
 
+
 class ShimazuLogFileTestCase(TestCase):
     def setUp(self):
         self.testfile = "./test/fixture/shimadzu/test_1.txt"
-        self.log = ShimadzuLogFile(self.testfile)
+        factory = LogfileFactory()
+        self.log = factory.create(self.testfile)
 
     def tearDown(self):
         pass
@@ -41,7 +43,8 @@ class ShimazuLogFileTestCase(TestCase):
 class HitachiLogfileTestCase(TestCase):
     def setUp(self):
         self.testfile = "./test/fixture/hitachi/00000001.rw1"
-        self.log = HitachiLogFile(self.testfile)
+        factory = LogfileFactory()
+        self.log = factory.create(self.testfile)
 
     def tearDown(self):
         pass
