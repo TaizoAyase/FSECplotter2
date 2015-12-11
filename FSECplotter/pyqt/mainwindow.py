@@ -63,12 +63,25 @@ class MainWindow(QtWidgets.QMainWindow):
         self.quitAction.triggered.connect(
             QtWidgets.QApplication.closeAllWindows)
 
+        # edit menu
+        # redraw
+        self.redrawAction = QtWidgets.QAction("Rdraw", self)
+        self.redrawAction.setShortcut("Ctrl+R")
+        self.redrawAction.setStatusTip("Force redraw plot.")
+        self.redrawAction.triggered.connect(self.plotarea.redraw)
+
         # tools-menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
         self.tsAction.setStatusTip(
             "Calc Tm from FSEC-TS data.(Not implemented yet)")
         self.tsAction.triggered.connect(self.fsec_ts)
+
+        # scale y-axis
+        self.y_scalingAction = QtWidgets.QAction("Y-axis scaling", self)
+        self.y_scalingAction.setStatusTip(
+            "Y-axis scaling.(Not implemented yet)")
+        self.y_scalingAction.triggered.connect(self.y_scaling)
 
     def createMenus(self):
         # file menu
@@ -80,6 +93,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileMenu.addAction(self.removeAllItemsAction)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.quitAction)
+
+        # edit menu
+        self.editMenu = self.menuBar().addMenu("Edit")
+        self.editMenu.addAction(self.redrawAction)
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tools")
@@ -127,6 +144,9 @@ class MainWindow(QtWidgets.QMainWindow):
         settings.setValue()
 
     def fsec_ts(self):
+        pass
+
+    def y_scaling(self):
         pass
 
 

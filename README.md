@@ -2,7 +2,7 @@ FSECplotter2
 =============
 The interactive plotting application for FSEC.
 
-In current version, compatible with only Shimazu HPLC.
+In current version, compatible with Shimadzu HPLC and Hitachi HPLC.
 
 How to install (for OSX users)
 ----------------
@@ -24,15 +24,16 @@ How to use
 0. Start app with `python FSECplotter2.py`
 1. Drag and Drop the FSEC logfile(s) to the left-side widget. 
 Or, press "Open File" button and select logfiles.
-2. Press "Redraw" button.
+2. Chromatograms will appear in right half widget.
 3. To save figure, press "Save Fig. As..." button to select filename to save. 
 PNG, JPG, PDF formats can be selected.
-4. "Quick Save" button saves figure as `plot.png` in your home directory.
+4. "Quick Save" button saves figure as `YYMMDD-HHMMSS.png` format in the last loaded directory
+5. If you want to delete all files, press 'file'->'Remove all files'
 
 
 Test files
 ------------
-This repository includes test files in `test/fixture` directory
+This repository includes test files for Shimadzu HPLC in `test/fixture/shimadzu` directory
 
 +   `test?.txt` :
     test files for large column (GE Healthcare Superose6 increase 10/300)
@@ -40,8 +41,21 @@ This repository includes test files in `test/fixture` directory
 +   `mini_test?.txt` :
     test files for mini column (GE Healthcare Superdex200 increase 5/150)
 
+Or, for Hitach HPCL, use the test files in `test/fixture/hitachi` directory
+
++   `*.rw?` :
+    for wave length 1 or 2
+
 Packaging
 -----------
 Use [Pyinstaller](http://www.pyinstaller.org/), for example:
 
 `pyinstaller --windowed --onefile FSECplotter2.py`
+
+
+For Another HPLC
+------------------
+To extend for another HPLC,
+
+0. Extend the `Logfile` class in `FSECplotter/core/logfile.py`, and implement `data()` and `_parse()` method.
+1. Add dispatch code to `LogfileFactory.create()` method in `FSECplotter/core/logfile`.

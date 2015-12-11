@@ -24,10 +24,10 @@ class Plotter():
 
     def make_plot(self):
         # at first, set flow rate for each logfile
-        [log.flowrate() for log in self.logfiles]
+        [log.flowrate for log in self.logfiles]
 
         for (log, df) in zip(self.logfiles, self.data):
-            self.axes.plot(df[:, 0] * log.flow_rate, df[:, 1])
+            self.axes.plot(df[:, 0] * log.flowrate, df[:, 1])
 
         self.axes.grid()
         self.axes.legend(self.filenames)
