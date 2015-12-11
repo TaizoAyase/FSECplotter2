@@ -3,6 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.factory import LogfileFactory
+from FSECplotter.core.shimadzu import NoSectionError
 import os
 
 # list background color
@@ -138,8 +139,10 @@ class LogfileModel(QtGui.QStandardItemModel):
                 data['filenames'].append(filename)
                 data['flow_rates'].append(self.item(i, 2).text())
             except NoSectionError:
-                mes = "In the file '%s', section named '%s' is not exist." % (
-                    filename, sec_name)
+                mes = ("""\
+                In the file '%s', Detector '%s' and\
+                Channel '%s' is not exist.""" % (
+                    filename, detector, channel_no)).strip()
                 raise NoSectionError(mes)
 
         return data
