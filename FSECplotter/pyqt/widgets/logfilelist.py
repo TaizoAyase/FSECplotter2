@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.core.logfile import *
 from FSECplotter.pyqt.models.logfilelist_model import *
 from FSECplotter.pyqt.view.logfilelist_view import *
 import os
@@ -37,8 +36,15 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.open_button.setText("Open file")
 
         self.delete_button = QtWidgets.QPushButton(self)
-        self.delete_button.setObjectName("Delete button")
+        self.delete_button.setObjectName("Remove file button")
         self.delete_button.setText("Remove file")
+
+        self.check_all_button = QtWidgets.QPushButton(self)
+        self.check_all_button.setObjectName("Check all button")
+        self.check_all_button.setText("Check All")
+        self.uncheck_all_button = QtWidgets.QPushButton(self)
+        self.uncheck_all_button.setObjectName("Uncheck all button")
+        self.uncheck_all_button.setText("Uncheck All")
 
         self.move_up_button = QtWidgets.QPushButton(self)
         self.move_up_button.setObjectName("Move-up button")
@@ -50,8 +56,10 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.gridLay1 = QtWidgets.QGridLayout()
         self.gridLay1.addWidget(self.open_button, 0, 0, 1, 1)
         self.gridLay1.addWidget(self.delete_button, 0, 1, 1, 1)
-        self.gridLay1.addWidget(self.move_up_button, 1, 0, 1, 1)
-        self.gridLay1.addWidget(self.move_down_button, 1, 1, 1, 1)
+        self.gridLay1.addWidget(self.check_all_button, 1, 0, 1, 1)
+        self.gridLay1.addWidget(self.uncheck_all_button, 1, 1, 1, 1)
+        self.gridLay1.addWidget(self.move_up_button, 1, 2, 1, 1)
+        self.gridLay1.addWidget(self.move_down_button, 1, 3, 1, 1)
 
         self.verLay1 = QtWidgets.QVBoxLayout()
         self.verLay1.addWidget(self.treeview)
@@ -63,6 +71,10 @@ class LogfileListWidget(QtWidgets.QWidget):
         # signal slot definition
         self.open_button.clicked.connect(self.open_file)
         self.delete_button.clicked.connect(self.delete_file)
+        self.check_all_button.clicked.connect(
+            lambda: self.model.change_all_check_state(2))
+        self.uncheck_all_button.clicked.connect(
+            lambda: self.model.change_all_check_state(0))
         self.move_up_button.clicked.connect(lambda: self.move_selected(-1))
         self.move_down_button.clicked.connect(lambda: self.move_selected(1))
 
