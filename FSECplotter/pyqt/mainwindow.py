@@ -74,6 +74,12 @@ class MainWindow(QtWidgets.QMainWindow):
             "Calc Tm from FSEC-TS data.(Not implemented yet)")
         self.tsAction.triggered.connect(self.fsec_ts)
 
+        # scale y-axis
+        self.y_scalingAction = QtWidgets.QAction("Y-axis scaling", self)
+        self.y_scalingAction.setStatusTip(
+            "Y-axis scaling.(Not implemented yet)")
+        self.y_scalingAction.triggered.connect(self.y_scaling)
+
     def createMenus(self):
         # file menu
         self.fileMenu = self.menuBar().addMenu("File")
@@ -105,6 +111,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fomulaLabel.setText("")
 
     def fsec_ts(self):
+        pass
+
+    def y_scaling(self):
         pass
 
 
