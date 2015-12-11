@@ -11,14 +11,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_YaxisScalingDialog(object):
     def setupUi(self, YaxisScalingDialog):
         YaxisScalingDialog.setObjectName("YaxisScalingDialog")
-        YaxisScalingDialog.resize(286, 99)
-        
+        YaxisScalingDialog.resize(320, 128)
         self.verticalLayoutWidget = QtWidgets.QWidget(YaxisScalingDialog)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(20, 1, 249, 91))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 1, 301, 121))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName("verticalLayout")
-
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.x_axis_label = QtWidgets.QLabel(self.verticalLayoutWidget)
@@ -30,12 +28,19 @@ class Ui_YaxisScalingDialog(object):
         self.unit_label = QtWidgets.QLabel(self.verticalLayoutWidget)
         self.unit_label.setObjectName("unit_label")
         self.horizontalLayout.addWidget(self.unit_label)
-
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.filename_label = QtWidgets.QLabel(self.verticalLayoutWidget)
+        self.filename_label.setObjectName("filename_label")
+        self.horizontalLayout_2.addWidget(self.filename_label)
+        self.filename_for_normal = QtWidgets.QComboBox(self.verticalLayoutWidget)
+        self.filename_for_normal.setObjectName("filename_for_normal")
+        self.horizontalLayout_2.addWidget(self.filename_for_normal)
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.verticalLayoutWidget)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(
-            QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout.addWidget(self.buttonBox)
 
@@ -46,10 +51,8 @@ class Ui_YaxisScalingDialog(object):
 
     def retranslateUi(self, YaxisScalingDialog):
         _translate = QtCore.QCoreApplication.translate
-        YaxisScalingDialog.setWindowTitle(_translate(
-            "YaxisScalingDialog", "Y-axis Scaling"))
-        self.x_axis_label.setText(_translate(
-            "YaxisScalingDialog", "Scaling at "))
-        self.unit_label.setText(_translate(
-            "YaxisScalingDialog", "(mL)"))
+        YaxisScalingDialog.setWindowTitle(_translate("YaxisScalingDialog", "Y-axis Scaling"))
+        self.x_axis_label.setText(_translate("YaxisScalingDialog", "Scaling at "))
+        self.unit_label.setText(_translate("YaxisScalingDialog", "(mL)"))
+        self.filename_label.setText(_translate("YaxisScalingDialog", "File used as Normal"))
 

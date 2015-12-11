@@ -104,6 +104,23 @@ class PlotArea(QtWidgets.QWidget):
         file_save_to = self.model.current_dir + "/" + defalt_plot_name
         self.figcanvas.save_fig_to(file_save_to)
 
+    def rescale(self, scale_factor):
+        try:
+            data = self.model.get_current_data()
+        except NoSectionError as e:
+            # if invalid section was selected, display the warning window.
+            mes = e.args[0]
+            QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
+                                          QtWidgets.QMessageBox.Ok)
+            return
+
+        for i in range(len(scale_factor)):
+            data['data'][i][:, 1] = data['data'][i][:, 1] / scale_factor[i]
+
+        self.figcanvas.set_xlim(self.xlim_min_box.text(),
+                                self.xlim_max_box.text())
+        self.figcanvas.plot_fig(data)
+
 
 if __name__ == '__main__':
     import sys
