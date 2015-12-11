@@ -2,9 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.core.logfile import *
+from FSECplotter.core.factory import LogfileFactory
 import os
 
+# list background color
 COLOR_LIST = [
     QtGui.QBrush(QtGui.QColor(255, 255, 255)),
     QtGui.QBrush(QtGui.QColor(240, 240, 240))
@@ -15,15 +16,13 @@ class LogfileModel(QtGui.QStandardItemModel):
     """ The class that has logfile-ary.
         Also this is a model for ListView. """
 
-    Default_Detector = "B"
-    Default_Channel = 2
-
     # override itemChanged signal
     itemChanged = QtCore.pyqtSignal()
 
     def __init__(self, row, col, parent=None):
         super(LogfileModel, self).__init__(row, col, parent)
         self.logfiles = {}
+        self.logfile_factory = LogfileFactory()
         self.__id_count = 1
 
         # set header data
@@ -41,14 +40,17 @@ class LogfileModel(QtGui.QStandardItemModel):
         abspath = os.path.abspath(filename)
         new_log = self.__append_logfile(abspath)
 
+        default_detector = "B" if new_log.num_detectors == 2 else "A"
+        default_channel = 1
+
         row = self.rowCount()
         order = self.__id_count
         self.__id_count += 1
         data_ary = [order,
-                    new_log.file_name,
-                    new_log.flowrate(),
-                    self.Default_Detector,
-                    self.Default_Channel]
+                    new_log.filename,
+                    new_log.flowrate,
+                    default_detector,
+                    default_channel]
 
         for i in range(len(data_ary)):
             # create new Item and set texts in data_ary
@@ -126,14 +128,12 @@ class LogfileModel(QtGui.QStandardItemModel):
 
             detector = self.item(i, 3).text()
             channel_no = int(self.item(i, 4).text())
-            sec_name = "LC Chromatogram(Detector %s-Ch%d)" % (detector,
-                                                              channel_no)
 
             # set data ary
             filename = self.item(i, 1).text()
+            kwargs = {'detector': detector, 'channel': channel_no}
             try:
-                data_table = self.logfiles[
-                    log_id].find_section(sec_name).data()
+                data_table = self.logfiles[log_id].data(**kwargs)
                 data['data'].append(data_table)
                 data['filenames'].append(filename)
                 data['flow_rates'].append(self.item(i, 2).text())
@@ -152,13 +152,10 @@ class LogfileModel(QtGui.QStandardItemModel):
     # private methods
 
     def __append_logfile(self, filepath):
-        logfile = LogFile()
-        logfile.parse(filepath)
-        # Try to set flowrate of log
         try:
-            logfile.flowrate()
+            logfile = self.logfile_factory.create(filepath)
         except NoMatchedFlowRateError:
-            logfile.flow_rate = 0
+            logfile.flowrate = 0
 
         self.logfiles[self.__id_count] = logfile
         return logfile

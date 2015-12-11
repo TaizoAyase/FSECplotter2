@@ -5,7 +5,7 @@ import os
 import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.figurecanvas import *
-from FSECplotter.core.logfile import NoSectionError
+from FSECplotter.core.shimadzu import NoSectionError
 
 
 # FigureCanvas inherits QWidget
