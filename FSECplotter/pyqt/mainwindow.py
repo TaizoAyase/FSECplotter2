@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
+from FSECplotter.pyqt.dialogs.yscale_dialog import *
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -98,6 +100,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tool")
         self.toolMenu.addAction(self.tsAction)
+        self.toolMenu.addAction(self.y_scalingAction)
 
     def createStatusBar(self):
         self.fomulaLabel = QtWidgets.QLabel()
@@ -114,7 +117,9 @@ class MainWindow(QtWidgets.QMainWindow):
         pass
 
     def y_scaling(self):
-        pass
+        print("Called")
+        y_scale_dialog = YaxisScaleDialog(self)
+        y_scale_dialog.exec_()
 
 
 if __name__ == '__main__':
