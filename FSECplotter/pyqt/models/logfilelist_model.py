@@ -117,7 +117,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         data = {}
         data['total_data'] = self.rowCount()
         data['filenames'] = []
-        data['flow_rates'] = []
+        data['flowrate'] = []
         data['data'] = []
         data['enable_flags'] = []
 
@@ -135,15 +135,20 @@ class LogfileModel(QtGui.QStandardItemModel):
             kwargs = {'detector': detector, 'channel': channel_no}
             try:
                 data_table = self.logfiles[log_id].data(**kwargs)
-                data['data'].append(data_table)
-                data['filenames'].append(filename)
-                data['flow_rates'].append(self.item(i, 2).text())
             except NoSectionError:
                 mes = ("""\
                 In the file '%s', Detector '%s' and\
                 Channel '%s' is not exist.""" % (
                     filename, detector, channel_no)).strip()
                 raise NoSectionError(mes)
+
+            flowrate = float(self.item(i, 2).text())
+            d = data_table.copy()
+            d[:, 0] = data_table[:, 0] * flowrate
+            
+            data['data'].append(d)
+            data['filenames'].append(filename)
+            data['flowrate'].append(self.item(i, 2).text())
 
         return data
 

@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
+from FSECplotter.pyqt.dialogs.yscale_dialog import *
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -97,6 +99,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tool")
+        self.toolMenu.addAction(self.y_scalingAction)
         self.toolMenu.addAction(self.tsAction)
 
     def createStatusBar(self):
@@ -114,7 +117,28 @@ class MainWindow(QtWidgets.QMainWindow):
         pass
 
     def y_scaling(self):
-        pass
+        y_scale_dialog = YaxisScaleDialog(self)
+
+        n = self.treeview.model.rowCount()
+        filenames = [self.treeview.model.item(i, 1).text() for i in range(n)]
+        for f in filenames:
+            y_scale_dialog.ui.filename_for_normal.addItem(f)
+
+        if y_scale_dialog.exec_():
+            c_volume = y_scale_dialog.ui.lineEdit.text()
+            file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
+            self.__y_scaled_plot(float(c_volume), file_norm)
+
+    # private
+
+    def __y_scaled_plot(self, center_v, f_idx):
+        data_dict = self.treeview.model.get_current_data()
+        data_ary = data_dict['data']
+        idx_ary = [np.argmin(np.abs(d[:, 0] - center_v)) for d in data_ary]
+        intensity_ary = [d[i, 1] for i, d in zip(idx_ary, data_ary)]
+        norm_val = intensity_ary[f_idx]
+        scale_factor = intensity_ary / norm_val
+        self.plotarea.rescale(scale_factor)
 
 
 if __name__ == '__main__':
