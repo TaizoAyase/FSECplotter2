@@ -48,11 +48,15 @@ class Figurecanvas(FigureCanvas):
         for i in range(num_data):
             x = current_data['data'][i][:, 0]
             y = current_data['data'][i][:, 1]
-            
+
             self.axes.plot(x, y, label=current_data['filenames'][i],
                            visible=current_data['enable_flags'][i])
 
         self.axes.set_xlim(self.x_min, self.x_max)
+
+        if self.y_min and self.y_max:
+            self.axes.set_ylim(self.y_min, self.y_max)
+
         self.axes.legend(loc=3, mode="expand",
                          borderaxespad=0.,
                          bbox_to_anchor=(0., 1.02, 1., .102),
@@ -80,3 +84,24 @@ class Figurecanvas(FigureCanvas):
             self.x_max = self.x_min + 1.0
 
         return self.x_min, self.x_max
+
+    def set_ylim(self, y_min, y_max):
+        # add 0.1 to raw value to avoid the False judge in if statement
+        if not y_min:
+            self.y_min = None
+        else:
+            self.y_min = float(y_min) + 0.1
+
+        if not y_max:
+            self.y_max = None
+        else:
+            self.y_max = float(y_max) + 0.1
+
+        if not (self.y_min and self.y_max):
+            return
+
+        # avoid the illegal range setting
+        if self.y_min > self.y_max:
+            self.y_max = self.y_min + 100.0
+
+        return self.y_min, self.y_max
