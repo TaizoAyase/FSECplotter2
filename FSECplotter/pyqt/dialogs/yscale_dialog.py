@@ -3,7 +3,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.dialogs.ui_yscale_dialog import Ui_YaxisScalingDialog
-#from ui_yscale_dialog import Ui_YaxisScalingDialog
 
 class YaxisScaleDialog(QtWidgets.QDialog):
 

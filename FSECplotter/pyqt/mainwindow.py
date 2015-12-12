@@ -5,6 +5,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
+from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
+from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+import numpy as np
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -72,14 +75,15 @@ class MainWindow(QtWidgets.QMainWindow):
         # tools-menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
+        self.tsAction.setShortcut("Ctrl+T")
         self.tsAction.setStatusTip(
             "Calc Tm from FSEC-TS data.(Not implemented yet)")
         self.tsAction.triggered.connect(self.fsec_ts)
 
         # scale y-axis
         self.y_scalingAction = QtWidgets.QAction("Y-axis scaling", self)
-        self.y_scalingAction.setStatusTip(
-            "Y-axis scaling.(Not implemented yet)")
+        self.y_scalingAction.setShortcut("Ctrl+Y")
+        self.y_scalingAction.setStatusTip("Y-axis scaling.")
         self.y_scalingAction.triggered.connect(self.y_scaling)
 
     def createMenus(self):
@@ -99,8 +103,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tool")
-        self.toolMenu.addAction(self.y_scalingAction)
         self.toolMenu.addAction(self.tsAction)
+        self.toolMenu.addAction(self.y_scalingAction)
 
     def createStatusBar(self):
         self.fomulaLabel = QtWidgets.QLabel()
@@ -114,7 +118,20 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fomulaLabel.setText("")
 
     def fsec_ts(self):
-        pass
+        n = self.treeview.model.rowCount()
+        filenames = [self.treeview.model.item(i, 1).text() for i in range(n)]
+        tm_dialog = TmCalcDialog(filenames, self)
+
+        if tm_dialog.exec_():
+            c_volume = tm_dialog.ui.lineEdit.text()
+            file_norm = tm_dialog.ui.comboBox.currentIndex()
+            temp_list = tm_dialog.get_temperature()
+            scale_factor = self.__y_scale(float(c_volume), file_norm)
+
+            plot_dialog = TmFitDialog(self)
+            x = np.array(temp_list)
+            plot_dialog.fit(x, scale_factor)
+            plot_dialog.exec_()
 
     def y_scaling(self):
         y_scale_dialog = YaxisScaleDialog(self)
@@ -127,18 +144,19 @@ class MainWindow(QtWidgets.QMainWindow):
         if y_scale_dialog.exec_():
             c_volume = y_scale_dialog.ui.lineEdit.text()
             file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
-            self.__y_scaled_plot(float(c_volume), file_norm)
+            scale_factor = self.__y_scale(float(c_volume), file_norm)
+            self.plotarea.rescale(scale_factor)
 
     # private
 
-    def __y_scaled_plot(self, center_v, f_idx):
+    def __y_scale(self, center_v, f_idx):
         data_dict = self.treeview.model.get_current_data()
         data_ary = data_dict['data']
         idx_ary = [np.argmin(np.abs(d[:, 0] - center_v)) for d in data_ary]
         intensity_ary = [d[i, 1] for i, d in zip(idx_ary, data_ary)]
         norm_val = intensity_ary[f_idx]
         scale_factor = intensity_ary / norm_val
-        self.plotarea.rescale(scale_factor)
+        return scale_factor
 
 
 if __name__ == '__main__':
