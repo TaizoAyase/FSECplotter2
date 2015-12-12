@@ -102,7 +102,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.editMenu.addAction(self.redrawAction)
 
         # tool menu
-        self.toolMenu = self.menuBar().addMenu("Tool")
+        self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
 
@@ -119,7 +119,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def fsec_ts(self):
         n = self.treeview.model.rowCount()
-        filenames = [self.treeview.model.item(i, 1).text() for i in range(n)]
+        filenames = self.__get_enabled_filename()
         tm_dialog = TmCalcDialog(filenames, self)
 
         if tm_dialog.exec_():
@@ -134,12 +134,9 @@ class MainWindow(QtWidgets.QMainWindow):
             plot_dialog.exec_()
 
     def y_scaling(self):
-        y_scale_dialog = YaxisScaleDialog(self)
-
         n = self.treeview.model.rowCount()
-        filenames = [self.treeview.model.item(i, 1).text() for i in range(n)]
-        for f in filenames:
-            y_scale_dialog.ui.filename_for_normal.addItem(f)
+        filenames = self.__get_enabled_filename()
+        y_scale_dialog = YaxisScaleDialog(filenames, self)
 
         if y_scale_dialog.exec_():
             c_volume = y_scale_dialog.ui.lineEdit.text()
@@ -149,9 +146,20 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # private
 
+    def __get_enabled_filename(self):
+        data = self.treeview.model.get_current_data()
+        ary = []
+        for f, flag in zip(data['filenames'], data['enable_flags']):
+            if not flag:
+                continue
+            ary.append(f)
+
+        del data
+        return ary
+
     def __y_scale(self, center_v, f_idx):
-        data_dict = self.treeview.model.get_current_data()
-        data_ary = data_dict['data']
+        data = self.treeview.model.get_current_data()
+        data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
         idx_ary = [np.argmin(np.abs(d[:, 0] - center_v)) for d in data_ary]
         intensity_ary = [d[i, 1] for i, d in zip(idx_ary, data_ary)]
         norm_val = intensity_ary[f_idx]

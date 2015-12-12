@@ -11,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_YaxisScalingDialog(object):
     def setupUi(self, YaxisScalingDialog):
         YaxisScalingDialog.setObjectName("YaxisScalingDialog")
-        YaxisScalingDialog.resize(480, 187)
+        YaxisScalingDialog.resize(273, 132)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout(YaxisScalingDialog)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout = QtWidgets.QVBoxLayout()
