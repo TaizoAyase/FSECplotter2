@@ -31,6 +31,7 @@ PNG, JPG, PDF formats can be selected.
 5. If you want to delete all files, press 'file'->'Remove all files'
 
 
+
 Test files
 ------------
 This repository includes test files for Shimadzu HPLC in `test/fixture/shimadzu` directory
@@ -48,9 +49,9 @@ Or, for Hitach HPCL, use the test files in `test/fixture/hitachi` directory
 
 Packaging
 -----------
-Use [Pyinstaller](http://www.pyinstaller.org/), for example:
+Use [Pyinstaller](http://www.pyinstaller.org/), for example.
 
-`pyinstaller --windowed --onefile FSECplotter2.py`
+For pyinstaller, use the command as written in `win_build/command.txt` or `osx_build/command.txt`.
 
 
 For Another HPLC
