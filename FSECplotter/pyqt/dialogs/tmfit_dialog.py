@@ -15,7 +15,7 @@ import os
 class TmFitDialog(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
         self.fig = Figure(figsize=(6, 5), dpi=100)
         self.axes = self.fig.add_subplot(111)
         self.axes.hold(True)

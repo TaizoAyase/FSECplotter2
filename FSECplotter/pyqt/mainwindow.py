@@ -72,12 +72,16 @@ class MainWindow(QtWidgets.QMainWindow):
         self.redrawAction.setStatusTip("Force redraw plot.")
         self.redrawAction.triggered.connect(self.plotarea.redraw)
 
+        # x-axis
+        self.selectVolume = QtWidgets.QAction("Volume [mL]", self, checkable=True)
+        self.selectVolume.setChecked(True)
+        self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
+
         # tools-menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
         self.tsAction.setShortcut("Ctrl+T")
-        self.tsAction.setStatusTip(
-            "Calc Tm from FSEC-TS data.(Not implemented yet)")
+        self.tsAction.setStatusTip("Calc Tm from FSEC-TS data.")
         self.tsAction.triggered.connect(self.fsec_ts)
 
         # scale y-axis
@@ -100,6 +104,15 @@ class MainWindow(QtWidgets.QMainWindow):
         # edit menu
         self.editMenu = self.menuBar().addMenu("Edit")
         self.editMenu.addAction(self.redrawAction)
+        self.editsubMenu = self.editMenu.addMenu("X-axis")
+        ag = QtWidgets.QActionGroup(self, exclusive=True)
+        ag.addAction(self.selectVolume)
+        ag.addAction(self.selectTime)
+        self.editsubMenu.addAction(self.selectVolume)
+        self.editsubMenu.addAction(self.selectTime)
+
+        self.editsubMenu.addAction(self.selectVolume)
+        self.editsubMenu.addAction(self.selectTime)
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tools")
@@ -107,15 +120,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu.addAction(self.y_scalingAction)
 
     def createStatusBar(self):
-        self.fomulaLabel = QtWidgets.QLabel()
-        self.fomulaLabel.setIndent(3)
+        self.statusbar_label = QtWidgets.QLabel()
+        self.statusbar_label.setIndent(3)
 
-        self.statusBar().addWidget(self.fomulaLabel)
+        self.statusBar().addWidget(self.statusbar_label)
 
         self.updateStatusBar()
 
     def updateStatusBar(self):
-        self.fomulaLabel.setText("")
+        pass
 
     def fsec_ts(self):
         n = self.treeview.model.rowCount()

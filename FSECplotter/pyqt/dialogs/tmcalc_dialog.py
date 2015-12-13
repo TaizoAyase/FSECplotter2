@@ -8,7 +8,7 @@ import re
 class TmCalcDialog(QtWidgets.QDialog):
 
     def __init__(self, filenames, parent=None):
-        super().__init__(parent=None)
+        super().__init__(parent)
         self.ui = Ui_TmCalcDialog()
         self.ui.setupUi(self)
 
@@ -43,10 +43,15 @@ class TmCalcDialog(QtWidgets.QDialog):
 
         return list_
 
+    def accept(self):
+        if not self.ui.lineEdit.text():
+            return
+        super().accept()
+
     # private
 
     def __guess_temp(self, f):
-        m = re.findall('\d+', f)
+        m = re.findall('\d+\.?\d*', f)
 
         # if m is empty,
         if not m:

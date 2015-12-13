@@ -52,7 +52,7 @@ class PlotArea(QtWidgets.QWidget):
         self.ylim_max_box = QtWidgets.QLineEdit(self)
         self.ylim_max_box_label.setBuddy(self.ylim_max_box)
 
-        regexp = QtCore.QRegExp('\d+.?\d*')
+        regexp = QtCore.QRegExp('\d+\.?\d*')
         self.double_valid = QtGui.QRegExpValidator(regexp)
         self.xlim_min_box.setValidator(self.double_valid)
         self.xlim_max_box.setValidator(self.double_valid)
