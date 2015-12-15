@@ -1,8 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
+from FSECplotter.pyqt.dialogs.yscale_dialog import *
+from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
+from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+import numpy as np
 
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
@@ -70,17 +75,22 @@ class MainWindow(QtWidgets.QMainWindow):
         self.redrawAction.setStatusTip("Force redraw plot.")
         self.redrawAction.triggered.connect(self.plotarea.redraw)
 
+        # x-axis
+        self.selectVolume = QtWidgets.QAction("Volume [mL]", self, checkable=True)
+        self.selectVolume.setChecked(True)
+        self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
+
         # tools-menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
-        self.tsAction.setStatusTip(
-            "Calc Tm from FSEC-TS data.(Not implemented yet)")
+        self.tsAction.setShortcut("Ctrl+T")
+        self.tsAction.setStatusTip("Calc Tm from FSEC-TS data.")
         self.tsAction.triggered.connect(self.fsec_ts)
 
         # scale y-axis
         self.y_scalingAction = QtWidgets.QAction("Y-axis scaling", self)
-        self.y_scalingAction.setStatusTip(
-            "Y-axis scaling.(Not implemented yet)")
+        self.y_scalingAction.setShortcut("Ctrl+Y")
+        self.y_scalingAction.setStatusTip("Y-axis scaling.")
         self.y_scalingAction.triggered.connect(self.y_scaling)
 
     def createMenus(self):
@@ -97,21 +107,31 @@ class MainWindow(QtWidgets.QMainWindow):
         # edit menu
         self.editMenu = self.menuBar().addMenu("Edit")
         self.editMenu.addAction(self.redrawAction)
+        self.editsubMenu = self.editMenu.addMenu("X-axis")
+        ag = QtWidgets.QActionGroup(self, exclusive=True)
+        ag.addAction(self.selectVolume)
+        ag.addAction(self.selectTime)
+        self.editsubMenu.addAction(self.selectVolume)
+        self.editsubMenu.addAction(self.selectTime)
+
+        self.editsubMenu.addAction(self.selectVolume)
+        self.editsubMenu.addAction(self.selectTime)
 
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
+        self.toolMenu.addAction(self.y_scalingAction)
 
     def createStatusBar(self):
-        self.fomulaLabel = QtWidgets.QLabel()
-        self.fomulaLabel.setIndent(3)
+        self.statusbar_label = QtWidgets.QLabel()
+        self.statusbar_label.setIndent(3)
 
-        self.statusBar().addWidget(self.fomulaLabel)
+        self.statusBar().addWidget(self.statusbar_label)
 
         self.updateStatusBar()
 
     def updateStatusBar(self):
-        self.fomulaLabel.setText("")
+        pass
 
     def closeEvent(self, event):
         if self.okToContinue():
@@ -144,10 +164,53 @@ class MainWindow(QtWidgets.QMainWindow):
         settings.setValue()
 
     def fsec_ts(self):
-        pass
+        n = self.treeview.model.rowCount()
+        filenames = self.__get_enabled_filename()
+        tm_dialog = TmCalcDialog(filenames, self)
+
+        if tm_dialog.exec_():
+            c_volume = tm_dialog.ui.lineEdit.text()
+            file_norm = tm_dialog.ui.comboBox.currentIndex()
+            temp_list = tm_dialog.get_temperature()
+            scale_factor = self.__y_scale(float(c_volume), file_norm)
+
+            plot_dialog = TmFitDialog(self)
+            x = np.array(temp_list)
+            plot_dialog.fit(x, scale_factor)
+            plot_dialog.exec_()
 
     def y_scaling(self):
-        pass
+        n = self.treeview.model.rowCount()
+        filenames = self.__get_enabled_filename()
+        y_scale_dialog = YaxisScaleDialog(filenames, self)
+
+        if y_scale_dialog.exec_():
+            c_volume = y_scale_dialog.ui.lineEdit.text()
+            file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
+            scale_factor = self.__y_scale(float(c_volume), file_norm)
+            self.plotarea.rescale(scale_factor)
+
+    # private
+
+    def __get_enabled_filename(self):
+        data = self.treeview.model.get_current_data()
+        ary = []
+        for f, flag in zip(data['filenames'], data['enable_flags']):
+            if not flag:
+                continue
+            ary.append(f)
+
+        del data
+        return ary
+
+    def __y_scale(self, center_v, f_idx):
+        data = self.treeview.model.get_current_data()
+        data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
+        idx_ary = [np.argmin(np.abs(d[:, 0] - center_v)) for d in data_ary]
+        intensity_ary = [d[i, 1] for i, d in zip(idx_ary, data_ary)]
+        norm_val = intensity_ary[f_idx]
+        scale_factor = intensity_ary / norm_val
+        return scale_factor
 
 
 if __name__ == '__main__':

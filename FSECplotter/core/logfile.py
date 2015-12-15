@@ -9,7 +9,7 @@ import os
 class Logfile(metaclass=ABCMeta):
     """Abstract class for various logfiles"""
     def __init__(self, filename):
-        self.flowrate = None
+        self.flowrate = 1.0
         self.num_detectors = None
         self.num_channels = None
 
