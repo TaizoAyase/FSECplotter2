@@ -8,7 +8,7 @@ DEFAULT_PARAMETERS = [
     'detector',
     'channel',
     'flowrate',
-    'line_width',
+    'linewidth',
     'ts_gain',
     'ts_tm'
 ]
@@ -34,7 +34,7 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.detector_comboBox.setCurrentIndex(int(params['detector']))
         self.ui.channel_spinBox.setValue(int(params['channel']))
         self.ui.flowrate_spinBox.setValue(params['flowrate'])
-        self.ui.linewidth_spinBox.setValue(params['line_width'])
+        self.ui.linewidth_spinBox.setValue(params['linewidth'])
         self.ui.ts_gain_lineEdit.setText(str(params['ts_gain']))
         self.ui.ts_tm_lineEdit.setText(str(params['ts_tm']))
 
@@ -44,7 +44,7 @@ class PreferenceDialog(QtWidgets.QDialog):
         params['detector'] = self.ui.detector_comboBox.currentIndex()
         params['channel'] = self.ui.channel_spinBox.value()
         params['flowrate'] = self.ui.flowrate_spinBox.value()
-        params['line_width'] = self.ui.linewidth_spinBox.value()
+        params['linewidth'] = self.ui.linewidth_spinBox.value()
         params['ts_gain'] = self.ui.ts_gain_lineEdit.text()
         params['ts_tm'] = self.ui.ts_tm_lineEdit.text()
         return params

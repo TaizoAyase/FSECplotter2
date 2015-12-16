@@ -11,6 +11,8 @@ from FSECplotter.core.shimadzu import NoSectionError
 # FigureCanvas inherits QWidget
 class PlotArea(QtWidgets.QWidget):
 
+    updateParameters = QtCore.pyqtSlot()
+
     def __init__(self, listmodel, parent=None):
         # call constructor of FigureCanvas
         super(PlotArea, self).__init__(parent)
@@ -99,6 +101,12 @@ class PlotArea(QtWidgets.QWidget):
         # modified flag
         self.modified = False
 
+        # default params
+        self.linewidth = 1.0
+
+    def updateDefaultParameters(self, **kwargs):
+        self.linewidth = kwargs['linewidth']
+
     def redraw(self):
         try:
             data = self.model.get_current_data()
@@ -113,7 +121,7 @@ class PlotArea(QtWidgets.QWidget):
                                 self.xlim_max_box.text())
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
                                 self.ylim_max_box.text())
-        self.figcanvas.plot_fig(data)
+        self.figcanvas.plot_fig(data, self.linewidth)
         self.modified = True
 
     def save_figure(self):
@@ -149,7 +157,7 @@ class PlotArea(QtWidgets.QWidget):
 
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
-        self.figcanvas.plot_fig(data)
+        self.figcanvas.plot_fig(data, self.linewidth)
 
 
 if __name__ == '__main__':

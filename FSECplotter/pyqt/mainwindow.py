@@ -13,6 +13,15 @@ import numpy as np
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
 
+DEFAULTS = {
+    'detector': 1,
+    'channel': 1,
+    'flowrate': 10.0,
+    'linewidth': 1.0,
+    'ts_gain': 1.0,
+    'ts_tm': 50
+}
+
 class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, parent=None):
@@ -34,9 +43,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.createActions()
         self.createMenus()
         self.createStatusBar()
-        self.defaults = {}
-        for k in DEFAULT_PARAMETERS:
-            self.defaults[k] = None
         self.readSettings()
 
     def createActions(self):
@@ -171,11 +177,15 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def readSettings(self):
         settings = QtCore.QSettings(ORG_NAME, APP_NAME)
-        val = settings.value('test')
-        for k in DEFAULT_PARAMETERS:
+        self.defaults = {}
+        for k in DEFAULTS.keys():
             self.defaults[k] = settings.value(k)
 
-        print(self.defaults)
+        if None in self.defaults.values():
+            self.defaults = DEFAULTS
+
+        self.plotarea.updateDefaultParameters(**self.defaults)
+        self.treeview.model.updateDefaultParameters(**self.defaults)
 
         del settings
 
@@ -217,7 +227,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if dialog.exec_():
             #dialog.rejected.connect(lambda x:return)
             self.defaults = dialog.get_params()
-            print(self.defaults)
+            self.plotarea.updateDefaultParameters(**self.defaults)
+            self.treeview.model.updateDefaultParameters(**self.defaults)
 
     # private
 
