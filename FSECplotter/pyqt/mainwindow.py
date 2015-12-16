@@ -7,6 +7,7 @@ from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
 from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+from FSECplotter.pyqt.dialogs.preference_dialog import *
 import numpy as np
 
 ORG_NAME = "TaizoAyase" # temporary org. name
@@ -30,10 +31,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(1200, 600)
         self.setWindowTitle(APP_NAME)
 
-        self.readSettings()
         self.createActions()
         self.createMenus()
         self.createStatusBar()
+        self.defaults = {}
+        for k in DEFAULT_PARAMETERS:
+            self.defaults[k] = None
+        self.readSettings()
 
     def createActions(self):
         # file-menu
@@ -80,7 +84,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selectVolume.setChecked(True)
         self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
 
-        # tools-menu
+        # tools menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
         self.tsAction.setShortcut("Ctrl+T")
@@ -92,6 +96,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.y_scalingAction.setShortcut("Ctrl+Y")
         self.y_scalingAction.setStatusTip("Y-axis scaling.")
         self.y_scalingAction.triggered.connect(self.y_scaling)
+
+        # option menu
+        self.preferenceAction = QtWidgets.QAction("Preference", self)
+        self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
+        self.preferenceAction.triggered.connect(self.preference)
+
 
     def createMenus(self):
         # file menu
@@ -121,6 +131,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
+
+        # option menu
+        self.optionMenu = self.menuBar().addMenu("Options")
+        self.optionMenu.addAction(self.preferenceAction)
 
     def createStatusBar(self):
         self.statusbar_label = QtWidgets.QLabel()
@@ -156,12 +170,20 @@ class MainWindow(QtWidgets.QMainWindow):
         return True
 
     def readSettings(self):
-        pass
+        settings = QtCore.QSettings(ORG_NAME, APP_NAME)
+        val = settings.value('test')
+        for k in DEFAULT_PARAMETERS:
+            self.defaults[k] = settings.value(k)
+
+        print(self.defaults)
+
+        del settings
 
     def writeSettings(self):
         settings = QtCore.QSettings(ORG_NAME, APP_NAME)
 
-        settings.setValue()
+        for k, v in self.defaults.items():
+            settings.setValue(k, float(v))
 
     def fsec_ts(self):
         n = self.treeview.model.rowCount()
@@ -189,6 +211,13 @@ class MainWindow(QtWidgets.QMainWindow):
             file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
             scale_factor = self.__y_scale(float(c_volume), file_norm)
             self.plotarea.rescale(scale_factor)
+
+    def preference(self):
+        dialog = PreferenceDialog(self.defaults, self)
+        if dialog.exec_():
+            #dialog.rejected.connect(lambda x:return)
+            self.defaults = dialog.get_params()
+            print(self.defaults)
 
     # private
 
