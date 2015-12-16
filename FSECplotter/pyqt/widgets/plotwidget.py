@@ -11,6 +11,8 @@ from FSECplotter.core.shimadzu import NoSectionError
 # FigureCanvas inherits QWidget
 class PlotArea(QtWidgets.QWidget):
 
+    updateParameters = QtCore.pyqtSlot()
+
     def __init__(self, listmodel, parent=None):
         # call constructor of FigureCanvas
         super(PlotArea, self).__init__(parent)
@@ -96,6 +98,15 @@ class PlotArea(QtWidgets.QWidget):
         self.ylim_max_box.textChanged.connect(self.redraw)
         self.model.itemChanged.connect(self.redraw)
 
+        # modified flag
+        self.modified = False
+
+        # default params
+        self.linewidth = 1.0
+
+    def updateDefaultParameters(self, **kwargs):
+        self.linewidth = kwargs['linewidth']
+
     def redraw(self):
         try:
             data = self.model.get_current_data()
@@ -110,7 +121,8 @@ class PlotArea(QtWidgets.QWidget):
                                 self.xlim_max_box.text())
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
                                 self.ylim_max_box.text())
-        self.figcanvas.plot_fig(data)
+        self.figcanvas.plot_fig(data, self.linewidth)
+        self.modified = True
 
     def save_figure(self):
         defalt_plot_name = time.strftime("%y%m%d_%H%M%S") + "_plot.png"
@@ -122,11 +134,13 @@ class PlotArea(QtWidgets.QWidget):
         if not file_save_to:
             return
         self.figcanvas.save_fig_to(file_save_to)
+        self.modified = False
 
     def quick_save_figure(self):
         defalt_plot_name = time.strftime("%y%m%d_%H%M%S") + "_plot.png"
         file_save_to = self.model.current_dir + "/" + defalt_plot_name
         self.figcanvas.save_fig_to(file_save_to)
+        self.modified = False
 
     def rescale(self, scale_factor):
         try:
@@ -143,7 +157,7 @@ class PlotArea(QtWidgets.QWidget):
 
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
-        self.figcanvas.plot_fig(data)
+        self.figcanvas.plot_fig(data, self.linewidth)
 
 
 if __name__ == '__main__':
