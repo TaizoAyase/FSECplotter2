@@ -31,6 +31,27 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.selection_model.clear()
 
         # set buttons
+        self.label1 = QtWidgets.QLabel(self)
+        self.label1.setText("Change all detector to:")
+        self.label2 = QtWidgets.QLabel(self)
+        self.label2.setText("Change all channel to:")
+        self.setall_detector_comboBox = QtWidgets.QComboBox(self)
+        self.setall_detector_comboBox.addItem("")
+        self.setall_detector_comboBox.setItemText(0, "A")
+        self.setall_detector_comboBox.addItem("")
+        self.setall_detector_comboBox.setItemText(1, "B")
+        self.setall_channel_comboBox = QtWidgets.QComboBox(self)
+        self.setall_channel_comboBox.addItem("")
+        self.setall_channel_comboBox.setItemText(0, "1")
+        self.setall_channel_comboBox.addItem("")
+        self.setall_channel_comboBox.setItemText(1, "2")
+
+        self.combobox_layout = QtWidgets.QHBoxLayout()
+        self.combobox_layout.addWidget(self.label1)
+        self.combobox_layout.addWidget(self.setall_detector_comboBox)
+        self.combobox_layout.addWidget(self.label2)
+        self.combobox_layout.addWidget(self.setall_channel_comboBox)
+
         self.open_button = QtWidgets.QPushButton(self)
         self.open_button.setObjectName("Open button")
         self.open_button.setText("Open file")
@@ -65,10 +86,16 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.verLay1.addWidget(self.treeview)
 
         self.verLay2 = QtWidgets.QVBoxLayout(self)
+        self.verLay2.addLayout(self.combobox_layout)
         self.verLay2.addLayout(self.verLay1)
         self.verLay2.addLayout(self.gridLay1)
 
         # signal slot definition
+        self.setall_detector_comboBox.activated.connect(
+            self.change_all_detector)
+        self.setall_channel_comboBox.activated.connect(
+            self.change_all_channel)
+        
         self.open_button.clicked.connect(self.open_file)
         self.delete_button.clicked.connect(self.delete_file)
         self.check_all_button.clicked.connect(
@@ -77,6 +104,14 @@ class LogfileListWidget(QtWidgets.QWidget):
             lambda: self.model.change_all_check_state(0))
         self.move_up_button.clicked.connect(lambda: self.move_selected(-1))
         self.move_down_button.clicked.connect(lambda: self.move_selected(1))
+
+    def change_all_detector(self):
+        det = self.setall_detector_comboBox.currentText()
+        self.model.select_params_to(col=3, param=det)
+
+    def change_all_channel(self):
+        ch = self.setall_channel_comboBox.currentText()
+        self.model.select_params_to(col=4, param=ch)
 
     def open_file(self):
         # open the file selection dialog

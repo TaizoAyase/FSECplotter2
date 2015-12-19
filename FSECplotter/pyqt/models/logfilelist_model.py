@@ -5,6 +5,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.factory import LogfileFactory
 from FSECplotter.core.shimadzu import NoSectionError
 import os
+import string
 
 # list background color
 COLOR_LIST = [
@@ -37,12 +38,26 @@ class LogfileModel(QtGui.QStandardItemModel):
         # signal - slot connection
         self.itemChanged.connect(self.__update_background_color)
 
+        # default parameters
+        self.def_detector = "B"
+        self.def_channel = 1
+        self.def_flowrate = 1.0
+
+    def updateDefaultParameters(self, **kwargs):
+        self.def_detector = string.ascii_uppercase[ int(kwargs['detector']) ]
+        self.def_channel = int(kwargs['channel'])
+        self.flowrate = float(kwargs['flowrate'])
+
     def add_item(self, filename):
         abspath = os.path.abspath(filename)
         new_log = self.__append_logfile(abspath)
 
-        default_detector = "B" if new_log.num_detectors == 2 else "A"
-        default_channel = 1
+        if new_log.num_detectors == 2:
+            default_detector = self.def_detector 
+        else:
+            default_detector = "A"
+
+        default_channel = self.def_channel
 
         row = self.rowCount()
         order = self.__id_count
@@ -157,13 +172,18 @@ class LogfileModel(QtGui.QStandardItemModel):
             checkable_item = self.item(i, 0)
             checkable_item.setCheckState(check_state)
 
+    def select_params_to(self, col, param):
+        for i in range(self.rowCount()):
+            item = self.item(i, col)
+            item.setText(param)
+
     # private methods
 
     def __append_logfile(self, filepath):
         try:
             logfile = self.logfile_factory.create(filepath)
         except NoMatchedFlowRateError:
-            logfile.flowrate = 0
+            logfile.flowrate = self.flowrate
 
         self.logfiles[self.__id_count] = logfile
         return logfile

@@ -7,8 +7,20 @@ from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
 from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+from FSECplotter.pyqt.dialogs.preference_dialog import *
 import numpy as np
 
+ORG_NAME = "TaizoAyase" # temporary org. name
+APP_NAME = "FSECplotter2"
+
+DEFAULTS = {
+    'detector': 1,
+    'channel': 1,
+    'flowrate': 10.0,
+    'linewidth': 1.0,
+    'ts_gain': 1.0,
+    'ts_tm': 50
+}
 
 class MainWindow(QtWidgets.QMainWindow):
 
@@ -26,11 +38,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setCentralWidget(self.splitter)
 
         self.resize(1200, 600)
-        self.setWindowTitle("FSEC plotter 2")
+        self.setWindowTitle(APP_NAME)
 
         self.createActions()
         self.createMenus()
         self.createStatusBar()
+        self.readSettings()
 
     def createActions(self):
         # file-menu
@@ -77,7 +90,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.selectVolume.setChecked(True)
         self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
 
-        # tools-menu
+        # tools menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
         self.tsAction.setShortcut("Ctrl+T")
@@ -89,6 +102,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.y_scalingAction.setShortcut("Ctrl+Y")
         self.y_scalingAction.setStatusTip("Y-axis scaling.")
         self.y_scalingAction.triggered.connect(self.y_scaling)
+
+        # option menu
+        self.preferenceAction = QtWidgets.QAction("Preference", self)
+        self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
+        self.preferenceAction.triggered.connect(self.preference)
+
 
     def createMenus(self):
         # file menu
@@ -119,6 +138,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
 
+        # option menu
+        self.optionMenu = self.menuBar().addMenu("Options")
+        self.optionMenu.addAction(self.preferenceAction)
+
     def createStatusBar(self):
         self.statusbar_label = QtWidgets.QLabel()
         self.statusbar_label.setIndent(3)
@@ -129,6 +152,48 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def updateStatusBar(self):
         pass
+
+    def closeEvent(self, event):
+        if self.okToContinue():
+            self.writeSettings()
+            event.accept()
+        else:
+            event.ignore()
+
+    def okToContinue(self):
+        if self.plotarea.modified:
+            ret = QtWidgets.QMessageBox.warning(self, APP_NAME, 
+              "The figure has been modified.\nDo you want to save your changes?",
+              QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel,
+              QtWidgets.QMessageBox.Cancel)
+
+            if ret == QtWidgets.QMessageBox.Yes:
+                self.plotarea.save_figure()
+                return True
+            elif ret == QtWidgets.QMessageBox.Cancel:
+                return False
+
+        return True
+
+    def readSettings(self):
+        settings = QtCore.QSettings(ORG_NAME, APP_NAME)
+        self.defaults = {}
+        for k in DEFAULTS.keys():
+            self.defaults[k] = settings.value(k)
+
+        if None in self.defaults.values():
+            self.defaults = DEFAULTS
+
+        self.plotarea.updateDefaultParameters(**self.defaults)
+        self.treeview.model.updateDefaultParameters(**self.defaults)
+
+        del settings
+
+    def writeSettings(self):
+        settings = QtCore.QSettings(ORG_NAME, APP_NAME)
+
+        for k, v in self.defaults.items():
+            settings.setValue(k, float(v))
 
     def fsec_ts(self):
         n = self.treeview.model.rowCount()
@@ -156,6 +221,14 @@ class MainWindow(QtWidgets.QMainWindow):
             file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
             scale_factor = self.__y_scale(float(c_volume), file_norm)
             self.plotarea.rescale(scale_factor)
+
+    def preference(self):
+        dialog = PreferenceDialog(self.defaults, self)
+        if dialog.exec_():
+            #dialog.rejected.connect(lambda x:return)
+            self.defaults = dialog.get_params()
+            self.plotarea.updateDefaultParameters(**self.defaults)
+            self.treeview.model.updateDefaultParameters(**self.defaults)
 
     # private
 

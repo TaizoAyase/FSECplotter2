@@ -36,7 +36,7 @@ class Figurecanvas(FigureCanvas):
         # set color map object
         self.__cm = matplotlib.cm.gist_rainbow
 
-    def plot_fig(self, current_data):
+    def plot_fig(self, current_data, linewidth):
         self.axes.clear()
         self.axes.grid()
 
@@ -50,7 +50,8 @@ class Figurecanvas(FigureCanvas):
             y = current_data['data'][i][:, 1]
 
             self.axes.plot(x, y, label=current_data['filenames'][i],
-                           visible=current_data['enable_flags'][i])
+                           visible=current_data['enable_flags'][i],
+                           linewidth=linewidth)
 
         self.axes.set_xlim(self.x_min, self.x_max)
 
