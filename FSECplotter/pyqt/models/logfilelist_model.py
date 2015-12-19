@@ -172,6 +172,11 @@ class LogfileModel(QtGui.QStandardItemModel):
             checkable_item = self.item(i, 0)
             checkable_item.setCheckState(check_state)
 
+    def select_params_to(self, col, param):
+        for i in range(self.rowCount()):
+            item = self.item(i, col)
+            item.setText(param)
+
     # private methods
 
     def __append_logfile(self, filepath):
