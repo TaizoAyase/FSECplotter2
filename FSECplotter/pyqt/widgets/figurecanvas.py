@@ -90,10 +90,14 @@ class Figurecanvas(FigureCanvas):
         # add 0.1 to raw value to avoid the False judge in if statement
         if not y_min:
             self.y_min = None
+        elif y_min == "-":
+            self.y_min = None
         else:
             self.y_min = float(y_min) + 0.1
 
         if not y_max:
+            self.y_max = None
+        elif y_max == "-":
             self.y_max = None
         else:
             self.y_max = float(y_max) + 0.1
