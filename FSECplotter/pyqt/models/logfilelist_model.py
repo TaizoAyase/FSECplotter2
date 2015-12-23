@@ -176,6 +176,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         for i in range(self.rowCount()):
             item = self.item(i, col)
             item.setText(param)
+        self.itemChanged.emit()
 
     # private methods
 

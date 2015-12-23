@@ -33,8 +33,8 @@ class PreferenceDialog(QtWidgets.QDialog):
     def set_params(self, params):
         self.ui.detector_comboBox.setCurrentIndex(int(params['detector']))
         self.ui.channel_spinBox.setValue(int(params['channel']))
-        self.ui.flowrate_spinBox.setValue(params['flowrate'])
-        self.ui.linewidth_spinBox.setValue(params['linewidth'])
+        self.ui.flowrate_spinBox.setValue(float(params['flowrate']))
+        self.ui.linewidth_spinBox.setValue(float(params['linewidth']))
         self.ui.ts_gain_lineEdit.setText(str(params['ts_gain']))
         self.ui.ts_tm_lineEdit.setText(str(params['ts_tm']))
 
