@@ -64,6 +64,7 @@ class Figurecanvas(FigureCanvas):
                          prop={'size': 'small'})
         self.axes.set_xlabel("Volume(ml)")
         self.axes.set_ylabel("FL intensity(AU)")
+        self.__adjust_scale(num_data)
         self.draw()
 
     def save_fig_to(self, filepath):
@@ -110,3 +111,13 @@ class Figurecanvas(FigureCanvas):
             self.y_max = self.y_min + 100.0
 
         return self.y_min, self.y_max
+
+    def __adjust_scale(self, num_data):
+        # in this scheme, at 16 sample, top~0.25,
+        # which is the smallest size of graph-area
+        if num_data < 16:
+            adj = 0.9 - 0.04 * num_data
+        else:
+            adj = 0.25
+
+        self.fig.subplots_adjust(top=adj)
