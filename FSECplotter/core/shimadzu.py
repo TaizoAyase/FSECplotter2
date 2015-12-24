@@ -59,8 +59,11 @@ class ShimadzuLogFile(Logfile):
     # if cannot, raise Error
 
     def __set_flowrate(self):
-        methodfiles_ary = self.__get_params_ary(
-            "Original Files", "Method File")
+        try:
+            methodfiles_ary = self.__get_params_ary(
+                "Original Files", "Method File")
+        except NoSectionError as e:
+            raise e
 
         # search float in file name
         pat = re.compile(r"\d\.\d+")

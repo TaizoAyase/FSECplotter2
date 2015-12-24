@@ -3,7 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.core.factory import LogfileFactory
-from FSECplotter.core.shimadzu import NoSectionError
+from FSECplotter.core.shimadzu import NoSectionError, NoMatchedFlowRateError
 import os
 import string
 
@@ -183,8 +183,12 @@ class LogfileModel(QtGui.QStandardItemModel):
     def __append_logfile(self, filepath):
         try:
             logfile = self.logfile_factory.create(filepath)
-        except NoMatchedFlowRateError:
-            logfile.flowrate = self.flowrate
+        except NoSectionError:
+            #logfile.flowrate = self.flowrate
+            mes = ("""\
+                The input file '%s' lacks some required section. Skipped.\
+                """ % filepath).strip()
+            raise NoSectionError(mes)
 
         self.logfiles[self.__id_count] = logfile
         return logfile
