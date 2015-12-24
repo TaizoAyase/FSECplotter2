@@ -183,12 +183,12 @@ class LogfileModel(QtGui.QStandardItemModel):
     def __append_logfile(self, filepath):
         try:
             logfile = self.logfile_factory.create(filepath)
-        except NoMatchedFlowRateError:
+        except NoSectionError:
             #logfile.flowrate = self.flowrate
             mes = ("""\
                 The input file '%s' lacks some required section. Skipped.\
                 """ % filepath).strip()
-            raise NoMatchedFlowRateError(mes)
+            raise NoSectionError(mes)
 
         self.logfiles[self.__id_count] = logfile
         return logfile
