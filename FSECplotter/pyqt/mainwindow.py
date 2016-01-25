@@ -217,9 +217,12 @@ class MainWindow(QtWidgets.QMainWindow):
         y_scale_dialog = YaxisScaleDialog(filenames, self)
 
         if y_scale_dialog.exec_():
-            c_volume = y_scale_dialog.ui.lineEdit.text()
-            file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
-            scale_factor = self.__y_scale(float(c_volume), file_norm)
+            min_volume = y_scale_dialog.ui.lineEdit.text()
+            max_volume = y_scale_dialog.ui.lineEdit_2.text()
+            #c_volume = y_scale_dialog.ui.lineEdit.text()
+            #file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
+
+            scale_factor = self.__y_scale(float(min_volume), float(max_volume))
             self.plotarea.rescale(scale_factor)
 
     def preference(self):
@@ -243,13 +246,21 @@ class MainWindow(QtWidgets.QMainWindow):
         del data
         return ary
 
-    def __y_scale(self, center_v, f_idx):
+    def __y_scale(self, min_vol, max_vol):
+        # select enabled data
         data = self.treeview.model.get_current_data()
         data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
-        idx_ary = [np.argmin(np.abs(d[:, 0] - center_v)) for d in data_ary]
-        intensity_ary = [d[i, 1] for i, d in zip(idx_ary, data_ary)]
-        norm_val = intensity_ary[f_idx]
-        scale_factor = intensity_ary / norm_val
+
+        # get nearest indices to the min/max value
+        min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
+        max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
+
+        max_val_ary = [
+            max(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+            ]
+
+        norm_val = max(max_val_ary)
+        scale_factor = max_val_ary / norm_val
         return scale_factor
 
 
