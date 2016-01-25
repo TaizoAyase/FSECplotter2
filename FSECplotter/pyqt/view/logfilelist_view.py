@@ -3,6 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.models.logfilelist_model import *
+from FSECplotter.core.shimadzu import NoMatchedFlowRateError, NoSectionError
 import platform
 
 
@@ -37,7 +38,12 @@ class LogfileListView(QtWidgets.QTreeView):
                 path = url.path()
                 filepath = path[1:] if self.__windows_flag else path
 
-                model.add_item(filepath)
+                try:
+                    model.add_item(filepath)
+                except NoSectionError as e:
+                    mes = e.args[0]
+                    QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
+                        QtWidgets.QMessageBox.Ok)
             event.accept()
         else:
             event.ignore()

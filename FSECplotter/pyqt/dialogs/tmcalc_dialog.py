@@ -14,12 +14,13 @@ class TmCalcDialog(QtWidgets.QDialog):
 
         valid = QtGui.QDoubleValidator()
         self.ui.lineEdit.setValidator(valid)
+        self.ui.lineEdit_2.setValidator(valid)
         self.ui.lineEdit_temp.setValidator(valid)
 
         self.ui.treeWidget.setHeaderLabels(["Filename", "Temperature"])
 
         for f in filenames:
-            self.ui.comboBox.addItem(f)
+            # self.ui.comboBox.addItem(f)
             temp = self.__guess_temp(f)
             item = QtWidgets.QTreeWidgetItem([f, temp], 0)
             self.ui.treeWidget.addTopLevelItem(item)

@@ -54,12 +54,15 @@ class PlotArea(QtWidgets.QWidget):
         self.ylim_max_box = QtWidgets.QLineEdit(self)
         self.ylim_max_box_label.setBuddy(self.ylim_max_box)
 
-        regexp = QtCore.QRegExp('\d+\.?\d*')
-        self.double_valid = QtGui.QRegExpValidator(regexp)
-        self.xlim_min_box.setValidator(self.double_valid)
-        self.xlim_max_box.setValidator(self.double_valid)
-        self.ylim_min_box.setValidator(self.double_valid)
-        self.ylim_max_box.setValidator(self.double_valid)
+        regexp1 = QtCore.QRegExp('^\d+\.?\d*')
+        self.double_valid1 = QtGui.QRegExpValidator(regexp1)
+        self.xlim_min_box.setValidator(self.double_valid1)
+        self.xlim_max_box.setValidator(self.double_valid1)
+
+        regexp2 = QtCore.QRegExp('^-?\d+\.?\d*')
+        self.double_valid2 = QtGui.QRegExpValidator(regexp2)
+        self.ylim_min_box.setValidator(self.double_valid2)
+        self.ylim_max_box.setValidator(self.double_valid2)
 
         # right-hand layout
         self.horiLay1 = QtWidgets.QHBoxLayout()
