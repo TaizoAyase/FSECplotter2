@@ -201,10 +201,13 @@ class MainWindow(QtWidgets.QMainWindow):
         tm_dialog = TmCalcDialog(filenames, self)
 
         if tm_dialog.exec_():
-            c_volume = tm_dialog.ui.lineEdit.text()
-            file_norm = tm_dialog.ui.comboBox.currentIndex()
+            #c_volume = tm_dialog.ui.lineEdit.text()
+            #file_norm = tm_dialog.ui.comboBox.currentIndex()
+            min_volume = tm_dialog.ui.lineEdit.text()
+            max_volume = tm_dialog.ui.lineEdit_2.text()
             temp_list = tm_dialog.get_temperature()
-            scale_factor = self.__y_scale(float(c_volume), file_norm)
+
+            scale_factor = self.__y_scale(float(min_volume), float(max_volume))
 
             plot_dialog = TmFitDialog(self)
             x = np.array(temp_list)
