@@ -13,9 +13,10 @@ class YaxisScaleDialog(QtWidgets.QDialog):
 
         valid = QtGui.QDoubleValidator()
         self.ui.lineEdit.setValidator(valid)
+        self.ui.lineEdit_2.setValidator(valid)
 
-        for f in filenames:
-            self.ui.filename_for_normal.addItem(f)
+        #for f in filenames:
+            #self.ui.filename_for_normal.addItem(f)
 
     def accept(self):
         if not self.ui.lineEdit.text():
