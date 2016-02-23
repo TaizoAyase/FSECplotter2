@@ -24,3 +24,8 @@ class Logfile(metaclass=ABCMeta):
     @abstractmethod
     def _parse(self, filename):
         pass
+
+
+# base class for Exception classes for logfiles
+class LogfileError(Exception):
+    pass

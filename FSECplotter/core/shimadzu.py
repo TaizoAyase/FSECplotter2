@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-from FSECplotter.core.logfile import Logfile
+from FSECplotter.core.logfile import Logfile, LogfileError
 
 import numpy as np
 import codecs
@@ -156,10 +156,10 @@ class Section:
         return self.__parameters
 
 
-# exception
-class NoMatchedFlowRateError(Exception):
+# exceptions
+class NoMatchedFlowRateError(LogfileError):
     pass
 
 
-class NoSectionError(Exception):
+class NoSectionError(LogfileError):
     pass
