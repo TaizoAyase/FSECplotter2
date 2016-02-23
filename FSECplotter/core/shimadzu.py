@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import print_function
-from FSECplotter.core.logfile import Logfile
+from FSECplotter.core.logfile import Logfile, LogfileError
 
 import numpy as np
 import codecs
@@ -44,9 +44,9 @@ class ShimadzuLogFile(Logfile):
 
         f.close()
 
-        self.__set_flowrate()
         self.__set_num_detectors()
         self.__set_num_channels()
+        self.__set_flowrate()
 
     # private methods
 
@@ -71,7 +71,7 @@ class ShimadzuLogFile(Logfile):
         if matched_str:
             self.flowrate = float(matched_str[0])
         else:
-            raise NoMatchedFlowRateError
+            self.flowrate = None
 
     # detector/channel num. is written in Configuration section
     def __set_num_detectors(self):
@@ -156,10 +156,10 @@ class Section:
         return self.__parameters
 
 
-# exception
-class NoMatchedFlowRateError(Exception):
+# exceptions
+class NoMatchedFlowRateError(LogfileError):
     pass
 
 
-class NoSectionError(Exception):
+class NoSectionError(LogfileError):
     pass
