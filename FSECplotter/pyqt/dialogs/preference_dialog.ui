@@ -152,7 +152,7 @@
             <item>
              <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>Plot line width:</string>
+               <string>Default line width:</string>
               </property>
               <property name="buddy">
                <cstring>linewidth_spinBox</cstring>
@@ -165,7 +165,7 @@
                <number>1</number>
               </property>
               <property name="singleStep">
-               <double>0.100000000000000</double>
+               <double>0.500000000000000</double>
               </property>
               <property name="value">
                <double>1.000000000000000</double>
