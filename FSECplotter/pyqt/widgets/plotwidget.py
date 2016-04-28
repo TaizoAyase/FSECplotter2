@@ -72,6 +72,7 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth_spinbox_label = QtWidgets.QLabel("Line width:")
         self.linewidth_spinbox = QtWidgets.QDoubleSpinBox(self)
         self.linewidth_spinbox.setSingleStep(0.5)
+        self.linewidth_spinbox.setDecimals(1)
         self.linewidth_spinbox.setSuffix(" pt")
         self.linewidth_spinbox.setValue(self.linewidth)
         self.linewidth_spinbox_label.setBuddy(self.linewidth_spinbox)
@@ -95,8 +96,11 @@ class PlotArea(QtWidgets.QWidget):
         self.horiLay3.addWidget(self.quick_save_button)
 
         self.horiLay4 = QtWidgets.QHBoxLayout()
+        spacerItem = QtWidgets.QSpacerItem(40, 20, 
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horiLay4.addWidget(self.linewidth_spinbox_label)
         self.horiLay4.addWidget(self.linewidth_spinbox)
+        self.horiLay4.addItem(spacerItem)
 
         self.buttons_layout = QtWidgets.QVBoxLayout()
         self.buttons_layout.addLayout(self.horiLay1)
@@ -124,6 +128,7 @@ class PlotArea(QtWidgets.QWidget):
 
     def updateDefaultParameters(self, **kwargs):
         self.linewidth = kwargs['linewidth']
+        self.linewidth_spinbox.setValue(self.linewidth)
 
     def redraw(self):
         try:

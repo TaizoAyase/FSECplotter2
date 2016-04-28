@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'preference_dialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.5
+# Created by: PyQt5 UI code generator 5.5.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -84,7 +84,7 @@ class Ui_PreferenceDialog(object):
         self.horizontalLayout_6.addWidget(self.label_9)
         self.linewidth_spinBox = QtWidgets.QDoubleSpinBox(self.plot_params)
         self.linewidth_spinBox.setDecimals(1)
-        self.linewidth_spinBox.setSingleStep(0.1)
+        self.linewidth_spinBox.setSingleStep(0.5)
         self.linewidth_spinBox.setProperty("value", 1.0)
         self.linewidth_spinBox.setObjectName("linewidth_spinBox")
         self.horizontalLayout_6.addWidget(self.linewidth_spinBox)
@@ -165,7 +165,7 @@ class Ui_PreferenceDialog(object):
         self.label_7.setText(_translate("PreferenceDialog", "Default flow rate:"))
         self.label_8.setText(_translate("PreferenceDialog", "mL/min"))
         self.plot_params.setTitle(_translate("PreferenceDialog", "Plot params"))
-        self.label_9.setText(_translate("PreferenceDialog", "Plot line width:"))
+        self.label_9.setText(_translate("PreferenceDialog", "Default line width:"))
         self.label_10.setText(_translate("PreferenceDialog", "pt"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.default_tab), _translate("PreferenceDialog", "Default Parameters"))
         self.ts_group.setTitle(_translate("PreferenceDialog", "FSEC-TS parameter"))
