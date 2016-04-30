@@ -8,6 +8,7 @@ from FSECplotter.pyqt.dialogs.yscale_dialog import *
 from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
 from FSECplotter.pyqt.dialogs.integrator_dialog import *
+from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
 import numpy as np
 
@@ -237,14 +238,17 @@ class MainWindow(QtWidgets.QMainWindow):
             self.plotarea.rescale(scale_factor)
 
     def integrate(self):
+        filenames = self.__get_enabled_filename()
         integrator_dialog = IntegratorDialog(self)
+
         if integrator_dialog.exec_():
             min_volume = integrator_dialog.ui.lineEdit.text()
             max_volume = integrator_dialog.ui.lineEdit_2.text()
 
             int_ary = self.__peak_integrate(float(min_volume), float(max_volume))
-            print(int_ary)
-
+            plot_dialog = IntegratePlotDialog(self)
+            plot_dialog.plot(filenames, int_ary)
+            plot_dialog.exec_()
 
     def preference(self):
         dialog = PreferenceDialog(self.defaults, self)
