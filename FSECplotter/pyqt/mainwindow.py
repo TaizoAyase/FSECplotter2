@@ -239,7 +239,12 @@ class MainWindow(QtWidgets.QMainWindow):
     def integrate(self):
         integrator_dialog = IntegratorDialog(self)
         if integrator_dialog.exec_():
-            pass
+            min_volume = integrator_dialog.ui.lineEdit.text()
+            max_volume = integrator_dialog.ui.lineEdit_2.text()
+
+            int_ary = self.__peak_integrate(float(min_volume), float(max_volume))
+            print(int_ary)
+
 
     def preference(self):
         dialog = PreferenceDialog(self.defaults, self)
@@ -278,6 +283,29 @@ class MainWindow(QtWidgets.QMainWindow):
         norm_val = max(max_val_ary)
         scale_factor = max_val_ary / norm_val
         return scale_factor
+
+    def __peak_integrate(self, min_vol, max_vol):
+        # select enebled data
+        data = self.treeview.model.get_current_data()
+        data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
+
+        # get nearest indices to the min/max value
+        min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
+        max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
+
+        delx_val_ary = [
+            d[min_x+1:max_x+1, 0] - d[min_x:max_x, 0] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+        ]
+        y_val_ary = [
+            d[min_x:max_x, 1] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+        ]
+
+        # sum over the product of (delta * y) for each data
+        prod_val = [
+            sum(delta * val) for delta, val in zip(delx_val_ary, y_val_ary)
+        ]
+
+        return prod_val
 
 
 if __name__ == '__main__':
