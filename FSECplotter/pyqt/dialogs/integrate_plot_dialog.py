@@ -21,6 +21,7 @@ class IntegratePlotDialog(QtWidgets.QDialog):
         self.axes.hold(True)
         self.canvas = FigureCanvas(self.fig)
         self.axes.set_ylabel("Integrated intensity")
+        self.axes.set_title("Peak Integration")
         self.axes.grid()
 
         self.hori_layout = QtWidgets.QHBoxLayout()
@@ -30,7 +31,7 @@ class IntegratePlotDialog(QtWidgets.QDialog):
         self.save_fig_button.setText("Save barplot")
 
         self.save_csv_button = QtWidgets.QPushButton()
-        sef.save_csv_button.setText("Save CSV")
+        self.save_csv_button.setText("Save CSV")
 
         self.ok_button = QtWidgets.QPushButton()
         self.ok_button.setText("OK")
@@ -51,7 +52,7 @@ class IntegratePlotDialog(QtWidgets.QDialog):
 
         # set variables
         self.filenames = None
-        self.values = None
+        self.intensities= None
 
     def plot(self, filenames, values):
         x = np.arange(len(filenames))
@@ -63,13 +64,21 @@ class IntegratePlotDialog(QtWidgets.QDialog):
 
         # set values to write out csv file
         self.filenames = filenames
-        self.intensities = values
+        self.intensities = [str(v) for v in values]
 
     def save_csv(self):
-        if (self.filenames is None) or (self.values is None):
-            raise
-        # TODO: implement me!
-        pass
+        if (self.filenames is None) or (self.intensities is None):
+            raise ArgumentError("The length of filenames and intensities is not match.")
+
+        default_filename = "integrate_table.csv"
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save CSV",
+            os.path.expanduser("~") + "/" + default_filename,
+            filter="Text files (*.csv)")
+        file_save_to = filename[0]
+        text = ", ".join(self.filenames) + "\n" + ", ".join(self.intensities)
+        with open(file_save_to, "w+") as f:
+            f.write(text)
 
     def save_fig(self):
         default_filename = "integrate.png"
