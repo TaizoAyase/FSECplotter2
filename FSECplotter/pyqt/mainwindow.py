@@ -7,6 +7,7 @@ from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
 from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+from FSECplotter.pyqt.dialogs.integrator_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
 import numpy as np
 
@@ -103,6 +104,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.y_scalingAction.setStatusTip("Y-axis scaling.")
         self.y_scalingAction.triggered.connect(self.y_scaling)
 
+        # peak integration
+        self.integrateAction = QtWidgets.QAction("Peak integration", self)
+        self.integrateAction.setShortcut("Ctrl+I")
+        self.integrateAction.setStatusTip("Peak integration.")
+        self.integrateAction.triggered.connect(self.integrate)
+
         # option menu
         self.preferenceAction = QtWidgets.QAction("Preference", self)
         self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
@@ -137,6 +144,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
+        self.toolMenu.addAction(self.integrateAction)
 
         # option menu
         self.optionMenu = self.menuBar().addMenu("Options")
@@ -227,6 +235,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
             scale_factor = self.__y_scale(float(min_volume), float(max_volume))
             self.plotarea.rescale(scale_factor)
+
+    def integrate(self):
+        integrator_dialog = IntegratorDialog(self)
+        if integrator_dialog.exec_():
+            pass
 
     def preference(self):
         dialog = PreferenceDialog(self.defaults, self)
