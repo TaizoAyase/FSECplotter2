@@ -89,9 +89,8 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         if warning_dialog_flag:
             mes = ('''\
-                The input file '%s' doesn't contain the flow rate information.\
-                Flow rate will be set %.2f ml/min.
-                ''' % (abspath, self.def_flowrate)).strip()
+The input file '%s' doesn't contain the flow rate information.\
+Flow rate will be set %.2f ml/min.''' % (abspath, self.def_flowrate)).strip()
             raise NoMatchedFlowRateError(mes)
 
 
@@ -198,7 +197,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         except NoSectionError:
             #logfile.flowrate = self.flowrate
             mes = ("""\
-                The input file '%s' lacks some required section. Skipped.\
+The input file '%s' lacks some required section. Skipped.\
                 """ % filepath).strip()
             raise NoSectionError(mes)
 
