@@ -188,6 +188,12 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         return data
 
+    def get_color(self, row):
+        return str(self.item(row, 5))
+
+    def set_color(self, row, color):
+        self.item(row, 5).setText(color)
+
     def change_all_check_state(self, check_state):
         for i in range(self.rowCount()):
             checkable_item = self.item(i, 0)
