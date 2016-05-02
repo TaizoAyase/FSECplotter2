@@ -229,4 +229,10 @@ class LogfileModel(QtGui.QStandardItemModel):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 item = self.item(row, col)
-                item.setBackground(COLOR_LIST[row % 2])
+                # color field is colored with the user color
+                if col == 5 and item.text() != 'Default':
+                    color = QtGui.QColor(item.text())
+                    item.setBackground(color)
+                else:
+                    item.setBackground(COLOR_LIST[row % 2])
+
