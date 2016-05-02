@@ -48,10 +48,11 @@ class Figurecanvas(FigureCanvas):
         for i in range(num_data):
             x = current_data['data'][i][:, 0]
             y = current_data['data'][i][:, 1]
+            col = current_data['color'][i]
 
             self.axes.plot(x, y, label=current_data['filenames'][i],
                            visible=current_data['enable_flags'][i],
-                           linewidth=linewidth)
+                           linewidth=linewidth, color=col)
 
         self.axes.set_xlim(self.x_min, self.x_max)
 

@@ -152,6 +152,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         data['flowrate'] = []
         data['data'] = []
         data['enable_flags'] = []
+        data['color'] = []
 
         for i in range(self.rowCount()):
             enable = self.item(i, 0).checkState() == 2
@@ -180,6 +181,10 @@ class LogfileModel(QtGui.QStandardItemModel):
             data['data'].append(d)
             data['filenames'].append(filename)
             data['flowrate'].append(self.item(i, 2).text())
+
+            # set color
+            col = self.item(i, 5).text()
+            data['color'].append(None if col == "Default" else str(col))
 
         return data
 
