@@ -7,6 +7,8 @@ from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
 from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+from FSECplotter.pyqt.dialogs.integrator_dialog import *
+from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
 import numpy as np
 
@@ -103,6 +105,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.y_scalingAction.setStatusTip("Y-axis scaling.")
         self.y_scalingAction.triggered.connect(self.y_scaling)
 
+        # peak integration
+        self.integrateAction = QtWidgets.QAction("Peak integration", self)
+        self.integrateAction.setShortcut("Ctrl+I")
+        self.integrateAction.setStatusTip("Peak integration.")
+        self.integrateAction.triggered.connect(self.integrate)
+
         # option menu
         self.preferenceAction = QtWidgets.QAction("Preference", self)
         self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
@@ -137,6 +145,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
+        self.toolMenu.addAction(self.integrateAction)
 
         # option menu
         self.optionMenu = self.menuBar().addMenu("Options")
@@ -228,6 +237,19 @@ class MainWindow(QtWidgets.QMainWindow):
             scale_factor = self.__y_scale(float(min_volume), float(max_volume))
             self.plotarea.rescale(scale_factor)
 
+    def integrate(self):
+        filenames = self.__get_enabled_filename()
+        integrator_dialog = IntegratorDialog(self)
+
+        if integrator_dialog.exec_():
+            min_volume = integrator_dialog.ui.lineEdit.text()
+            max_volume = integrator_dialog.ui.lineEdit_2.text()
+
+            int_ary = self.__peak_integrate(float(min_volume), float(max_volume))
+            plot_dialog = IntegratePlotDialog(self)
+            plot_dialog.plot(filenames, int_ary)
+            plot_dialog.exec_()
+
     def preference(self):
         dialog = PreferenceDialog(self.defaults, self)
         if dialog.exec_():
@@ -265,6 +287,29 @@ class MainWindow(QtWidgets.QMainWindow):
         norm_val = max(max_val_ary)
         scale_factor = max_val_ary / norm_val
         return scale_factor
+
+    def __peak_integrate(self, min_vol, max_vol):
+        # select enebled data
+        data = self.treeview.model.get_current_data()
+        data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
+
+        # get nearest indices to the min/max value
+        min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
+        max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
+
+        delx_val_ary = [
+            d[min_x+1:max_x+1, 0] - d[min_x:max_x, 0] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+        ]
+        y_val_ary = [
+            d[min_x:max_x, 1] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+        ]
+
+        # sum over the product of (delta * y) for each data
+        prod_val = [
+            sum(delta * val) for delta, val in zip(delx_val_ary, y_val_ary)
+        ]
+
+        return prod_val
 
 
 if __name__ == '__main__':
