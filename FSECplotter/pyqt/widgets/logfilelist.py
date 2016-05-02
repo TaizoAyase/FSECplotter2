@@ -15,7 +15,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         super(LogfileListWidget, self).__init__(parent)
 
         # Standard item model
-        self.model = LogfileModel(0, 6, self)
+        self.model = LogfileModel(0, 5, self)
         self.selection_model = QtCore.QItemSelectionModel(self.model)
 
         self.treeview = LogfileListView(self)
@@ -119,8 +119,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         filename = QtWidgets.QFileDialog.getOpenFileNames(
             self, "Open file", os.path.expanduser('~'))
         for f in filename[0]:
-            # delegate adding item to treeview class
-            self.treeview.add_item(f)
+            self.model.add_item(f)
 
     def delete_file(self):
         try:

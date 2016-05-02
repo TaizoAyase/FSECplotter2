@@ -40,7 +40,7 @@ class LogfileListView(QtWidgets.QTreeView):
                 filepath = path[1:] if self.__windows_flag else path
 
                 try:
-                    self.add_item(filepath)
+                    model.add_item(filepath)
                 except NoMatchedFlowRateError as e:
                     mes = e.args[0]
                     QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
@@ -52,11 +52,3 @@ class LogfileListView(QtWidgets.QTreeView):
             event.accept()
         else:
             event.ignore()
-
-    def add_item(self, filename):
-        self.model().add_item(filename)
-
-        col_button = QtWidgets.QPushButton('Default')
-        row = self.model().rowCount() - 1
-        idx = self.model().index(row, 5, QtCore.QModelIndex())
-        self.setIndexWidget(idx, col_button)
