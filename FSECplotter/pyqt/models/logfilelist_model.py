@@ -193,6 +193,11 @@ class LogfileModel(QtGui.QStandardItemModel):
 
     def set_color(self, row, color):
         self.item(row, 5).setText(color)
+        self.itemChanged.emit()
+
+    def reset_color(self, row):
+        self.item(row, 5).setText('Default')
+        self.itemChanged.emit()
 
     def change_all_check_state(self, check_state):
         for i in range(self.rowCount()):
