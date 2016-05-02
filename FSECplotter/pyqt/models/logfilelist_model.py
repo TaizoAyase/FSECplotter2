@@ -29,7 +29,7 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         # set header data
         self.headers = ('Id', 'Filename', 'Flow rate(ml/min)',
-                        'Detector', 'Channel')
+                        'Detector', 'Channel', 'Color')
         for i, item in enumerate(self.headers):
             self.setHeaderData(i, QtCore.Qt.Horizontal, item)
 
@@ -63,6 +63,7 @@ class LogfileModel(QtGui.QStandardItemModel):
             new_log.flowrate = self.def_flowrate
 
         default_channel = self.def_channel
+        default_color = 'Default'
 
         row = self.rowCount()
         order = self.__id_count
@@ -71,7 +72,8 @@ class LogfileModel(QtGui.QStandardItemModel):
                     new_log.filename,
                     new_log.flowrate,
                     default_detector,
-                    default_channel]
+                    default_channel,
+                    default_color]
 
         for i in range(len(data_ary)):
             # create new Item and set texts in data_ary
@@ -79,6 +81,8 @@ class LogfileModel(QtGui.QStandardItemModel):
             if i == 0:
                 item.setCheckable(True)
                 item.setCheckState(2)  # take value of 0, 1 or 2
+            elif i == 5:
+                item.setEditable(False)
             item.setText(str(data_ary[i]))
             item.setBackground(COLOR_LIST[row % 2])
 

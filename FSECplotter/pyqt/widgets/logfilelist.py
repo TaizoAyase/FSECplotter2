@@ -15,7 +15,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         super(LogfileListWidget, self).__init__(parent)
 
         # Standard item model
-        self.model = LogfileModel(0, 5, self)
+        self.model = LogfileModel(0, 6, self)
         self.selection_model = QtCore.QItemSelectionModel(self.model)
 
         self.treeview = LogfileListView(self)
