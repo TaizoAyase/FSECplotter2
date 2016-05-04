@@ -132,8 +132,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         # enable multiple selection
         filename = QtWidgets.QFileDialog.getOpenFileNames(
             self, "Open file", os.path.expanduser('~'))
-        for f in filename[0]:
-            self.model.add_item(f)
+        self.treeview.add_items(filename[0])
 
     def delete_file(self):
         try:

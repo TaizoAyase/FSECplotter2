@@ -29,26 +29,28 @@ class LogfileListView(QtWidgets.QTreeView):
 
     def dropEvent(self, event):
         mimedata = event.mimeData()
-        model = self.model()
 
         if mimedata.hasUrls():
             urllist = mimedata.urls()
-            for url in urllist:
-                # remove first slash if runs on windows
-                # or, do nothing
-                path = url.path()
-                filepath = path[1:] if self.__windows_flag else path
-
-                try:
-                    model.add_item(filepath)
-                except NoMatchedFlowRateError as e:
-                    mes = e.args[0]
-                    QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
-                        QtWidgets.QMessageBox.Ok)
-                except LogfileError as e:
-                    mes = e.args[0]
-                    QtWidgets.QMessageBox.critical(self, "FSEC plotter 2", mes,
-                        QtWidgets.QMessageBox.Ok)
+            # modify urls for windows file path
+            filelist = [url.path()[1:] if self.__windows_flag else url.path() for url in urllist]
+            self.add_items(filelist)
             event.accept()
         else:
             event.ignore()
+
+    def add_items(self, filelist):
+        model = self.model()
+        for filepath in filelist:
+            # remove first slash if runs on windows
+            # or, do nothing
+            try:
+                model.add_item(filepath)
+            except NoMatchedFlowRateError as e:
+                mes = e.args[0]
+                QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
+                    QtWidgets.QMessageBox.Ok)
+            except LogfileError as e:
+                mes = e.args[0]
+                QtWidgets.QMessageBox.critical(self, "FSEC plotter 2", mes,
+                    QtWidgets.QMessageBox.Ok)
