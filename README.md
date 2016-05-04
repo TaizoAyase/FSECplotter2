@@ -2,7 +2,18 @@ FSECplotter2
 =============
 The interactive plotting application for FSEC.
 
-In current version, compatible with Shimadzu HPLC and Hitachi HPLC.
+In current version, compatible with Shimadzu HPLC and Hitachi HPLC formats.
+
+Features
+--------------
++ A simple GUI based control for drawing Shimadzu (or other HPLCs) format chromatograms.
++ Drag&Drop operation for file opening.
++ Cross platform application with python3 and PyQt5.
++ Drawing melting curve in the FSEC-TS assay (Tools->calcTm).
++ Normalizing Y-axis (Tools->Y-axis scaling).
++ Peak integration (Tools->Peak integration).
++ The line color and line width can be changed manually.
++ You can extend the file parser with your own parser for another HPLC file (See below).
 
 How to install (for OSX users)
 ----------------
@@ -30,6 +41,9 @@ PNG, JPG, PDF formats can be selected.
 4. "Quick Save" button saves figure as `YYMMDD-HHMMSS.png` format in the last loaded directory
 5. If you want to delete all files, press 'file'->'Remove all files'
 
++ flowrate data was automatically parsed when decimal was contained in the method filename in Shimadzu format. For other HPLC formats, please input the flowrate information manually.
+
++ In the FSEC-TS calculation, the temperature information will be automatically parsed when integer was contained in the filename of data file.
 
 
 Test files
