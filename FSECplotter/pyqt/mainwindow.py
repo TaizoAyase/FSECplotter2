@@ -272,6 +272,11 @@ class MainWindow(QtWidgets.QMainWindow):
         return ary
 
     def __y_scale(self, min_vol, max_vol):
+        # if the same values was selected for min/max,
+        # add 0.1 to max to abort app. down
+        if min_vol == max_vol:
+            max_vol += 0.1
+
         # select enabled data
         data = self.treeview.model.get_current_data()
         data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
