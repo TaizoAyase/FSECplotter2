@@ -40,6 +40,10 @@ class Figurecanvas(FigureCanvas):
         self.axes.clear()
         self.axes.grid()
 
+        # if current_data has no data, return
+        if current_data['total_data'] == 0:
+            return
+
         # iterate for the length of dataset( len(filename) )
         num_data = len(current_data['filenames'])
         num_color = current_data['total_data']
