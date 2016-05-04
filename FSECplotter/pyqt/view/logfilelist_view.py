@@ -6,6 +6,7 @@ from FSECplotter.pyqt.models.logfilelist_model import *
 from FSECplotter.core.logfile import LogfileError
 from FSECplotter.core.shimadzu import NoMatchedFlowRateError, NoSectionError
 import platform
+import os
 
 
 class LogfileListView(QtWidgets.QTreeView):
@@ -41,11 +42,29 @@ class LogfileListView(QtWidgets.QTreeView):
 
     def add_items(self, filelist):
         model = self.model()
-        for filepath in filelist:
+
+        # set progress bar dialog
+        dlg = QtWidgets.QProgressDialog("Loading files ...", "Cancel", 0, 0, self)
+        dlg.setValue(0)
+        dlg.setWindowTitle("FSEC plotter 2")
+        dlg.setWindowModality(QtCore.Qt.WindowModal)
+        dlg.setCancelButton(None)
+        dlg.setRange(0, len(filelist))
+        dlg.show()
+
+        for i, filepath in enumerate(filelist):
             # remove first slash if runs on windows
             # or, do nothing
             try:
+                # set progress dialog
+                dlg.setValue(i+1)
+                filename = os.path.basename(filepath)
+                mes = "Loading %s ..." % filename
+                dlg.setLabelText(mes)
+
                 model.add_item(filepath)
+
+                QtWidgets.QApplication.processEvents()
             except NoMatchedFlowRateError as e:
                 mes = e.args[0]
                 QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
@@ -54,3 +73,6 @@ class LogfileListView(QtWidgets.QTreeView):
                 mes = e.args[0]
                 QtWidgets.QMessageBox.critical(self, "FSEC plotter 2", mes,
                     QtWidgets.QMessageBox.Ok)
+
+        # finish progress dialog
+        dlg.hide()
