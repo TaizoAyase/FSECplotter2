@@ -15,7 +15,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         super(LogfileListWidget, self).__init__(parent)
 
         # Standard item model
-        self.model = LogfileModel(0, 5, self)
+        self.model = LogfileModel(0, 6, self)
         self.selection_model = QtCore.QItemSelectionModel(self.model)
 
         self.treeview = LogfileListView(self)
@@ -60,6 +60,14 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.delete_button.setObjectName("Remove file button")
         self.delete_button.setText("Remove file")
 
+        self.color_button = QtWidgets.QPushButton(self)
+        self.color_button.setObjectName("Change plot color")
+        self.color_button.setText("Change color")
+
+        self.reset_color_button = QtWidgets.QPushButton(self)
+        self.reset_color_button.setObjectName("Reset color to default")
+        self.reset_color_button.setText("Reset color")
+
         self.check_all_button = QtWidgets.QPushButton(self)
         self.check_all_button.setObjectName("Check all button")
         self.check_all_button.setText("Check All")
@@ -77,6 +85,8 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.gridLay1 = QtWidgets.QGridLayout()
         self.gridLay1.addWidget(self.open_button, 0, 0, 1, 1)
         self.gridLay1.addWidget(self.delete_button, 0, 1, 1, 1)
+        self.gridLay1.addWidget(self.color_button, 0, 2, 1, 1)
+        self.gridLay1.addWidget(self.reset_color_button, 0, 3, 1, 1)
         self.gridLay1.addWidget(self.check_all_button, 1, 0, 1, 1)
         self.gridLay1.addWidget(self.uncheck_all_button, 1, 1, 1, 1)
         self.gridLay1.addWidget(self.move_up_button, 1, 2, 1, 1)
@@ -95,9 +105,13 @@ class LogfileListWidget(QtWidgets.QWidget):
             self.change_all_detector)
         self.setall_channel_comboBox.activated.connect(
             self.change_all_channel)
-        
+
+        # buttons
         self.open_button.clicked.connect(self.open_file)
         self.delete_button.clicked.connect(self.delete_file)
+        self.color_button.clicked.connect(self.change_plot_color)
+        self.reset_color_button.clicked.connect(self.reset_color)
+
         self.check_all_button.clicked.connect(
             lambda: self.model.change_all_check_state(2))
         self.uncheck_all_button.clicked.connect(
@@ -118,8 +132,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         # enable multiple selection
         filename = QtWidgets.QFileDialog.getOpenFileNames(
             self, "Open file", os.path.expanduser('~'))
-        for f in filename[0]:
-            self.model.add_item(f)
+        self.treeview.add_items(filename[0])
 
     def delete_file(self):
         try:
@@ -134,6 +147,32 @@ class LogfileListWidget(QtWidgets.QWidget):
     def delete_all_files(self):
         while self.model.rowCount() > 0:
             self.model.delete_item(0)
+
+    def change_plot_color(self):
+        try:
+            current_row = self.__get_current_index()
+        except IndexOutOfRangeError:
+            return
+
+        # get current color of selected row
+        current_col = self.model.get_color(current_row)
+        col_dlg = QtWidgets.QColorDialog(self)
+        # if color is already set, set initial color to the current one
+        if current_col:
+            col_dlg.setCurrentColor(QtGui.QColor(current_col))
+
+        # select the color
+        if col_dlg.exec_():
+            col_name = col_dlg.currentColor().name()
+            self.model.set_color(current_row, col_name)
+
+    def reset_color(self):
+        try:
+            current_row = self.__get_current_index()
+        except IndexOutOfRangeError:
+            return
+
+        self.model.reset_color(current_row)
 
     def move_selected(self, shift):
         try:

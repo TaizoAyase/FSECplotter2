@@ -29,7 +29,7 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         # set header data
         self.headers = ('Id', 'Filename', 'Flow rate(ml/min)',
-                        'Detector', 'Channel')
+                        'Detector', 'Channel', 'Color')
         for i, item in enumerate(self.headers):
             self.setHeaderData(i, QtCore.Qt.Horizontal, item)
 
@@ -46,18 +46,24 @@ class LogfileModel(QtGui.QStandardItemModel):
     def updateDefaultParameters(self, **kwargs):
         self.def_detector = string.ascii_uppercase[ int(kwargs['detector']) ]
         self.def_channel = int(kwargs['channel'])
-        self.flowrate = float(kwargs['flowrate'])
+        self.def_flowrate = float(kwargs['flowrate'])
 
     def add_item(self, filename):
         abspath = os.path.abspath(filename)
         new_log = self.__append_logfile(abspath)
+        warning_dialog_flag = False
 
         if new_log.num_detectors == 2:
             default_detector = self.def_detector 
         else:
             default_detector = "A"
 
+        if new_log.flowrate is None:
+            warning_dialog_flag = True
+            new_log.flowrate = self.def_flowrate
+
         default_channel = self.def_channel
+        default_color = 'Default'
 
         row = self.rowCount()
         order = self.__id_count
@@ -66,7 +72,8 @@ class LogfileModel(QtGui.QStandardItemModel):
                     new_log.filename,
                     new_log.flowrate,
                     default_detector,
-                    default_channel]
+                    default_channel,
+                    default_color]
 
         for i in range(len(data_ary)):
             # create new Item and set texts in data_ary
@@ -74,6 +81,8 @@ class LogfileModel(QtGui.QStandardItemModel):
             if i == 0:
                 item.setCheckable(True)
                 item.setCheckState(2)  # take value of 0, 1 or 2
+            elif i == 5:
+                item.setEditable(False)
             item.setText(str(data_ary[i]))
             item.setBackground(COLOR_LIST[row % 2])
 
@@ -81,6 +90,13 @@ class LogfileModel(QtGui.QStandardItemModel):
 
         self.itemChanged.emit()
         self.current_dir = os.path.dirname(abspath)
+
+        if warning_dialog_flag:
+            mes = ('''\
+The input file '%s' doesn't contain the flow rate information.\
+Flow rate will be set %.2f ml/min.''' % (abspath, self.def_flowrate)).strip()
+            raise NoMatchedFlowRateError(mes)
+
 
     def move_item(self, current_index, shift):
         next_row_num = current_index + int(shift)
@@ -135,6 +151,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         data['flowrate'] = []
         data['data'] = []
         data['enable_flags'] = []
+        data['color'] = []
 
         for i in range(self.rowCount()):
             enable = self.item(i, 0).checkState() == 2
@@ -152,9 +169,8 @@ class LogfileModel(QtGui.QStandardItemModel):
                 data_table = self.logfiles[log_id].data(**kwargs)
             except NoSectionError:
                 mes = ("""\
-                In the file '%s', Detector '%s' and\
-                Channel '%s' is not exist.""" % (
-                    filename, detector, channel_no)).strip()
+                In the file '%s', Detector '%s' and Channel '%s' is not exist.\
+                """ % (filename, detector, channel_no)).strip()
                 raise NoSectionError(mes)
 
             flowrate = float(self.item(i, 2).text())
@@ -165,7 +181,22 @@ class LogfileModel(QtGui.QStandardItemModel):
             data['filenames'].append(filename)
             data['flowrate'].append(self.item(i, 2).text())
 
+            # set color
+            col = self.item(i, 5).text()
+            data['color'].append(None if col == "Default" else str(col))
+
         return data
+
+    def get_color(self, row):
+        return str(self.item(row, 5))
+
+    def set_color(self, row, color):
+        self.item(row, 5).setText(color)
+        self.itemChanged.emit()
+
+    def reset_color(self, row):
+        self.item(row, 5).setText('Default')
+        self.itemChanged.emit()
 
     def change_all_check_state(self, check_state):
         for i in range(self.rowCount()):
@@ -186,7 +217,7 @@ class LogfileModel(QtGui.QStandardItemModel):
         except NoSectionError:
             #logfile.flowrate = self.flowrate
             mes = ("""\
-                The input file '%s' lacks some required section. Skipped.\
+The input file '%s' lacks some required section. Skipped.\
                 """ % filepath).strip()
             raise NoSectionError(mes)
 
@@ -197,4 +228,10 @@ class LogfileModel(QtGui.QStandardItemModel):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 item = self.item(row, col)
-                item.setBackground(COLOR_LIST[row % 2])
+                # color field is colored with the user color
+                if col == 5 and item.text() != 'Default':
+                    color = QtGui.QColor(item.text())
+                    item.setBackground(color)
+                else:
+                    item.setBackground(COLOR_LIST[row % 2])
+

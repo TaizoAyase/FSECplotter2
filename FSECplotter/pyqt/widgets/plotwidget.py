@@ -20,6 +20,9 @@ class PlotArea(QtWidgets.QWidget):
         self.figcanvas = Figurecanvas(self)
         self.model = listmodel
 
+        # default params
+        self.linewidth = 1.0
+
         # set buttons
         self.redraw_button = QtWidgets.QPushButton(self)
         self.redraw_button.setObjectName("Redraw button")
@@ -64,6 +67,16 @@ class PlotArea(QtWidgets.QWidget):
         self.ylim_min_box.setValidator(self.double_valid2)
         self.ylim_max_box.setValidator(self.double_valid2)
 
+        # set spinbox
+        # linewith
+        self.linewidth_spinbox_label = QtWidgets.QLabel("Line width:")
+        self.linewidth_spinbox = QtWidgets.QDoubleSpinBox(self)
+        self.linewidth_spinbox.setSingleStep(0.5)
+        self.linewidth_spinbox.setDecimals(1)
+        self.linewidth_spinbox.setSuffix(" pt")
+        self.linewidth_spinbox.setValue(self.linewidth)
+        self.linewidth_spinbox_label.setBuddy(self.linewidth_spinbox)
+
         # right-hand layout
         self.horiLay1 = QtWidgets.QHBoxLayout()
         self.horiLay1.addWidget(self.xlim_min_box_label)
@@ -82,9 +95,17 @@ class PlotArea(QtWidgets.QWidget):
         self.horiLay3.addWidget(self.savefig_button)
         self.horiLay3.addWidget(self.quick_save_button)
 
+        self.horiLay4 = QtWidgets.QHBoxLayout()
+        spacerItem = QtWidgets.QSpacerItem(40, 20, 
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horiLay4.addWidget(self.linewidth_spinbox_label)
+        self.horiLay4.addWidget(self.linewidth_spinbox)
+        self.horiLay4.addItem(spacerItem)
+
         self.buttons_layout = QtWidgets.QVBoxLayout()
         self.buttons_layout.addLayout(self.horiLay1)
         self.buttons_layout.addLayout(self.horiLay2)
+        self.buttons_layout.addLayout(self.horiLay4)
         self.buttons_layout.addLayout(self.horiLay3)
 
         self.verLay1 = QtWidgets.QVBoxLayout(self)
@@ -99,16 +120,15 @@ class PlotArea(QtWidgets.QWidget):
         self.xlim_max_box.textChanged.connect(self.redraw)
         self.ylim_min_box.textChanged.connect(self.redraw)
         self.ylim_max_box.textChanged.connect(self.redraw)
+        self.linewidth_spinbox.valueChanged.connect(self.redraw)
         self.model.itemChanged.connect(self.redraw)
 
         # modified flag
         self.modified = False
 
-        # default params
-        self.linewidth = 1.0
-
     def updateDefaultParameters(self, **kwargs):
         self.linewidth = kwargs['linewidth']
+        self.linewidth_spinbox.setValue(self.linewidth)
 
     def redraw(self):
         try:
@@ -124,6 +144,7 @@ class PlotArea(QtWidgets.QWidget):
                                 self.xlim_max_box.text())
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
                                 self.ylim_max_box.text())
+        self.linewidth = self.linewidth_spinbox.value()
         self.figcanvas.plot_fig(data, self.linewidth)
         self.modified = True
 

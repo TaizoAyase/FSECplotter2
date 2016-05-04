@@ -40,18 +40,27 @@ class Figurecanvas(FigureCanvas):
         self.axes.clear()
         self.axes.grid()
 
+        # if current_data has no data, return
+        if current_data['total_data'] == 0:
+            return
+
         # iterate for the length of dataset( len(filename) )
         num_data = len(current_data['filenames'])
         num_color = current_data['total_data']
-        self.axes.set_color_cycle(
-            [self.__cm(1.*i/num_color) for i in range(num_color)])
+        self.axes.set_color_cycle([self.__cm(1.*i/num_color) for i in range(num_color)])
         for i in range(num_data):
             x = current_data['data'][i][:, 0]
             y = current_data['data'][i][:, 1]
 
+            # set color
+            col = current_data['color'][i]
+            # if default, use default rainbow
+            if col is None:
+                col = self.__conv_to_hex(self.__cm(1.*i/num_color))
+
             self.axes.plot(x, y, label=current_data['filenames'][i],
                            visible=current_data['enable_flags'][i],
-                           linewidth=linewidth)
+                           linewidth=linewidth, color=col)
 
         self.axes.set_xlim(self.x_min, self.x_max)
 
@@ -112,6 +121,8 @@ class Figurecanvas(FigureCanvas):
 
         return self.y_min, self.y_max
 
+    # private
+
     def __adjust_scale(self, num_data):
         # in this scheme, at 16 sample, top~0.25,
         # which is the smallest size of graph-area
@@ -121,3 +132,10 @@ class Figurecanvas(FigureCanvas):
             adj = 0.25
 
         self.fig.subplots_adjust(top=adj)
+
+    def __conv_to_hex(self, rgba_col):
+        red = int(rgba_col[0] * 255)
+        green = int(rgba_col[1] * 255)
+        blue = int(rgba_col[2] * 255)
+        return '#{r:02x}{g:02x}{b:02x}'.format(r=red, g=green, b=blue)
+
