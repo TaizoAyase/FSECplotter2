@@ -127,7 +127,7 @@ class PlotArea(QtWidgets.QWidget):
         self.modified = False
 
     def updateDefaultParameters(self, **kwargs):
-        self.linewidth = kwargs['linewidth']
+        self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
 
     def redraw(self):
