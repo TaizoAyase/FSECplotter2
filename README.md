@@ -74,3 +74,7 @@ To extend for another HPLC,
 
 0. Extend the `Logfile` class in `FSECplotter/core/logfile.py`, and implement `data()` and `_parse()` method.
 1. Add dispatch code to `LogfileFactory.create()` method in `FSECplotter/core/logfile`.
+
+License
+--------
++ GPLv2
