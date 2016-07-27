@@ -279,7 +279,7 @@ class MainWindow(QtWidgets.QMainWindow):
             plot_dialog.exec_()
 
     def peaktable(self):
-        peaktable_dialog = PeakTableDialog(self)
+        peaktable_dialog = PeakTableDialog(self.treeview.model, self)
         peaktable_dialog.show()
 
     def preference(self):

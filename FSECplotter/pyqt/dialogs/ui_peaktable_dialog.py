@@ -31,7 +31,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_PeakTableDialog(object):
     def setupUi(self, PeakTableDialog):
         PeakTableDialog.setObjectName("PeakTableDialog")
-        PeakTableDialog.resize(473, 545)
+        PeakTableDialog.resize(463, 545)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(PeakTableDialog)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.verticalLayout = QtWidgets.QVBoxLayout()
@@ -86,6 +86,9 @@ class Ui_PeakTableDialog(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_3.addItem(spacerItem2)
+        self.updateButton = QtWidgets.QPushButton(PeakTableDialog)
+        self.updateButton.setObjectName("updateButton")
+        self.horizontalLayout_3.addWidget(self.updateButton)
         self.saveCSVButton = QtWidgets.QPushButton(PeakTableDialog)
         self.saveCSVButton.setObjectName("saveCSVButton")
         self.horizontalLayout_3.addWidget(self.saveCSVButton)
@@ -101,6 +104,11 @@ class Ui_PeakTableDialog(object):
 
         self.retranslateUi(PeakTableDialog)
         QtCore.QMetaObject.connectSlotsByName(PeakTableDialog)
+        PeakTableDialog.setTabOrder(self.lineEdit_min, self.lineEdit_max)
+        PeakTableDialog.setTabOrder(self.lineEdit_max, self.tableWidget)
+        PeakTableDialog.setTabOrder(self.tableWidget, self.updateButton)
+        PeakTableDialog.setTabOrder(self.updateButton, self.saveCSVButton)
+        PeakTableDialog.setTabOrder(self.saveCSVButton, self.okButton)
 
     def retranslateUi(self, PeakTableDialog):
         _translate = QtCore.QCoreApplication.translate
@@ -117,6 +125,7 @@ class Ui_PeakTableDialog(object):
         item.setText(_translate("PeakTableDialog", "Volume(ml)"))
         item = self.tableWidget.horizontalHeaderItem(2)
         item.setText(_translate("PeakTableDialog", "Max peak(A.U.)"))
+        self.updateButton.setText(_translate("PeakTableDialog", "Update"))
         self.saveCSVButton.setText(_translate("PeakTableDialog", "Save CSV"))
         self.okButton.setText(_translate("PeakTableDialog", "OK"))
 

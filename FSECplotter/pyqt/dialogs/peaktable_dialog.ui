@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>473</width>
+    <width>463</width>
     <height>545</height>
    </rect>
   </property>
@@ -157,6 +157,13 @@
         </spacer>
        </item>
        <item>
+        <widget class="QPushButton" name="updateButton">
+         <property name="text">
+          <string>Update</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="saveCSVButton">
          <property name="text">
           <string>Save CSV</string>
@@ -176,6 +183,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_min</tabstop>
+  <tabstop>lineEdit_max</tabstop>
+  <tabstop>tableWidget</tabstop>
+  <tabstop>updateButton</tabstop>
+  <tabstop>saveCSVButton</tabstop>
+  <tabstop>okButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>
