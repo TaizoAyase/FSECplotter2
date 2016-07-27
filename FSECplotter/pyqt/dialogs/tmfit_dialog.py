@@ -66,6 +66,8 @@ class TmFitDialog(QtWidgets.QDialog):
     def fit(self, data_x, data_y):
         self.axes.plot(data_x, data_y, 'o')
 
+        # TODO:app down when overflow
+        # catch the exception and show warning dialog
         param, cov = curve_fit(self.__sigmoid, data_x, data_y, p0=(1.0, 55))
         lin_x = np.arange(120, step=0.5)
         self.axes.plot(lin_x, self.__sigmoid(lin_x, *param))
