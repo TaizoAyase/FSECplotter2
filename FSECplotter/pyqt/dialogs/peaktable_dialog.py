@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.dialogs.ui_peaktable_dialog import Ui_PeakTableDialog
 import numpy as np
+import os
 
 
 class PeakTableDialog(QtWidgets.QDialog):
@@ -52,7 +53,24 @@ class PeakTableDialog(QtWidgets.QDialog):
 
     # TODO: implement it
     def saveCSV(self):
-        pass
+        default_filename = "peaktable.csv"
+
+        csvfile = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save CSV",
+            os.path.expanduser("~") + "/" + default_filename,
+            filter="Text files (*.csv)")
+
+        text = "Filenames, Volume, Intensity\n"
+        for i in range(self.ui.tableWidget.rowCount()):
+            text += self.ui.tableWidget.item(i, 0).text()
+            text += ", "
+            text += self.ui.tableWidget.item(i, 1).text()
+            text += ", "
+            text += self.ui.tableWidget.item(i, 2).text()
+            text += "\n"
+
+        with open(csvfile[0], "w+") as f:
+            f.write(text)
 
     def update(self):
         # update table only when both textbox is not empty
