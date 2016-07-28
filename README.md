@@ -6,12 +6,13 @@ In current version, compatible with Shimadzu HPLC and Hitachi HPLC formats.
 
 Features
 --------------
-+ A simple GUI based control for drawing Shimadzu (or other HPLCs) format chromatograms.
++ A simple GUI based control for drawing Shimadzu and Hitachi (or other HPLCs) format chromatograms.
 + Drag&Drop operation for file opening.
 + Cross platform application with python3 and PyQt5.
 + Drawing melting curve in the FSEC-TS assay (Tools->calcTm).
 + Normalizing Y-axis (Tools->Y-axis scaling).
 + Peak integration (Tools->Peak integration).
++ Max peak table (Tools->Peak table).
 + The line color and line width can be changed manually.
 + You can extend the file parser with your own parser for another HPLC file (See below).
 
@@ -56,14 +57,16 @@ This repository includes test files for Shimadzu HPLC in `test/fixture/shimadzu`
 +   `mini_test?.txt` :
     test files for mini column (GE Healthcare Superdex200 increase 5/150)
 
-Or, for Hitach HPCL, use the test files in `test/fixture/hitachi` directory
+Or, for Hitachi HPCL, use the test files in `test/fixture/hitachi` directory
 
 +   `*.rw?` :
     for wave length 1 or 2
 
 Packaging
 -----------
-Use [Pyinstaller](http://www.pyinstaller.org/), for example.
+Packaged binary for Windows and MacOSX is distributed in `release` tab above.
+
+If you want to build binary yourself, use [Pyinstaller](http://www.pyinstaller.org/) for example.
 
 For pyinstaller, use the command as written in `win_build/command.txt` or `osx_build/command.txt`.
 
