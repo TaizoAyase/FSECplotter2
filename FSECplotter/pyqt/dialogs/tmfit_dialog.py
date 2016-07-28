@@ -61,6 +61,7 @@ class TmFitDialog(QtWidgets.QDialog):
         self.setLayout(layout)
 
         self.default_filename = "fsects_fitcurve.png"
+        self.fig_saved = False
 
         self.ok_button.clicked.connect(self.accept)
         self.save_fig_button.clicked.connect(self.save_fig)
@@ -73,7 +74,7 @@ class TmFitDialog(QtWidgets.QDialog):
         except RuntimeError as e:
             mes = 'Curve fitting failed!\nPlease check the temperature.'
             QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes, QtWidgets.QMessageBox.Ok)
-            return
+            raise e
         lin_x = np.arange(120, step=0.5)
         self.axes.plot(lin_x, self.__sigmoid(lin_x, *param))
         self.axes.set_title("Calculated Tm: %2.1f C" % param[1])
@@ -90,6 +91,26 @@ class TmFitDialog(QtWidgets.QDialog):
             return
 
         self.fig.savefig(file_save_to, bbox_inches='tight')
+        self.fig_saved = True
+
+    def accept(self):
+        if self.fig_saved:
+            super().accept()
+            return
+
+        # if not saved, ask user
+        ret = QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", 
+            "Fit curve is not saved.\nDo you want to save before exit dialog?",
+            QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No | QtWidgets.QMessageBox.Cancel,
+            QtWidgets.QMessageBox.Cancel)
+
+        if ret == QtWidgets.QMessageBox.Yes:
+            self.save_fig()
+            super().accept()
+        elif ret == QtWidgets.QMessageBox.No:
+            super().accept()
+        elif ret == QtWidgets.QMessageBox.Cancel:
+            return
 
     # private
 

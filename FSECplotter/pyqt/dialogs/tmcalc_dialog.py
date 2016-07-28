@@ -23,12 +23,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.dialogs.ui_tmcalc_dialog import Ui_TmCalcDialog
+from FSECplotter import calc_yscale_factor, get_enabled_filename
+from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+import numpy as np
 import re
 
 class TmCalcDialog(QtWidgets.QDialog):
 
-    def __init__(self, filenames, parent=None):
+    def __init__(self, model, parent=None):
         super().__init__(parent)
+        self.model = model
         self.ui = Ui_TmCalcDialog()
         self.ui.setupUi(self)
 
@@ -39,7 +43,8 @@ class TmCalcDialog(QtWidgets.QDialog):
 
         self.ui.treeWidget.setHeaderLabels(["Filename", "Temperature"])
 
-        for f in filenames:
+        self.filenames = get_enabled_filename(self.model)
+        for f in self.filenames:
             # self.ui.comboBox.addItem(f)
             temp = self.__guess_temp(f)
             item = QtWidgets.QTreeWidgetItem([f, temp], 0)
@@ -67,18 +72,32 @@ class TmCalcDialog(QtWidgets.QDialog):
     def accept(self):
         if not self.ui.lineEdit.text():
             return
+
+        min_vol = float(self.ui.lineEdit.text())
+        max_vol = float(self.ui.lineEdit_2.text())
+        if min_vol > max_vol:
+            return
+
+        temp_list = np.array(self.get_temperature())
+        scale_factor = calc_yscale_factor(self.model, min_vol, max_vol)
+
+        tmplot_dialog = TmFitDialog(self)
+        try:
+            tmplot_dialog.fit(temp_list, scale_factor)
+        except RuntimeError as e:
+            return
+        tmplot_dialog.exec_()
         super().accept()
 
     # private
 
     def __guess_temp(self, f):
-        m = re.findall('\d+\.?\d*', f)
+        matched = re.findall('\d+\.?\d*', f)
 
-        # if m is empty,
-        if not m:
+        if not matched:
             return ""
 
-        selected = [temp for temp in m if len(temp) <= 2]
+        selected = [temp for temp in matched if len(temp) <= 2]
         return selected[-1]
 
 if __name__ == '__main__':
