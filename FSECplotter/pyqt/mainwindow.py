@@ -168,6 +168,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.editsubMenu.addAction(self.selectVolume)
         self.editsubMenu.addAction(self.selectTime)
 
+        self.editMenu.addSeparator()
+        self.editMenu.addAction(self.preferenceAction)
+
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
@@ -176,8 +179,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu.addAction(self.peaktableAction)
 
         # option menu
-        self.optionMenu = self.menuBar().addMenu("Options")
-        self.optionMenu.addAction(self.preferenceAction)
+        #self.optionMenu = self.menuBar().addMenu("Options")
 
     def createStatusBar(self):
         self.statusbar_label = QtWidgets.QLabel()
