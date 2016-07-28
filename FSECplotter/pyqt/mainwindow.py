@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from FSECplotter import calc_yscale_factor, get_enabled_filename
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
@@ -30,6 +31,7 @@ from FSECplotter.pyqt.dialogs.tmfit_dialog import *
 from FSECplotter.pyqt.dialogs.integrator_dialog import *
 from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
+from FSECplotter.pyqt.dialogs.peaktable_dialog import *
 import numpy as np
 
 ORG_NAME = "TaizoAyase" # temporary org. name
@@ -131,6 +133,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.integrateAction.setStatusTip("Peak integration.")
         self.integrateAction.triggered.connect(self.integrate)
 
+        # peak table
+        self.peaktableAction = QtWidgets.QAction("Peak table", self)
+        self.peaktableAction.setShortcut("Ctrl+P")
+        self.peaktableAction.setStatusTip("Create max-peak table in selected range.")
+        self.peaktableAction.triggered.connect(self.peaktable)
+
         # option menu
         self.preferenceAction = QtWidgets.QAction("Preference", self)
         self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
@@ -161,15 +169,18 @@ class MainWindow(QtWidgets.QMainWindow):
         self.editsubMenu.addAction(self.selectVolume)
         self.editsubMenu.addAction(self.selectTime)
 
+        self.editMenu.addSeparator()
+        self.editMenu.addAction(self.preferenceAction)
+
         # tool menu
         self.toolMenu = self.menuBar().addMenu("Tools")
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
         self.toolMenu.addAction(self.integrateAction)
+        self.toolMenu.addAction(self.peaktableAction)
 
         # option menu
-        self.optionMenu = self.menuBar().addMenu("Options")
-        self.optionMenu.addAction(self.preferenceAction)
+        #self.optionMenu = self.menuBar().addMenu("Options")
 
     def createStatusBar(self):
         self.statusbar_label = QtWidgets.QLabel()
@@ -226,41 +237,32 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def fsec_ts(self):
         n = self.treeview.model.rowCount()
-        filenames = self.__get_enabled_filename()
-        tm_dialog = TmCalcDialog(filenames, self)
+        filenames = get_enabled_filename(self.treeview.model)
+        tm_dialog = TmCalcDialog(self.treeview.model, self)
 
-        if tm_dialog.exec_():
-            #c_volume = tm_dialog.ui.lineEdit.text()
-            #file_norm = tm_dialog.ui.comboBox.currentIndex()
-            min_volume = tm_dialog.ui.lineEdit.text()
-            max_volume = tm_dialog.ui.lineEdit_2.text()
-            temp_list = tm_dialog.get_temperature()
-
-            scale_factor = self.__y_scale(float(min_volume), float(max_volume))
-
-            plot_dialog = TmFitDialog(self)
-            x = np.array(temp_list)
-            plot_dialog.fit(x, scale_factor)
-            plot_dialog.exec_()
+        # show in modeless dialog
+        tm_dialog.show()
 
     def y_scaling(self):
         n = self.treeview.model.rowCount()
-        filenames = self.__get_enabled_filename()
+        filenames = get_enabled_filename(self.treeview.model)
         y_scale_dialog = YaxisScaleDialog(filenames, self)
 
+        # show in modal dialog
         if y_scale_dialog.exec_():
             min_volume = y_scale_dialog.ui.lineEdit.text()
             max_volume = y_scale_dialog.ui.lineEdit_2.text()
             #c_volume = y_scale_dialog.ui.lineEdit.text()
             #file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
 
-            scale_factor = self.__y_scale(float(min_volume), float(max_volume))
+            scale_factor = calc_yscale_factor(self.treeview.model, float(min_volume), float(max_volume))
             self.plotarea.rescale(scale_factor)
 
     def integrate(self):
-        filenames = self.__get_enabled_filename()
+        filenames = get_enabled_filename(self.treeview.model)
         integrator_dialog = IntegratorDialog(self)
 
+        # show in modal dialog
         if integrator_dialog.exec_():
             min_volume = integrator_dialog.ui.lineEdit.text()
             max_volume = integrator_dialog.ui.lineEdit_2.text()
@@ -269,6 +271,10 @@ class MainWindow(QtWidgets.QMainWindow):
             plot_dialog = IntegratePlotDialog(self)
             plot_dialog.plot(filenames, int_ary)
             plot_dialog.exec_()
+
+    def peaktable(self):
+        peaktable_dialog = PeakTableDialog(self.treeview.model, self)
+        peaktable_dialog.show()
 
     def preference(self):
         dialog = PreferenceDialog(self.defaults, self)
@@ -279,39 +285,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.treeview.model.updateDefaultParameters(**self.defaults)
 
     # private
-
-    def __get_enabled_filename(self):
-        data = self.treeview.model.get_current_data()
-        ary = []
-        for f, flag in zip(data['filenames'], data['enable_flags']):
-            if not flag:
-                continue
-            ary.append(f)
-
-        del data
-        return ary
-
-    def __y_scale(self, min_vol, max_vol):
-        # if the same values was selected for min/max,
-        # add 0.1 to max to abort app. down
-        if min_vol == max_vol:
-            max_vol += 0.1
-
-        # select enabled data
-        data = self.treeview.model.get_current_data()
-        data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
-
-        # get nearest indices to the min/max value
-        min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
-        max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
-
-        max_val_ary = [
-            max(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
-            ]
-
-        norm_val = max(max_val_ary)
-        scale_factor = max_val_ary / norm_val
-        return scale_factor
 
     def __peak_integrate(self, min_vol, max_vol):
         # select enebled data
