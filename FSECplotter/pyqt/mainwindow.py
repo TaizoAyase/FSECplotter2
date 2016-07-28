@@ -30,6 +30,7 @@ from FSECplotter.pyqt.dialogs.tmfit_dialog import *
 from FSECplotter.pyqt.dialogs.integrator_dialog import *
 from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
+from FSECplotter.pyqt.dialogs.peaktable_dialog import *
 import numpy as np
 
 ORG_NAME = "TaizoAyase" # temporary org. name
@@ -131,6 +132,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.integrateAction.setStatusTip("Peak integration.")
         self.integrateAction.triggered.connect(self.integrate)
 
+        # peak table
+        self.peaktableAction = QtWidgets.QAction("Peak table", self)
+        self.peaktableAction.setShortcut("Ctrl+P")
+        self.peaktableAction.setStatusTip("Create max-peak table in selected range.")
+        self.peaktableAction.triggered.connect(self.peaktable)
+
         # option menu
         self.preferenceAction = QtWidgets.QAction("Preference", self)
         self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
@@ -166,6 +173,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.toolMenu.addAction(self.tsAction)
         self.toolMenu.addAction(self.y_scalingAction)
         self.toolMenu.addAction(self.integrateAction)
+        self.toolMenu.addAction(self.peaktableAction)
 
         # option menu
         self.optionMenu = self.menuBar().addMenu("Options")
@@ -269,6 +277,10 @@ class MainWindow(QtWidgets.QMainWindow):
             plot_dialog = IntegratePlotDialog(self)
             plot_dialog.plot(filenames, int_ary)
             plot_dialog.exec_()
+
+    def peaktable(self):
+        peaktable_dialog = PeakTableDialog(self.treeview.model, self)
+        peaktable_dialog.show()
 
     def preference(self):
         dialog = PreferenceDialog(self.defaults, self)
