@@ -74,6 +74,9 @@ class IntegratePlotDialog(QtWidgets.QDialog):
         self.filenames = None
         self.intensities= None
 
+        self.default_table_filename = "integrate_table.csv"
+        self.default_plot_filename = "integrate.png"
+
     def plot(self, filenames, values):
         x = np.arange(len(filenames))
         self.axes.bar(x, values, 
@@ -90,10 +93,9 @@ class IntegratePlotDialog(QtWidgets.QDialog):
         if (self.filenames is None) or (self.intensities is None):
             raise ArgumentError("The length of filenames and intensities is not match.")
 
-        default_filename = "integrate_table.csv"
         filename = QtWidgets.QFileDialog.getSaveFileName(
             self, "Save CSV",
-            os.path.expanduser("~") + "/" + default_filename,
+            os.path.expanduser("~") + "/" + self.default_table_filename,
             filter="Text files (*.csv)")
         file_save_to = filename[0]
         text = ", ".join(self.filenames) + "\n" + ", ".join(self.intensities)
@@ -101,10 +103,9 @@ class IntegratePlotDialog(QtWidgets.QDialog):
             f.write(text)
 
     def save_fig(self):
-        default_filename = "integrate.png"
         filename = QtWidgets.QFileDialog.getSaveFileName(
             self, "Save file", 
-            os.path.expanduser("~") + "/" + default_filename,
+            os.path.expanduser("~") + "/" + self.default_plot_filename,
             filter="images (*.png *.jpg *.pdf)")
         file_save_to = filename[0]
         if not file_save_to:

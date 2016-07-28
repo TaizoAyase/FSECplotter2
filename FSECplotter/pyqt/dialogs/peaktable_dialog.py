@@ -32,6 +32,7 @@ class PeakTableDialog(QtWidgets.QDialog):
     def __init__(self, model, parent=None):
         super().__init__(parent)
         self.model = model
+        self.default_filename = "peaktable.csv"
 
         self.ui = Ui_PeakTableDialog()
         self.ui.setupUi(self)
@@ -53,11 +54,9 @@ class PeakTableDialog(QtWidgets.QDialog):
 
     # TODO: implement it
     def saveCSV(self):
-        default_filename = "peaktable.csv"
-
         csvfile = QtWidgets.QFileDialog.getSaveFileName(
             self, "Save CSV",
-            os.path.expanduser("~") + "/" + default_filename,
+            os.path.expanduser("~") + "/" + self.default_filename,
             filter="Text files (*.csv)")
 
         text = "Filenames, Volume, Intensity\n"
