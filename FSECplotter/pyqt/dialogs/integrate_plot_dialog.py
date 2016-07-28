@@ -98,6 +98,10 @@ class IntegratePlotDialog(QtWidgets.QDialog):
             os.path.expanduser("~") + "/" + self.default_table_filename,
             filter="Text files (*.csv)")
         file_save_to = filename[0]
+
+        if not file_save_to:
+            return
+
         text = ", ".join(self.filenames) + "\n" + ", ".join(self.intensities)
         with open(file_save_to, "w+") as f:
             f.write(text)
@@ -107,8 +111,10 @@ class IntegratePlotDialog(QtWidgets.QDialog):
             self, "Save file", 
             os.path.expanduser("~") + "/" + self.default_plot_filename,
             filter="images (*.png *.jpg *.pdf)")
+
         file_save_to = filename[0]
         if not file_save_to:
             return
+
         self.fig.savefig(file_save_to, bbox_inches='tight') 
 

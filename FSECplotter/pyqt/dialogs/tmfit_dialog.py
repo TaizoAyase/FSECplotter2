@@ -84,9 +84,11 @@ class TmFitDialog(QtWidgets.QDialog):
         filename = QtWidgets.QFileDialog.getSaveFileName(
             self, "Save file", os.path.expanduser("~") + "/" + self.default_filename,
             filter="images (*.png *.jpg *.pdf)")
+
         file_save_to = filename[0]
         if not file_save_to:
             return
+
         self.fig.savefig(file_save_to, bbox_inches='tight')
 
     # private

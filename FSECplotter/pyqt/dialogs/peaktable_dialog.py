@@ -59,6 +59,9 @@ class PeakTableDialog(QtWidgets.QDialog):
             os.path.expanduser("~") + "/" + self.default_filename,
             filter="Text files (*.csv)")
 
+        if not csvfile[0]:
+            return
+
         text = "Filenames, Volume, Intensity\n"
         for i in range(self.ui.tableWidget.rowCount()):
             text += self.ui.tableWidget.item(i, 0).text()
