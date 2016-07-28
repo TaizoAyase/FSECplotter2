@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import numpy as np
 
 
-def y_scale(model, min_vol, max_vol):
+def calc_yscale_factor(model, min_vol, max_vol):
     # if the same values was selected for min/max,
     # add 0.1 to max to abort app. down
     if min_vol == max_vol:
@@ -45,4 +45,16 @@ def y_scale(model, min_vol, max_vol):
     norm_val = max(max_val_ary)
     scale_factor = max_val_ary / norm_val
     return scale_factor
+
+
+def get_enabled_filename(model):
+    data = model.get_current_data()
+    ary = []
+    for f, flag in zip(data['filenames'], data['enable_flags']):
+        if not flag:
+            continue
+        ary.append(f)
+
+    del data
+    return ary
 

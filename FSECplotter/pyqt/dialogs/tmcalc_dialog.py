@@ -23,12 +23,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.dialogs.ui_tmcalc_dialog import Ui_TmCalcDialog
+from FSECplotter import calc_yscale_factor, get_enabled_filename
+from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 import re
 
 class TmCalcDialog(QtWidgets.QDialog):
 
-    def __init__(self, filenames, parent=None):
+    def __init__(self, model, parent=None):
         super().__init__(parent)
+        self.model = model
         self.ui = Ui_TmCalcDialog()
         self.ui.setupUi(self)
 
@@ -39,7 +42,8 @@ class TmCalcDialog(QtWidgets.QDialog):
 
         self.ui.treeWidget.setHeaderLabels(["Filename", "Temperature"])
 
-        for f in filenames:
+        self.filenames = get_enabled_filename(self.model)
+        for f in self.filenames:
             # self.ui.comboBox.addItem(f)
             temp = self.__guess_temp(f)
             item = QtWidgets.QTreeWidgetItem([f, temp], 0)
@@ -67,6 +71,11 @@ class TmCalcDialog(QtWidgets.QDialog):
     def accept(self):
         if not self.ui.lineEdit.text():
             return
+        min_vol = float(self.ui.lineEdit.text())
+        max_vol = float(self.ui.lineEdit_2.text())
+        temp_list = self.get_temperature()
+
+        scale_factor = calc_yscale_factor(self.model, min_vol, max_vol)
         super().accept()
 
     # private

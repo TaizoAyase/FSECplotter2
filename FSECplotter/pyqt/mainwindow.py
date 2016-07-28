@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter import y_scale
+from FSECplotter import calc_yscale_factor, get_enabled_filename
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
@@ -235,8 +235,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def fsec_ts(self):
         n = self.treeview.model.rowCount()
-        filenames = self.__get_enabled_filename()
-        tm_dialog = TmCalcDialog(filenames, self)
+        filenames = get_enabled_filename(self.treeview.model)
+        tm_dialog = TmCalcDialog(self.treeview.model, self)
 
         if tm_dialog.exec_():
             #c_volume = tm_dialog.ui.lineEdit.text()
@@ -245,7 +245,7 @@ class MainWindow(QtWidgets.QMainWindow):
             max_volume = tm_dialog.ui.lineEdit_2.text()
             temp_list = tm_dialog.get_temperature()
 
-            scale_factor = y_scale(self.treeview.model, float(min_volume), float(max_volume))
+            scale_factor = calc_yscale_factor(self.treeview.model, float(min_volume), float(max_volume))
 
             plot_dialog = TmFitDialog(self)
             x = np.array(temp_list)
@@ -254,7 +254,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def y_scaling(self):
         n = self.treeview.model.rowCount()
-        filenames = self.__get_enabled_filename()
+        filenames = get_enabled_filename(self.treeview.model)
         y_scale_dialog = YaxisScaleDialog(filenames, self)
 
         if y_scale_dialog.exec_():
@@ -263,11 +263,11 @@ class MainWindow(QtWidgets.QMainWindow):
             #c_volume = y_scale_dialog.ui.lineEdit.text()
             #file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
 
-            scale_factor = y_scale(self.treeview.model, float(min_volume), float(max_volume))
+            scale_factor = calc_yscale_factor(self.treeview.model, float(min_volume), float(max_volume))
             self.plotarea.rescale(scale_factor)
 
     def integrate(self):
-        filenames = self.__get_enabled_filename()
+        filenames = get_enabled_filename(self.treeview.model)
         integrator_dialog = IntegratorDialog(self)
 
         if integrator_dialog.exec_():
