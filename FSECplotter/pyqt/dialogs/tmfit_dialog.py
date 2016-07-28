@@ -73,7 +73,7 @@ class TmFitDialog(QtWidgets.QDialog):
         except RuntimeError as e:
             mes = 'Curve fitting failed!\nPlease check the temperature.'
             QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes, QtWidgets.QMessageBox.Ok)
-            return
+            raise e
         lin_x = np.arange(120, step=0.5)
         self.axes.plot(lin_x, self.__sigmoid(lin_x, *param))
         self.axes.set_title("Calculated Tm: %2.1f C" % param[1])

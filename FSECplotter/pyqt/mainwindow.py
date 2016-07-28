@@ -238,25 +238,15 @@ class MainWindow(QtWidgets.QMainWindow):
         filenames = get_enabled_filename(self.treeview.model)
         tm_dialog = TmCalcDialog(self.treeview.model, self)
 
-        if tm_dialog.exec_():
-            #c_volume = tm_dialog.ui.lineEdit.text()
-            #file_norm = tm_dialog.ui.comboBox.currentIndex()
-            min_volume = tm_dialog.ui.lineEdit.text()
-            max_volume = tm_dialog.ui.lineEdit_2.text()
-            temp_list = tm_dialog.get_temperature()
-
-            scale_factor = calc_yscale_factor(self.treeview.model, float(min_volume), float(max_volume))
-
-            plot_dialog = TmFitDialog(self)
-            x = np.array(temp_list)
-            plot_dialog.fit(x, scale_factor)
-            plot_dialog.exec_()
+        # show in modeless dialog
+        tm_dialog.show()
 
     def y_scaling(self):
         n = self.treeview.model.rowCount()
         filenames = get_enabled_filename(self.treeview.model)
         y_scale_dialog = YaxisScaleDialog(filenames, self)
 
+        # show in modal dialog
         if y_scale_dialog.exec_():
             min_volume = y_scale_dialog.ui.lineEdit.text()
             max_volume = y_scale_dialog.ui.lineEdit_2.text()
@@ -270,6 +260,7 @@ class MainWindow(QtWidgets.QMainWindow):
         filenames = get_enabled_filename(self.treeview.model)
         integrator_dialog = IntegratorDialog(self)
 
+        # show in modal dialog
         if integrator_dialog.exec_():
             min_volume = integrator_dialog.ui.lineEdit.text()
             max_volume = integrator_dialog.ui.lineEdit_2.text()
@@ -292,17 +283,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.treeview.model.updateDefaultParameters(**self.defaults)
 
     # private
-
-    def __get_enabled_filename(self):
-        data = self.treeview.model.get_current_data()
-        ary = []
-        for f, flag in zip(data['filenames'], data['enable_flags']):
-            if not flag:
-                continue
-            ary.append(f)
-
-        del data
-        return ary
 
     def __peak_integrate(self, min_vol, max_vol):
         # select enebled data
