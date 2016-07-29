@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Peak table</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_4">
    <item>
@@ -102,6 +102,13 @@
         </spacer>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="normalizeCheckBox">
+       <property name="text">
+        <string>Normalize with max value</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QTableWidget" name="tableWidget">

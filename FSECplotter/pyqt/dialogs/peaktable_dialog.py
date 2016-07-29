@@ -104,6 +104,7 @@ class PeakTableDialog(QtWidgets.QDialog):
         self.ui.tableWidget.setRowCount(n_row)
 
         row = 0
+        ary = []
         for f, d in zip(f_ary, d_ary):
             minidx = np.argmin(np.abs(d[:, 0] - min_vol))
             maxidx = np.argmin(np.abs(d[:, 0] - max_vol))
@@ -112,6 +113,8 @@ class PeakTableDialog(QtWidgets.QDialog):
             max_value = max(d[minidx:maxidx, 1])
             max_volume_idx = np.argmax(d[minidx:maxidx, 1])
             max_volume = d[max_volume_idx, 0]
+
+            ary.append(max_value)
 
             # set item to table
             item = QtWidgets.QTableWidgetItem(f)
@@ -122,6 +125,14 @@ class PeakTableDialog(QtWidgets.QDialog):
             self.ui.tableWidget.setItem(row, 2, item)
 
             row += 1
+
+        if self.ui.normalizeCheckBox.checkState() == 2:
+            max_ary = np.array(ary)
+            max_all = np.max(max_ary)
+            max_ary /= max_all
+            for i in range(self.ui.tableWidget.rowCount()):
+                item = QtWidgets.QTableWidgetItem(str(max_ary[i]))
+                self.ui.tableWidget.setItem(i, 2, item)
 
 
 if __name__ == '__main__':
