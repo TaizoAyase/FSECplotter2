@@ -106,6 +106,10 @@ class LogfileModel(QtGui.QStandardItemModel):
             item.setText(str(data_ary[i]))
             item.setBackground(COLOR_LIST[row % 2])
 
+            # test for nested-tree object
+            # tmp = QtGui.QStandardItem('hogehoge')
+            # item.appendRow(tmp)
+
             self.setItem(row, i, item)
 
         self.itemChanged.emit()
@@ -189,8 +193,8 @@ Flow rate will be set %.2f ml/min.''' % (abspath, self.def_flowrate)).strip()
                 data_table = self.logfiles[log_id].data(**kwargs)
             except NoSectionError:
                 mes = ("""\
-                In the file '%s', Detector '%s' and Channel '%s' is not exist.\
-                """ % (filename, detector, channel_no)).strip()
+In the file '%s', Detector '%s' and Channel '%s' is not exist.\
+""" % (filename, detector, channel_no)).strip()
                 raise NoSectionError(mes)
 
             flowrate = float(self.item(i, 2).text())
