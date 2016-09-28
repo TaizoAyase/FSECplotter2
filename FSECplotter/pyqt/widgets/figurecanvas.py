@@ -34,7 +34,12 @@ from matplotlib.figure import Figure
 # FigureCanvas inherits QWidget
 class Figurecanvas(FigureCanvas):
 
-    def __init__(self, parent=None, width=4, height=3, dpi=100):
+    def __init__(self, parent=None, 
+                 width=4, height=3, dpi=100, 
+                 use_seaborn=False):
+        if use_seaborn:
+            import seaborn as sns
+
         # set matplitlib figure object
         self.fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = self.fig.add_subplot(111)
@@ -58,7 +63,7 @@ class Figurecanvas(FigureCanvas):
 
     def plot_fig(self, current_data, linewidth):
         self.axes.clear()
-        self.axes.grid()
+        #self.axes.grid() # this will be omitted when using seaborn
 
         # if current_data has no data, return
         if current_data['total_data'] == 0:
