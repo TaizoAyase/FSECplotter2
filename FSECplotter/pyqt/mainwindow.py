@@ -43,7 +43,8 @@ DEFAULTS = {
     'flowrate': 10.0,
     'linewidth': 1.0,
     'ts_gain': 1.0,
-    'ts_tm': 50
+    'ts_tm': 50,
+    'figure_dpi': 100
 }
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -52,9 +53,11 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__(parent)
         self.splitter = QtWidgets.QSplitter(self)
 
+        self.readSettings()
         # set list view and plot widgets
         self.treeview = LogfileListWidget(self)
-        self.plotarea = PlotArea(self.treeview.model, self)
+        self.plotarea = PlotArea(self.treeview.model, self,
+            dpi=self.defaults['figure_dpi'])
 
         self.splitter.addWidget(self.treeview)
         self.splitter.addWidget(self.plotarea)
@@ -67,7 +70,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.createActions()
         self.createMenus()
         self.createStatusBar()
-        self.readSettings()
+        self.updateSettings()
 
     def createActions(self):
         # file-menu
@@ -224,10 +227,14 @@ class MainWindow(QtWidgets.QMainWindow):
         if None in self.defaults.values():
             self.defaults = DEFAULTS
 
+        del settings
+
+
+    def updateSettings(self):
+        # TODO: reflect the setting of figure dpi value
         self.plotarea.updateDefaultParameters(**self.defaults)
         self.treeview.model.updateDefaultParameters(**self.defaults)
 
-        del settings
 
     def writeSettings(self):
         settings = QtCore.QSettings(ORG_NAME, APP_NAME)
