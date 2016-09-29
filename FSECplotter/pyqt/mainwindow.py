@@ -44,7 +44,10 @@ DEFAULTS = {
     'linewidth': 1.0,
     'ts_gain': 1.0,
     'ts_tm': 50,
-    'figure_dpi': 100
+    'figure_dpi': 100,
+    'use_seaborn': 0,
+    'sns_style': 0,
+    'sns_context': 0
 }
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -57,7 +60,8 @@ class MainWindow(QtWidgets.QMainWindow):
         # set list view and plot widgets
         self.treeview = LogfileListWidget(self)
         self.plotarea = PlotArea(self.treeview.model, self,
-            dpi=self.defaults['figure_dpi'])
+            dpi=self.defaults['figure_dpi'],
+            seaborn=bool(self.defaults['use_seaborn']))
 
         self.splitter.addWidget(self.treeview)
         self.splitter.addWidget(self.plotarea)

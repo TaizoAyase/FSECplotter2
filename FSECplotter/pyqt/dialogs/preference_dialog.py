@@ -53,6 +53,11 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.ts_gain_lineEdit.setText(str(params['ts_gain']))
         self.ui.ts_tm_lineEdit.setText(str(params['ts_tm']))
         self.ui.figure_dpi_lineEdit.setText(str(params['figure_dpi']))
+        self.ui.sns_style_comboBox.setCurrentIndex(int(params['sns_style']))
+        self.ui.sns_context_comboBox.setCurrentIndex(int(params['sns_context']))
+        if bool(params['use_seaborn']):
+            self.ui.use_seaborn_checkBox.setCheckState(QtCore.Qt.Checked)
+            self.ui.seaborn_style_groupBox.setEnabled(True)
 
     def get_params(self):
         params = {}
@@ -63,5 +68,8 @@ class PreferenceDialog(QtWidgets.QDialog):
         params['ts_gain'] = self.ui.ts_gain_lineEdit.text()
         params['ts_tm'] = self.ui.ts_tm_lineEdit.text()
         params['figure_dpi'] = self.ui.figure_dpi_lineEdit.text()
+        params['use_seaborn'] = self.ui.use_seaborn_checkBox.isChecked()
+        params['sns_style'] = self.ui.sns_style_comboBox.currentIndex()
+        params['sns_context'] = self.ui.sns_context_comboBox.currentIndex()
         return params
 
