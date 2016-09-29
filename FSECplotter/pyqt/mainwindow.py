@@ -43,7 +43,8 @@ DEFAULTS = {
     'flowrate': 10.0,
     'linewidth': 1.0,
     'ts_gain': 1.0,
-    'ts_tm': 50
+    'ts_tm': 50,
+    'figure_dpi': 100
 }
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -224,6 +225,7 @@ class MainWindow(QtWidgets.QMainWindow):
         if None in self.defaults.values():
             self.defaults = DEFAULTS
 
+        # TODO: reflect the setting of figure dpi value
         self.plotarea.updateDefaultParameters(**self.defaults)
         self.treeview.model.updateDefaultParameters(**self.defaults)
 

@@ -150,6 +150,9 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
 
+        # update figure canvas
+        #self.figcanvas = Figurecanvas(self, dpi=kwargs['figure_dpi'])
+
     def redraw(self):
         try:
             data = self.model.get_current_data()

@@ -24,14 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.dialogs.ui_preference_dialog import Ui_PreferenceDialog
 
-DEFAULT_PARAMETERS = [
-    'detector',
-    'channel',
-    'flowrate',
-    'linewidth',
-    'ts_gain',
-    'ts_tm'
-]
 
 class PreferenceDialog(QtWidgets.QDialog):
 
@@ -44,9 +36,12 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
-        valid = QtGui.QDoubleValidator()
-        self.ui.ts_gain_lineEdit.setValidator(valid)
-        self.ui.ts_tm_lineEdit.setValidator(valid)
+        double_valid = QtGui.QDoubleValidator()
+        self.ui.ts_gain_lineEdit.setValidator(double_valid)
+        self.ui.ts_tm_lineEdit.setValidator(double_valid)
+
+        int_valid = QtGui.QIntValidator(0, 1200)
+        self.ui.figure_dpi_lineEdit.setValidator(int_valid)
 
         self.set_params(restored)
 
@@ -57,7 +52,7 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.linewidth_spinBox.setValue(float(params['linewidth']))
         self.ui.ts_gain_lineEdit.setText(str(params['ts_gain']))
         self.ui.ts_tm_lineEdit.setText(str(params['ts_tm']))
-
+        self.ui.figure_dpi_lineEdit.setText(str(params['figure_dpi']))
 
     def get_params(self):
         params = {}
@@ -67,7 +62,6 @@ class PreferenceDialog(QtWidgets.QDialog):
         params['linewidth'] = self.ui.linewidth_spinBox.value()
         params['ts_gain'] = self.ui.ts_gain_lineEdit.text()
         params['ts_tm'] = self.ui.ts_tm_lineEdit.text()
+        params['figure_dpi'] = self.ui.figure_dpi_lineEdit.text()
         return params
-
-
 
