@@ -1,24 +1,4 @@
 # -*- coding: utf-8 -*-
-'''
-FSECplotter2 - The interactive plotting application for FSEC.
-
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
-
-This file is part of FSECplotter2.
-
-FSECplotter2 is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-'''
 
 # Form implementation generated from reading ui file 'preference_dialog.ui'
 #
@@ -122,11 +102,9 @@ class Ui_PreferenceDialog(object):
         self.verticalLayout_9 = QtWidgets.QVBoxLayout(self.figurecanvas_tab)
         self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.verticalLayout_8 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.label_12 = QtWidgets.QLabel(self.figurecanvas_tab)
         self.label_12.setObjectName("label_12")
-        self.verticalLayout_8.addWidget(self.label_12)
+        self.verticalLayout_9.addWidget(self.label_12)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_7.setObjectName("horizontalLayout_7")
         self.label_11 = QtWidgets.QLabel(self.figurecanvas_tab)
@@ -138,10 +116,46 @@ class Ui_PreferenceDialog(object):
         self.horizontalLayout_7.addWidget(self.figure_dpi_lineEdit)
         spacerItem1 = QtWidgets.QSpacerItem(60, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_7.addItem(spacerItem1)
-        self.verticalLayout_8.addLayout(self.horizontalLayout_7)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_8.addItem(spacerItem2)
-        self.verticalLayout_9.addLayout(self.verticalLayout_8)
+        self.verticalLayout_9.addLayout(self.horizontalLayout_7)
+        self.use_seaborn_checkBox = QtWidgets.QCheckBox(self.figurecanvas_tab)
+        self.use_seaborn_checkBox.setObjectName("use_seaborn_checkBox")
+        self.verticalLayout_9.addWidget(self.use_seaborn_checkBox)
+        self.seaborn_style_groupBox = QtWidgets.QGroupBox(self.figurecanvas_tab)
+        self.seaborn_style_groupBox.setEnabled(False)
+        self.seaborn_style_groupBox.setObjectName("seaborn_style_groupBox")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.seaborn_style_groupBox)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        self.label_13 = QtWidgets.QLabel(self.seaborn_style_groupBox)
+        self.label_13.setObjectName("label_13")
+        self.horizontalLayout_8.addWidget(self.label_13)
+        self.sns_style_comboBox = QtWidgets.QComboBox(self.seaborn_style_groupBox)
+        self.sns_style_comboBox.setObjectName("sns_style_comboBox")
+        self.sns_style_comboBox.addItem("")
+        self.sns_style_comboBox.addItem("")
+        self.sns_style_comboBox.addItem("")
+        self.sns_style_comboBox.addItem("")
+        self.sns_style_comboBox.addItem("")
+        self.horizontalLayout_8.addWidget(self.sns_style_comboBox)
+        self.verticalLayout_8.addLayout(self.horizontalLayout_8)
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.label_14 = QtWidgets.QLabel(self.seaborn_style_groupBox)
+        self.label_14.setObjectName("label_14")
+        self.horizontalLayout_9.addWidget(self.label_14)
+        self.sns_context_comboBox = QtWidgets.QComboBox(self.seaborn_style_groupBox)
+        self.sns_context_comboBox.setObjectName("sns_context_comboBox")
+        self.sns_context_comboBox.addItem("")
+        self.sns_context_comboBox.addItem("")
+        self.sns_context_comboBox.addItem("")
+        self.sns_context_comboBox.addItem("")
+        self.sns_context_comboBox.addItem("")
+        self.horizontalLayout_9.addWidget(self.sns_context_comboBox)
+        self.verticalLayout_8.addLayout(self.horizontalLayout_9)
+        self.verticalLayout_9.addWidget(self.seaborn_style_groupBox)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 204, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_9.addItem(spacerItem2)
         self.tabWidget.addTab(self.figurecanvas_tab, "")
         self.advanced_tab = QtWidgets.QWidget()
         self.advanced_tab.setEnabled(True)
@@ -200,6 +214,7 @@ class Ui_PreferenceDialog(object):
         self.retranslateUi(PreferenceDialog)
         self.tabWidget.setCurrentIndex(1)
         self.detector_comboBox.setCurrentIndex(1)
+        self.use_seaborn_checkBox.toggled['bool'].connect(self.seaborn_style_groupBox.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(PreferenceDialog)
 
     def retranslateUi(self, PreferenceDialog):
@@ -219,6 +234,20 @@ class Ui_PreferenceDialog(object):
         self.label_12.setText(_translate("PreferenceDialog", "These parameters are enabled when app is restared."))
         self.label_11.setText(_translate("PreferenceDialog", "Default figure dpi: "))
         self.figure_dpi_lineEdit.setText(_translate("PreferenceDialog", "100"))
+        self.use_seaborn_checkBox.setText(_translate("PreferenceDialog", "use seaborn package"))
+        self.seaborn_style_groupBox.setTitle(_translate("PreferenceDialog", "seaborn style setting"))
+        self.label_13.setText(_translate("PreferenceDialog", "Style:"))
+        self.sns_style_comboBox.setItemText(0, _translate("PreferenceDialog", "DarkGrid"))
+        self.sns_style_comboBox.setItemText(1, _translate("PreferenceDialog", "WhiteGrid"))
+        self.sns_style_comboBox.setItemText(2, _translate("PreferenceDialog", "Dark (no grid)"))
+        self.sns_style_comboBox.setItemText(3, _translate("PreferenceDialog", "White (no grid)"))
+        self.sns_style_comboBox.setItemText(4, _translate("PreferenceDialog", "ticks"))
+        self.label_14.setText(_translate("PreferenceDialog", "Context:"))
+        self.sns_context_comboBox.setItemText(0, _translate("PreferenceDialog", "None"))
+        self.sns_context_comboBox.setItemText(1, _translate("PreferenceDialog", "paper"))
+        self.sns_context_comboBox.setItemText(2, _translate("PreferenceDialog", "notebook"))
+        self.sns_context_comboBox.setItemText(3, _translate("PreferenceDialog", "talk"))
+        self.sns_context_comboBox.setItemText(4, _translate("PreferenceDialog", "poster"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.figurecanvas_tab), _translate("PreferenceDialog", "Figure Canvas Setting"))
         self.ts_group.setTitle(_translate("PreferenceDialog", "FSEC-TS parameter"))
         self.label_5.setText(_translate("PreferenceDialog", "Initial value for curve sigmoid fitting of FSEC-TS tool. "))
