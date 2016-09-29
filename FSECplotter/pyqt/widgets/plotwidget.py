@@ -33,11 +33,11 @@ class PlotArea(QtWidgets.QWidget):
 
     updateParameters = QtCore.pyqtSlot()
 
-    def __init__(self, listmodel, parent=None):
+    def __init__(self, listmodel, parent=None, dpi=100):
         # call constructor of FigureCanvas
         super(PlotArea, self).__init__(parent)
 
-        self.figcanvas = Figurecanvas(self)
+        self.figcanvas = Figurecanvas(self, dpi=dpi)
         self.model = listmodel
 
         # default params
@@ -150,8 +150,6 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
 
-        # update figure canvas
-        #self.figcanvas = Figurecanvas(self, dpi=kwargs['figure_dpi'])
 
     def redraw(self):
         try:
