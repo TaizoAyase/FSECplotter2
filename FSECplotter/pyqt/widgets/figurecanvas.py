@@ -37,6 +37,7 @@ class Figurecanvas(FigureCanvas):
     def __init__(self, parent=None, 
                  width=4, height=3, dpi=100, 
                  use_seaborn=False):
+        self.seaborn = use_seaborn
         if use_seaborn:
             import seaborn as sns
 
@@ -63,7 +64,9 @@ class Figurecanvas(FigureCanvas):
 
     def plot_fig(self, current_data, linewidth):
         self.axes.clear()
-        #self.axes.grid() # this will be omitted when using seaborn
+        if not self.seaborn:
+            # this is omitted when using seaborn
+            self.axes.grid()
 
         # if current_data has no data, return
         if current_data['total_data'] == 0:

@@ -150,7 +150,6 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
 
-
     def redraw(self):
         try:
             data = self.model.get_current_data()
