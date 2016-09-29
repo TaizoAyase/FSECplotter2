@@ -33,11 +33,14 @@ class PlotArea(QtWidgets.QWidget):
 
     updateParameters = QtCore.pyqtSlot()
 
-    def __init__(self, listmodel, parent=None, dpi=100, seaborn=False):
+    def __init__(self, listmodel, parent=None, dpi=100,
+                 seaborn=False, style=0, context=0):
         # call constructor of FigureCanvas
         super(PlotArea, self).__init__(parent)
 
-        self.figcanvas = Figurecanvas(self, dpi=dpi, use_seaborn=seaborn)
+        self.figcanvas = Figurecanvas(self, dpi=dpi, 
+                                      use_seaborn=seaborn,
+                                      style=style, context=context)
         self.model = listmodel
 
         # default params

@@ -34,12 +34,18 @@ from matplotlib.figure import Figure
 # FigureCanvas inherits QWidget
 class Figurecanvas(FigureCanvas):
 
+    SEABORN_STYLE = ['darkgrid', 'whitegrid', 'dark', 'white', 'ticks']
+    SEABORN_CONTEXT = [None, 'paper', 'notebook', 'talk', 'poster']
+
     def __init__(self, parent=None, 
                  width=4, height=3, dpi=100, 
-                 use_seaborn=False):
+                 use_seaborn=False,
+                 style=0, context=0):
         self.seaborn = use_seaborn
         if use_seaborn:
             import seaborn as sns
+            sns.set_style(self.SEABORN_STYLE[style])
+            sns.set_context(self.SEABORN_CONTEXT[context])
 
         # set matplitlib figure object
         self.fig = Figure(figsize=(width, height), dpi=dpi)

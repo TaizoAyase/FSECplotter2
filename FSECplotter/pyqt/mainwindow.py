@@ -61,7 +61,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.treeview = LogfileListWidget(self)
         self.plotarea = PlotArea(self.treeview.model, self,
             dpi=self.defaults['figure_dpi'],
-            seaborn=bool(self.defaults['use_seaborn']))
+            seaborn=bool(self.defaults['use_seaborn']),
+            style=int(self.defaults['sns_style']),
+            context=int(self.defaults['sns_context']))
 
         self.splitter.addWidget(self.treeview)
         self.splitter.addWidget(self.plotarea)
