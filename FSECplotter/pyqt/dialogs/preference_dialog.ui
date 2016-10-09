@@ -225,62 +225,157 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_8">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>These parameters are enabled when app is restared.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
-          <widget class="QLabel" name="label_12">
+          <widget class="QLabel" name="label_11">
            <property name="text">
-            <string>These parameters are enabled when app is restared.</string>
+            <string>Default figure dpi: </string>
            </property>
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_7">
-           <item>
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Default figure dpi: </string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="figure_dpi_lineEdit">
-             <property name="text">
-              <string>100</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>60</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
+          <widget class="QLineEdit" name="figure_dpi_lineEdit">
+           <property name="text">
+            <string>100</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
          </item>
          <item>
-          <spacer name="verticalSpacer_3">
+          <spacer name="horizontalSpacer_3">
            <property name="orientation">
-            <enum>Qt::Vertical</enum>
+            <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
-             <height>40</height>
+             <width>60</width>
+             <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="use_seaborn_checkBox">
+         <property name="text">
+          <string>use seaborn package</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="seaborn_style_groupBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="title">
+          <string>seaborn style setting</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_8">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Style:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="sns_style_comboBox">
+              <item>
+               <property name="text">
+                <string>DarkGrid</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>WhiteGrid</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Dark (no grid)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>White (no grid)</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>ticks</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <item>
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>Context:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="sns_context_comboBox">
+              <item>
+               <property name="text">
+                <string>None</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>paper</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>notebook</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>talk</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>poster</string>
+               </property>
+              </item>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>204</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -412,5 +507,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   </layout>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>use_seaborn_checkBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>seaborn_style_groupBox</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>70</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
