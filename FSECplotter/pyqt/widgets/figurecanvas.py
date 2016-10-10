@@ -48,7 +48,7 @@ class Figurecanvas(FigureCanvas):
             sns.set_context(self.SEABORN_CONTEXT[context])
 
         # set matplitlib figure object
-        self.fig = Figure(figsize=(width, height), dpi=dpi)
+        self.fig = Figure(figsize=(width, height), dpi=int(dpi))
         self.axes = self.fig.add_subplot(111)
         self.axes.hold(True)
 
