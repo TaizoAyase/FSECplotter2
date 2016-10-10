@@ -112,7 +112,9 @@ class PeakTableDialog(QtWidgets.QDialog):
             # get max volume and intensity
             max_value = max(d[minidx:maxidx, 1])
             max_volume_idx = np.argmax(d[minidx:maxidx, 1])
-            max_volume = d[max_volume_idx, 0]
+            max_volume = d[max_volume_idx, 0] + min_vol
+            # alternative implementation
+            # max_volume = d[max_volume_idx+minidx, 0]
 
             ary.append(max_value)
 
