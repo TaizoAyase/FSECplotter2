@@ -68,7 +68,8 @@ Packaged binary for Windows and MacOSX is distributed in `release` tab above.
 
 If you want to build binary yourself, use [Pyinstaller](http://www.pyinstaller.org/) for example.
 
-For pyinstaller, use the command as written in `win_build/command.txt` or `osx_build/command.txt`.
+For pyinstaller, use the spec file in `win_build/FSECplotter2.spec` or `osx_build/FSECplotter2.spec`, 
+as `pyinstaller --clean FSECplotter2.spec`
 
 
 For Another HPLC
