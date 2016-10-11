@@ -228,7 +228,10 @@ class MainWindow(QtWidgets.QMainWindow):
         settings = QtCore.QSettings(ORG_NAME, APP_NAME)
         self.defaults = {}
         for k in DEFAULTS.keys():
-            self.defaults[k] = settings.value(k)
+            # float() is for windows
+            # the setting values are stored in str obj. in windows
+            # float obj. in MacOS
+            self.defaults[k] = float(settings.value(k))
 
         if None in self.defaults.values():
             self.defaults = DEFAULTS
