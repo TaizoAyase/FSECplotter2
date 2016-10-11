@@ -1,1 +1,0 @@
-pyinstaller --windowed --onefile --hidden-import=scipy.linalg.cython_blas --hidden-import=scipy.linalg.cython_lapack --hidden-import=scipy.integrate ../FSECplotter2.py

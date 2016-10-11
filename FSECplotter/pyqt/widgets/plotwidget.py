@@ -33,11 +33,14 @@ class PlotArea(QtWidgets.QWidget):
 
     updateParameters = QtCore.pyqtSlot()
 
-    def __init__(self, listmodel, parent=None):
+    def __init__(self, listmodel, parent=None, dpi=100,
+                 seaborn=False, style=0, context=0):
         # call constructor of FigureCanvas
         super(PlotArea, self).__init__(parent)
 
-        self.figcanvas = Figurecanvas(self)
+        self.figcanvas = Figurecanvas(self, dpi=dpi, 
+                                      use_seaborn=seaborn,
+                                      style=style, context=context)
         self.model = listmodel
 
         # default params
@@ -196,8 +199,13 @@ class PlotArea(QtWidgets.QWidget):
                                           QtWidgets.QMessageBox.Ok)
             return
 
-        for i in range(len(scale_factor)):
-            data['data'][i][:, 1] = data['data'][i][:, 1] / scale_factor[i]
+        j = 0 # index for scale factor array
+        for i, flag in enumerate(data['enable_flags']):
+            # skip the non-enabled data
+            if not flag:
+                continue
+            data['data'][i][:, 1] = data['data'][i][:, 1] / scale_factor[j]
+            j += 1
 
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())

@@ -5,10 +5,8 @@ FSECplotter/pyqt/__pycache__/
 __pycache__/
 osx_build/build/
 osx_build/dist/
-osx_build/*.spec
 win_build/build/
 win_build/dist/
-win_build/*.spec
 test/*.png
 test/fixture/*.png
 test/fixture/shimadzu/*.png

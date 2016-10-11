@@ -67,6 +67,9 @@ class Ui_PeakTableDialog(object):
         spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem1)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.normalizeCheckBox = QtWidgets.QCheckBox(PeakTableDialog)
+        self.normalizeCheckBox.setObjectName("normalizeCheckBox")
+        self.verticalLayout.addWidget(self.normalizeCheckBox)
         self.tableWidget = QtWidgets.QTableWidget(PeakTableDialog)
         self.tableWidget.setGridStyle(QtCore.Qt.SolidLine)
         self.tableWidget.setRowCount(1)
@@ -112,12 +115,13 @@ class Ui_PeakTableDialog(object):
 
     def retranslateUi(self, PeakTableDialog):
         _translate = QtCore.QCoreApplication.translate
-        PeakTableDialog.setWindowTitle(_translate("PeakTableDialog", "Dialog"))
+        PeakTableDialog.setWindowTitle(_translate("PeakTableDialog", "Peak table"))
         self.label_5.setText(_translate("PeakTableDialog", "Enter the range of volume in mL."))
         self.label.setText(_translate("PeakTableDialog", "Min. Volume "))
         self.label_3.setText(_translate("PeakTableDialog", "(mL)"))
         self.label_2.setText(_translate("PeakTableDialog", "Max. Volume"))
         self.label_4.setText(_translate("PeakTableDialog", "(mL)"))
+        self.normalizeCheckBox.setText(_translate("PeakTableDialog", "Normalize with max value"))
         self.tableWidget.setSortingEnabled(False)
         item = self.tableWidget.horizontalHeaderItem(0)
         item.setText(_translate("PeakTableDialog", "Filename"))
