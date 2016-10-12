@@ -204,6 +204,9 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.selection_model.clear()
         self.__select_row(moved_to)
 
+    def write_csv(self):
+        pass
+
     # private methods
 
     def __get_current_index(self):

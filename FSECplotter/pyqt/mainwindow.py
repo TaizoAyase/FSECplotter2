@@ -98,6 +98,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.quickSaveAction.setStatusTip("One click save.")
         self.quickSaveAction.triggered.connect(self.plotarea.quick_save_figure)
 
+        # save csv table file
+        self.saveCsvAction = QtWidgets.QAction("Save CSV table", self)
+        self.saveCsvAction.setStatusTip("Write out the current data table.")
+        self.saveCsvAction.triggered.connect(self.treeview.write_csv)
+
         # remove all list items
         self.removeAllItemsAction = QtWidgets.QAction("Remove all files", self)
         self.removeAllItemsAction.setStatusTip("Remove all files from list.")
@@ -160,6 +165,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.fileMenu.addAction(self.openAction)
         self.fileMenu.addAction(self.saveAsAction)
         self.fileMenu.addAction(self.quickSaveAction)
+        self.fileMenu.addAction(self.saveCsvAction)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(self.removeAllItemsAction)
         self.fileMenu.addSeparator()
