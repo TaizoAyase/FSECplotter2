@@ -25,6 +25,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.models.logfilelist_model import *
 from FSECplotter.pyqt.view.logfilelist_view import *
 import os
+import time
 import platform
 
 
@@ -205,7 +206,26 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.__select_row(moved_to)
 
     def write_csv(self):
-        pass
+        data = self.model.get_current_data()
+
+        defalt_plot_name = time.strftime("%y%m%d_%H%M%S") + "_table.csv"
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save file", self.model.current_dir + "/" + defalt_plot_name,
+            filter="text (*.csv)")
+        file_save_to = filename[0]
+
+        # generate the csv text
+        n_enabled_data = sum(data['enable_flags'])
+        csv_string = ""
+        for i in range(n_enabled_data):
+            d = data['data'][i]
+            data_len = d.shape[0]
+            for j in range(data_len):
+                fname = data['filenames'][i]
+                csv_string += "%f, %f, %s\n" % (d[j, 0], d[j, 1], fname)
+
+        with open(file_save_to, 'w+') as f:
+            f.write(csv_string)
 
     # private methods
 
