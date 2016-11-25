@@ -231,7 +231,7 @@ class MainWindow(QtWidgets.QMainWindow):
             # float() is for windows
             # the setting values are stored in str obj. in windows
             # float obj. in MacOS
-            self.defaults[k] = float(settings.value(k))
+            self.defaults[k] = None if settings.value(k) is None else float(settings.value(k))
 
         if None in self.defaults.values():
             self.defaults = DEFAULTS
