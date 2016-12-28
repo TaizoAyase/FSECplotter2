@@ -214,6 +214,10 @@ class LogfileListWidget(QtWidgets.QWidget):
             filter="text (*.csv)")
         file_save_to = filename[0]
 
+        # if the cancel button was pressed,
+        if not file_save_to:
+            return
+
         # generate the csv text
         n_enabled_data = sum(data['enable_flags'])
         csv_string = ""
