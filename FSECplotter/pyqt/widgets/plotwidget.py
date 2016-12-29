@@ -21,11 +21,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import os
-import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.widgets.figurecanvas import *
 from FSECplotter.core.shimadzu import NoSectionError
+import os
+import time
 
 
 # FigureCanvas inherits QWidget
@@ -144,6 +144,7 @@ class PlotArea(QtWidgets.QWidget):
         self.redraw_button.clicked.connect(self.redraw)
         self.savefig_button.clicked.connect(self.save_figure)
         self.quick_save_button.clicked.connect(self.quick_save_figure)
+        self.save_csv_table_button.clicked.connect(self.write_csv)
         self.xlim_min_box.textChanged.connect(self.redraw)
         self.xlim_max_box.textChanged.connect(self.redraw)
         self.ylim_min_box.textChanged.connect(self.redraw)
@@ -193,6 +194,19 @@ class PlotArea(QtWidgets.QWidget):
         file_save_to = self.model.current_dir + "/" + defalt_plot_name
         self.figcanvas.save_fig_to(file_save_to)
         self.modified = False
+
+    def write_csv(self):
+        default_filename = time.strftime("%y%m%d_%H%M%S") + "_table.csv"
+        filename = QtWidgets.QFileDialog.getSaveFileName(
+            self, "Save file", self.model.current_dir + "/" + default_filename,
+            filter="text (*.csv)")
+        file_save_to = filename[0]
+
+        # if the cancel button was pressed,
+        if not file_save_to:
+            return
+
+        self.model.save_csv_table(file_save_to)
 
     def rescale(self, scale_factor):
         try:
