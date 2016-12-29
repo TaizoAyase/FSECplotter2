@@ -101,7 +101,7 @@ class MainWindow(QtWidgets.QMainWindow):
         # save csv table file
         self.saveCsvAction = QtWidgets.QAction("Save CSV table", self)
         self.saveCsvAction.setStatusTip("Write out the current data table.")
-        self.saveCsvAction.triggered.connect(self.treeview.write_csv)
+        self.saveCsvAction.triggered.connect(self.plotarea.write_csv)
 
         # remove all list items
         self.removeAllItemsAction = QtWidgets.QAction("Remove all files", self)

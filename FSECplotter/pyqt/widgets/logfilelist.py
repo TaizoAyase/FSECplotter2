@@ -205,18 +205,6 @@ class LogfileListWidget(QtWidgets.QWidget):
         self.selection_model.clear()
         self.__select_row(moved_to)
 
-    def write_csv(self):
-        default_filename = time.strftime("%y%m%d_%H%M%S") + "_table.csv"
-        filename = QtWidgets.QFileDialog.getSaveFileName(
-            self, "Save file", self.model.current_dir + "/" + default_filename,
-            filter="text (*.csv)")
-        file_save_to = filename[0]
-
-        # if the cancel button was pressed,
-        if not file_save_to:
-            return
-
-        self.model.save_csv_table(file_save_to)
 
     # private methods
 
