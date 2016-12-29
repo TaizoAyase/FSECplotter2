@@ -233,6 +233,21 @@ In the file '%s', Detector '%s' and Channel '%s' is not exist.\
             item.setText(param)
         self.itemChanged.emit()
 
+    def save_csv_table(self, filename):
+        # save current data table with long format dataframe
+        data = self.get_current_data()
+        n_enabled_data = sum(data['enable_flags'])
+        csv_string = "Volume, Intensity, filename\n"
+        for i in range(n_enabled_data):
+            d = data['data'][i]
+            data_len = d.shape[0]
+            for j in range(data_len):
+                fname = data['filenames'][i]
+                csv_string += "%f, %f, %s\n" % (d[j, 0], d[j, 1], fname)
+
+        with open(filename, 'w+') as f:
+            f.write(csv_string)
+
     # private methods
 
     def __append_logfile(self, filepath):
