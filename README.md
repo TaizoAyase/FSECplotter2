@@ -17,6 +17,7 @@ Features
 + The style and context setting in the [seaborn package](https://stanford.edu/~mwaskom/software/seaborn/index.html) is supported.
 Check "use seaborn package" in the Preference->Figure Canvas Setting, and select the style and context.
 This setting was enabled when the app is restarted.
++ The csv data table (long format) can be exported.
 + You can extend the file parser with your own parser for another HPLC file (See below).
 
 How to install (for OSX users)
