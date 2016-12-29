@@ -59,6 +59,10 @@ class PlotArea(QtWidgets.QWidget):
         self.quick_save_button.setObjectName("Quick Save button")
         self.quick_save_button.setText("Quick Save")
 
+        self.save_csv_table_button = QtWidgets.QPushButton(self)
+        self.save_csv_table_button.setObjectName("Save CSV table button")
+        self.save_csv_table_button.setText("Save CSV table")
+
         # set textbox
         # xlim
         self.xlim_min_box_label = QtWidgets.QLabel("x min:")
@@ -117,6 +121,7 @@ class PlotArea(QtWidgets.QWidget):
         self.horiLay3.addWidget(self.redraw_button)
         self.horiLay3.addWidget(self.savefig_button)
         self.horiLay3.addWidget(self.quick_save_button)
+        self.horiLay3.addWidget(self.save_csv_table_button)
 
         self.horiLay4 = QtWidgets.QHBoxLayout()
         spacerItem = QtWidgets.QSpacerItem(40, 20, 
