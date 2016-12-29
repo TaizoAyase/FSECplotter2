@@ -81,7 +81,7 @@ class TmCalcDialog(QtWidgets.QDialog):
         temp_list = np.array(self.get_temperature())
         scale_factor = calc_yscale_factor(self.model, min_vol, max_vol)
 
-        tmplot_dialog = TmFitDialog(self)
+        tmplot_dialog = TmFitDialog(self.model, self)
         try:
             tmplot_dialog.fit(temp_list, scale_factor)
         except RuntimeError as e:

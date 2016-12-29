@@ -34,7 +34,7 @@ import os
 
 class TmFitDialog(QtWidgets.QDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, model, parent=None):
         super().__init__(parent)
         self.fig = Figure(figsize=(6, 5), dpi=100)
         self.axes = self.fig.add_subplot(111)
@@ -62,6 +62,7 @@ class TmFitDialog(QtWidgets.QDialog):
 
         self.default_filename = "fsects_fitcurve.png"
         self.fig_saved = False
+        self.model = model
 
         self.ok_button.clicked.connect(self.accept)
         self.save_fig_button.clicked.connect(self.save_fig)
@@ -83,7 +84,8 @@ class TmFitDialog(QtWidgets.QDialog):
 
     def save_fig(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(
-            self, "Save file", os.path.expanduser("~") + "/" + self.default_filename,
+            self, "Save file",
+            self.model.current_dir + "/" + self.default_filename,
             filter="images (*.png *.jpg *.pdf)")
 
         file_save_to = filename[0]

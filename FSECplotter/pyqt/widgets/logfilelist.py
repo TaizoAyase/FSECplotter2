@@ -25,6 +25,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.models.logfilelist_model import *
 from FSECplotter.pyqt.view.logfilelist_view import *
 import os
+import time
 import platform
 
 
@@ -203,6 +204,7 @@ class LogfileListWidget(QtWidgets.QWidget):
         moved_to = self.model.move_item(current_row, int(shift))
         self.selection_model.clear()
         self.__select_row(moved_to)
+
 
     # private methods
 
