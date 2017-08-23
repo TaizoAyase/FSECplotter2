@@ -68,7 +68,7 @@ class Figurecanvas(FigureCanvas):
         # set color map object
         self.__cm = matplotlib.cm.gist_rainbow
 
-    def plot_fig(self, current_data, linewidth):
+    def plot_fig(self, current_data, linewidth, volume_x=True):
         self.axes.clear()
         if not self.seaborn:
             # this is omitted when using seaborn
@@ -86,7 +86,8 @@ class Figurecanvas(FigureCanvas):
             x = current_data['data'][i][:, 0]
             y = current_data['data'][i][:, 1]
 
-            x *= current_data['flowrate'][i]
+            if volume_x:
+                x *= current_data['flowrate'][i]
 
             # set color
             col = current_data['color'][i]
@@ -107,7 +108,9 @@ class Figurecanvas(FigureCanvas):
                          borderaxespad=0.,
                          bbox_to_anchor=(0., 1.02, 1., .102),
                          prop={'size': 'small'})
-        self.axes.set_xlabel("Volume(ml)")
+
+        xlab = "Volume(ml)" if volume_x else "Time(min)"
+        self.axes.set_xlabel(xlab)
         self.axes.set_ylabel("FL intensity(AU)")
         self.__adjust_scale(num_data)
         self.draw()
