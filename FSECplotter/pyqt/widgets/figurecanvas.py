@@ -86,6 +86,8 @@ class Figurecanvas(FigureCanvas):
             x = current_data['data'][i][:, 0]
             y = current_data['data'][i][:, 1]
 
+            x *= current_data['flowrate'][i]
+
             # set color
             col = current_data['color'][i]
             # if default, use default rainbow

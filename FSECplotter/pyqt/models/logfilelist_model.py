@@ -199,11 +199,11 @@ In the file '%s', Detector '%s' and Channel '%s' is not exist.\
 
             flowrate = float(self.item(i, 2).text())
             d = data_table.copy()
-            d[:, 0] = data_table[:, 0] * flowrate
+            #d[:, 0] = data_table[:, 0] * flowrate
             
             data['data'].append(d)
             data['filenames'].append(filename)
-            data['flowrate'].append(self.item(i, 2).text())
+            data['flowrate'].append(flowrate)
 
             # set color
             col = self.item(i, 5).text()
