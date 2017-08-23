@@ -75,16 +75,15 @@ class PeakTableDialog(QtWidgets.QDialog):
             f.write(text)
 
     def update(self):
-        # update table only when both textbox is not empty
-        if not self.ui.lineEdit_min.text():
-            return
-        if not self.ui.lineEdit_max.text():
+        # not accept when text box(es) are empty
+        if not (self.ui.lineEdit_min.text() and self.ui.lineEdit_max.text()):
+            QtWidgets.QApplication.beep()
             return
 
-        # and min < max
-        min_vol = float(self.ui.lineEdit_min.text())
-        max_vol = float(self.ui.lineEdit_max.text())
-        if min_vol > max_vol:
+        min_volume = float(self.ui.lineEdit.text())
+        max_volume = float(self.ui.lineEdit_2.text())
+        if min_volume >= max_volume:
+            QtWidgets.QApplication.beep()
             return
 
         self.__update_table(min_vol, max_vol)

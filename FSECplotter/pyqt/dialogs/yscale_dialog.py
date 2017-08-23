@@ -39,7 +39,9 @@ class YaxisScaleDialog(QtWidgets.QDialog):
             #self.ui.filename_for_normal.addItem(f)
 
     def accept(self):
-        if not self.ui.lineEdit.text():
+        # not accept when text box(es) are empty
+        if not (self.ui.lineEdit.text() and self.ui.lineEdit_2.text()):
+            QtWidgets.QApplication.beep()
             return
 
         min_volume = float(self.ui.lineEdit.text())
