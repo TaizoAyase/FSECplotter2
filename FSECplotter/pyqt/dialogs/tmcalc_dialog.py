@@ -70,12 +70,15 @@ class TmCalcDialog(QtWidgets.QDialog):
         return list_
 
     def accept(self):
-        if not self.ui.lineEdit.text():
+        # not accept when text box(es) are empty
+        if not (self.ui.lineEdit.text() and self.ui.lineEdit_2.text()):
+            QtWidgets.QApplication.beep()
             return
 
-        min_vol = float(self.ui.lineEdit.text())
-        max_vol = float(self.ui.lineEdit_2.text())
-        if min_vol > max_vol:
+        min_volume = float(self.ui.lineEdit.text())
+        max_volume = float(self.ui.lineEdit_2.text())
+        if min_volume >= max_volume:
+            QtWidgets.QApplication.beep()
             return
 
         temp_list = np.array(self.get_temperature())

@@ -36,8 +36,17 @@ class IntegratorDialog(QtWidgets.QDialog):
         self.ui.lineEdit_2.setValidator(valid)
 
     def accept(self):
-        if not self.ui.lineEdit.text():
+        # not accept when text box(es) are empty
+        if not (self.ui.lineEdit.text() and self.ui.lineEdit_2.text()):
+            QtWidgets.QApplication.beep()
             return
+
+        min_volume = float(self.ui.lineEdit.text())
+        max_volume = float(self.ui.lineEdit_2.text())
+        if min_volume >= max_volume:
+            QtWidgets.QApplication.beep()
+            return
+
         super().accept()
 
 
