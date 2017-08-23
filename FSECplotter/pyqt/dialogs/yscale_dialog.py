@@ -45,6 +45,7 @@ class YaxisScaleDialog(QtWidgets.QDialog):
         min_volume = float(self.ui.lineEdit.text())
         max_volume = float(self.ui.lineEdit_2.text())
         if min_volume >= max_volume:
+            QtWidgets.QApplication.beep()
             return
 
         super().accept()
