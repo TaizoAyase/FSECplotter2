@@ -50,6 +50,7 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.channel_spinBox.setValue(int(params['channel']))
         self.ui.flowrate_spinBox.setValue(float(params['flowrate']))
         self.ui.linewidth_spinBox.setValue(float(params['linewidth']))
+        self.ui.x_axis_comboBox.setCurrentIndex(int(params['x_axis']))
         self.ui.ts_gain_lineEdit.setText(str(params['ts_gain']))
         self.ui.ts_tm_lineEdit.setText(str(params['ts_tm']))
         self.ui.figure_dpi_lineEdit.setText(str(params['figure_dpi']))
@@ -71,5 +72,6 @@ class PreferenceDialog(QtWidgets.QDialog):
         params['use_seaborn'] = self.ui.use_seaborn_checkBox.isChecked()
         params['sns_style'] = self.ui.sns_style_comboBox.currentIndex()
         params['sns_context'] = self.ui.sns_context_comboBox.currentIndex()
+        params['x_axis'] = self.ui.x_axis_comboBox.currentIndex()
         return params
 

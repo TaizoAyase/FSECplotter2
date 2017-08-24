@@ -169,6 +169,8 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
 
+        self.timevolume_comboBox.setCurrentIndex(kwargs['x_axis'])
+
     def redraw(self):
         try:
             data = self.model.get_current_data()

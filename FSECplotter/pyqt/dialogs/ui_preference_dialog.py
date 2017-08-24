@@ -19,6 +19,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
+
 # Form implementation generated from reading ui file 'preference_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.6
@@ -112,6 +113,17 @@ class Ui_PreferenceDialog(object):
         self.label_10.setObjectName("label_10")
         self.horizontalLayout_6.addWidget(self.label_10)
         self.verticalLayout_7.addLayout(self.horizontalLayout_6)
+        self.horizontalLayout_12 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_12.setObjectName("horizontalLayout_12")
+        self.label_15 = QtWidgets.QLabel(self.plot_params)
+        self.label_15.setObjectName("label_15")
+        self.horizontalLayout_12.addWidget(self.label_15)
+        self.x_axis_comboBox = QtWidgets.QComboBox(self.plot_params)
+        self.x_axis_comboBox.setObjectName("x_axis_comboBox")
+        self.x_axis_comboBox.addItem("")
+        self.x_axis_comboBox.addItem("")
+        self.horizontalLayout_12.addWidget(self.x_axis_comboBox)
+        self.verticalLayout_7.addLayout(self.horizontalLayout_12)
         self.verticalLayout_5.addWidget(self.plot_params)
         spacerItem = QtWidgets.QSpacerItem(20, 157, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.verticalLayout_5.addItem(spacerItem)
@@ -231,8 +243,9 @@ class Ui_PreferenceDialog(object):
         self.label_4.setBuddy(self.ts_tm_lineEdit)
 
         self.retranslateUi(PreferenceDialog)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.detector_comboBox.setCurrentIndex(1)
+        self.x_axis_comboBox.setCurrentIndex(0)
         self.use_seaborn_checkBox.toggled['bool'].connect(self.seaborn_style_groupBox.setEnabled)
         QtCore.QMetaObject.connectSlotsByName(PreferenceDialog)
 
@@ -249,6 +262,9 @@ class Ui_PreferenceDialog(object):
         self.plot_params.setTitle(_translate("PreferenceDialog", "Plot params"))
         self.label_9.setText(_translate("PreferenceDialog", "Default line width:"))
         self.label_10.setText(_translate("PreferenceDialog", "pt"))
+        self.label_15.setText(_translate("PreferenceDialog", "x-axis:"))
+        self.x_axis_comboBox.setItemText(0, _translate("PreferenceDialog", "Volume [mL]"))
+        self.x_axis_comboBox.setItemText(1, _translate("PreferenceDialog", "Time [min]"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.default_tab), _translate("PreferenceDialog", "Default Parameters"))
         self.label_12.setText(_translate("PreferenceDialog", "These parameters are enabled when app is restared."))
         self.label_11.setText(_translate("PreferenceDialog", "Default figure dpi: "))

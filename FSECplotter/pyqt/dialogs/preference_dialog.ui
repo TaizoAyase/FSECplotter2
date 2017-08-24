@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="default_tab">
       <attribute name="title">
@@ -197,6 +197,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
               <property name="text">
                <string>pt</string>
               </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>x-axis:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="x_axis_comboBox">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Volume [mL]</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Time [min]</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
