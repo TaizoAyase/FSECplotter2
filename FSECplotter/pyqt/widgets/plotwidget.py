@@ -174,7 +174,7 @@ class PlotArea(QtWidgets.QWidget):
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
                                 self.ylim_max_box.text())
         self.linewidth = self.linewidth_spinbox.value()
-        self.figcanvas.plot_fig(data, self.linewidth)
+        self.figcanvas.plot_fig(data, self.linewidth, volume_x=True)
         self.modified = True
 
     def save_figure(self):

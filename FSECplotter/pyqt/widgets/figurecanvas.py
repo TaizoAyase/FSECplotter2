@@ -68,7 +68,7 @@ class Figurecanvas(FigureCanvas):
         # set color map object
         self.__cm = matplotlib.cm.gist_rainbow
 
-    def plot_fig(self, current_data, linewidth, volume_x=True):
+    def plot_fig(self, current_data, linewidth, volume_x):
         self.axes.clear()
         if not self.seaborn:
             # this is omitted when using seaborn
