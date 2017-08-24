@@ -104,6 +104,14 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth_spinbox.setValue(self.linewidth)
         self.linewidth_spinbox_label.setBuddy(self.linewidth_spinbox)
 
+        # selection of x-axis(volume, time)
+        self.timevolume_comboBox_label = QtWidgets.QLabel("x-axis:")
+        self.timevolume_comboBox = QtWidgets.QComboBox(self)
+        self.timevolume_comboBox.addItem("")
+        self.timevolume_comboBox.setItemText(0, "Volume [mL]")
+        self.timevolume_comboBox.addItem("")
+        self.timevolume_comboBox.setItemText(1, "Time [min]")
+
         # right-hand layout
         self.horiLay1 = QtWidgets.QHBoxLayout()
         self.horiLay1.addWidget(self.xlim_min_box_label)
@@ -128,6 +136,8 @@ class PlotArea(QtWidgets.QWidget):
             QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horiLay4.addWidget(self.linewidth_spinbox_label)
         self.horiLay4.addWidget(self.linewidth_spinbox)
+        self.horiLay4.addWidget(self.timevolume_comboBox_label)
+        self.horiLay4.addWidget(self.timevolume_comboBox)
         self.horiLay4.addItem(spacerItem)
 
         self.buttons_layout = QtWidgets.QVBoxLayout()
