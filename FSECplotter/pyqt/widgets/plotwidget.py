@@ -104,6 +104,14 @@ class PlotArea(QtWidgets.QWidget):
         self.linewidth_spinbox.setValue(self.linewidth)
         self.linewidth_spinbox_label.setBuddy(self.linewidth_spinbox)
 
+        # selection of x-axis(volume, time)
+        self.timevolume_comboBox_label = QtWidgets.QLabel("x-axis:")
+        self.timevolume_comboBox = QtWidgets.QComboBox(self)
+        self.timevolume_comboBox.addItem("")
+        self.timevolume_comboBox.setItemText(0, "Volume [mL]")
+        self.timevolume_comboBox.addItem("")
+        self.timevolume_comboBox.setItemText(1, "Time [min]")
+
         # right-hand layout
         self.horiLay1 = QtWidgets.QHBoxLayout()
         self.horiLay1.addWidget(self.xlim_min_box_label)
@@ -128,6 +136,8 @@ class PlotArea(QtWidgets.QWidget):
             QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horiLay4.addWidget(self.linewidth_spinbox_label)
         self.horiLay4.addWidget(self.linewidth_spinbox)
+        self.horiLay4.addWidget(self.timevolume_comboBox_label)
+        self.horiLay4.addWidget(self.timevolume_comboBox)
         self.horiLay4.addItem(spacerItem)
 
         self.buttons_layout = QtWidgets.QVBoxLayout()
@@ -150,14 +160,20 @@ class PlotArea(QtWidgets.QWidget):
         self.ylim_min_box.textChanged.connect(self.redraw)
         self.ylim_max_box.textChanged.connect(self.redraw)
         self.linewidth_spinbox.valueChanged.connect(self.redraw)
+        self.timevolume_comboBox.activated.connect(self.redraw)
         self.model.itemChanged.connect(self.redraw)
 
         # modified flag
         self.modified = False
 
     def updateDefaultParameters(self, **kwargs):
+        self.xlim_min_box.setText(str(kwargs['x_min']))
+        self.xlim_max_box.setText(str(kwargs['x_max']))
+
         self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
+
+        self.timevolume_comboBox.setCurrentIndex(kwargs['x_axis'])
 
     def redraw(self):
         try:
@@ -169,12 +185,14 @@ class PlotArea(QtWidgets.QWidget):
                                           QtWidgets.QMessageBox.Ok)
             return
 
+        xlab = True if self.timevolume_comboBox.currentIndex() == 0 else False
+
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
                                 self.ylim_max_box.text())
         self.linewidth = self.linewidth_spinbox.value()
-        self.figcanvas.plot_fig(data, self.linewidth)
+        self.figcanvas.plot_fig(data, self.linewidth, volume_x=xlab)
         self.modified = True
 
     def save_figure(self):

@@ -37,7 +37,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    <item>
     <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="default_tab">
       <attribute name="title">
@@ -168,6 +168,59 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_10">
+            <item>
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>x-min default: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="x_min_lineEdit">
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>[mL/min]</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_11">
+            <item>
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>x-max default:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="x_max_lineEdit">
+              <property name="text">
+               <string>30</string>
+              </property>
+              <property name="clearButtonEnabled">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_19">
+              <property name="text">
+               <string>[mL/min]</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_6">
             <item>
              <widget class="QLabel" name="label_9">
@@ -197,6 +250,34 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
               <property name="text">
                <string>pt</string>
               </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>x-axis:</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="x_axis_comboBox">
+              <property name="currentIndex">
+               <number>0</number>
+              </property>
+              <item>
+               <property name="text">
+                <string>Volume [mL]</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>Time [min]</string>
+               </property>
+              </item>
              </widget>
             </item>
            </layout>
