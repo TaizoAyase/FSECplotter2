@@ -160,6 +160,7 @@ class PlotArea(QtWidgets.QWidget):
         self.ylim_min_box.textChanged.connect(self.redraw)
         self.ylim_max_box.textChanged.connect(self.redraw)
         self.linewidth_spinbox.valueChanged.connect(self.redraw)
+        self.timevolume_comboBox.activated.connect(self.redraw)
         self.model.itemChanged.connect(self.redraw)
 
         # modified flag
