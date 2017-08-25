@@ -167,6 +167,9 @@ class PlotArea(QtWidgets.QWidget):
         self.modified = False
 
     def updateDefaultParameters(self, **kwargs):
+        self.xlim_min_box.setText(str(kwargs['x_min']))
+        self.xlim_max_box.setText(str(kwargs['x_max']))
+
         self.linewidth = float(kwargs['linewidth'])
         self.linewidth_spinbox.setValue(self.linewidth)
 
