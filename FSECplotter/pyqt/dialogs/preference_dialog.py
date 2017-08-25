@@ -37,6 +37,8 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.buttonBox.rejected.connect(self.reject)
 
         double_valid = QtGui.QDoubleValidator()
+        self.ui.x_min_lineEdit.setValidator(double_valid)
+        self.ui.x_max_lineEdit.setValidator(double_valid)
         self.ui.ts_gain_lineEdit.setValidator(double_valid)
         self.ui.ts_tm_lineEdit.setValidator(double_valid)
 
