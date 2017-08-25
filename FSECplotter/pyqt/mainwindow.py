@@ -48,7 +48,9 @@ DEFAULTS = {
     'use_seaborn': 0,
     'sns_style': 0,
     'sns_context': 0,
-    'x_axis': 0
+    'x_axis': 0,
+    'x_min': 0,
+    'x_max': 30
 }
 
 class MainWindow(QtWidgets.QMainWindow):
