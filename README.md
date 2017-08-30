@@ -25,6 +25,7 @@ This setting was enabled when the app is restarted.
 How to download package (only for Windows or MacOSX)
 ------------------------------------------------------
 0. Download appropriate package from [releases tab](https://github.com/TaizoAyase/FSECplotter2/releases)
+ + These packages are built wiht 64-bit python, so the binary for MacOSX will only work on MacOSX 10.6+.
 1. Double click the downloaded
 
 If you cannot launch from downloaded package, please try to launch from source code (below).
