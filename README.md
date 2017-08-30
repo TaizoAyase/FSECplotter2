@@ -14,20 +14,31 @@ Features
 + Peak integration (Tools->Peak integration).
 + Max peak table (Tools->Peak table).
 + The line color and line width can be changed manually.
++ The unit of X-axis can be selected from [Time(min)] and [Volume(mL)]
 + The style and context setting in the [seaborn package](https://stanford.edu/~mwaskom/software/seaborn/index.html) is supported.
 Check "use seaborn package" in the Preference->Figure Canvas Setting, and select the style and context.
 This setting was enabled when the app is restarted.
 + The csv data table (long format) can be exported.
 + You can extend the file parser with your own parser for another HPLC file (See below).
 
-How to install (for OSX users)
-----------------
+
+How to download package (only for Windows or MacOSX)
+------------------------------------------------------
+0. Download appropriate package from [releases tab](https://github.com/TaizoAyase/FSECplotter2/releases)
+1. Double click the downloaded
+
+If you cannot launch from downloaded package, please try to launch from source code (below).
+
+
+How to launch from source code (for OSX users)
+-----------------------------------------------
 0. Install [homebrew](http://brew.sh/).
 1. Execute `brew install python3 qt5 pyqt5`.
 2. Execute `pip3 install -r requirements.txt`.
 
-How to install (for Windows users)
-----------------
+
+How to launch from source code (for Windows users)
+---------------------------------------------------
 0. Install python3.
 1. Execute `pip3 install -r requirements.txt`.
 2. Install [PyQt5 for windows](https://riverbankcomputing.com/software/pyqt/download5) binary package.
