@@ -47,7 +47,10 @@ DEFAULTS = {
     'figure_dpi': 100,
     'use_seaborn': 0,
     'sns_style': 0,
-    'sns_context': 0
+    'sns_context': 0,
+    'x_axis': 0,
+    'x_min': 0,
+    'x_max': 30
 }
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -124,9 +127,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.redrawAction.triggered.connect(self.plotarea.redraw)
 
         # x-axis
-        self.selectVolume = QtWidgets.QAction("Volume [mL]", self, checkable=True)
-        self.selectVolume.setChecked(True)
-        self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
+        #self.selectVolume = QtWidgets.QAction("Volume [mL]", self, checkable=True)
+        #self.selectVolume.setChecked(True)
+        #self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
 
         # tools menu
         # fsec-ts
@@ -174,15 +177,12 @@ class MainWindow(QtWidgets.QMainWindow):
         # edit menu
         self.editMenu = self.menuBar().addMenu("Edit")
         self.editMenu.addAction(self.redrawAction)
-        self.editsubMenu = self.editMenu.addMenu("X-axis")
-        ag = QtWidgets.QActionGroup(self, exclusive=True)
-        ag.addAction(self.selectVolume)
-        ag.addAction(self.selectTime)
-        self.editsubMenu.addAction(self.selectVolume)
-        self.editsubMenu.addAction(self.selectTime)
-
-        self.editsubMenu.addAction(self.selectVolume)
-        self.editsubMenu.addAction(self.selectTime)
+        #self.editsubMenu = self.editMenu.addMenu("X-axis")
+        #ag = QtWidgets.QActionGroup(self, exclusive=True)
+        #ag.addAction(self.selectVolume)
+        #ag.addAction(self.selectTime)
+        #self.editsubMenu.addAction(self.selectVolume)
+        #self.editsubMenu.addAction(self.selectTime)
 
         self.editMenu.addSeparator()
         self.editMenu.addAction(self.preferenceAction)

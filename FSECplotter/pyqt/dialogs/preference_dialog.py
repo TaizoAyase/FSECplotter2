@@ -37,6 +37,8 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.buttonBox.rejected.connect(self.reject)
 
         double_valid = QtGui.QDoubleValidator()
+        self.ui.x_min_lineEdit.setValidator(double_valid)
+        self.ui.x_max_lineEdit.setValidator(double_valid)
         self.ui.ts_gain_lineEdit.setValidator(double_valid)
         self.ui.ts_tm_lineEdit.setValidator(double_valid)
 
@@ -50,6 +52,9 @@ class PreferenceDialog(QtWidgets.QDialog):
         self.ui.channel_spinBox.setValue(int(params['channel']))
         self.ui.flowrate_spinBox.setValue(float(params['flowrate']))
         self.ui.linewidth_spinBox.setValue(float(params['linewidth']))
+        self.ui.x_min_lineEdit.setText(str(params['x_min']))
+        self.ui.x_max_lineEdit.setText(str(params['x_max']))
+        self.ui.x_axis_comboBox.setCurrentIndex(int(params['x_axis']))
         self.ui.ts_gain_lineEdit.setText(str(params['ts_gain']))
         self.ui.ts_tm_lineEdit.setText(str(params['ts_tm']))
         self.ui.figure_dpi_lineEdit.setText(str(params['figure_dpi']))
@@ -64,6 +69,8 @@ class PreferenceDialog(QtWidgets.QDialog):
         params['detector'] = self.ui.detector_comboBox.currentIndex()
         params['channel'] = self.ui.channel_spinBox.value()
         params['flowrate'] = self.ui.flowrate_spinBox.value()
+        params['x_min'] = self.ui.x_min_lineEdit.text()
+        params['x_max'] = self.ui.x_max_lineEdit.text()
         params['linewidth'] = self.ui.linewidth_spinBox.value()
         params['ts_gain'] = self.ui.ts_gain_lineEdit.text()
         params['ts_tm'] = self.ui.ts_tm_lineEdit.text()
@@ -71,5 +78,6 @@ class PreferenceDialog(QtWidgets.QDialog):
         params['use_seaborn'] = self.ui.use_seaborn_checkBox.isChecked()
         params['sns_style'] = self.ui.sns_style_comboBox.currentIndex()
         params['sns_context'] = self.ui.sns_context_comboBox.currentIndex()
+        params['x_axis'] = self.ui.x_axis_comboBox.currentIndex()
         return params
 

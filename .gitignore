@@ -16,3 +16,5 @@ cover/
 .python-version
 .*.swp
 versions/
+*.sublime-project
+*.sublime-workspace
