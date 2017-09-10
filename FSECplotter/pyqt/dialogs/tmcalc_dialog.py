@@ -82,7 +82,7 @@ class TmCalcDialog(QtWidgets.QDialog):
             return
 
         temp_list = np.array(self.get_temperature())
-        scale_factor = calc_yscale_factor(self.model, min_vol, max_vol)
+        scale_factor = calc_yscale_factor(self.model, min_volume, max_volume)
 
         tmplot_dialog = TmFitDialog(self.model, self)
         try:
@@ -95,6 +95,7 @@ class TmCalcDialog(QtWidgets.QDialog):
     # private
 
     def __guess_temp(self, f):
+        # find all float numbers from the given file name
         matched = re.findall('\d+\.?\d*', f)
 
         if not matched:

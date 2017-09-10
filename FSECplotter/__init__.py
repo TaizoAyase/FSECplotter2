@@ -21,40 +21,4 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import numpy as np
-
-
-def calc_yscale_factor(model, min_vol, max_vol):
-    # if the same values was selected for min/max,
-    # add 0.1 to max to abort app. down
-    if min_vol == max_vol:
-        max_vol += 0.1
-
-    # select enabled data
-    data = model.get_current_data()
-    data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
-
-    # get nearest indices to the min/max value
-    min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
-    max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
-
-    max_val_ary = [
-        max(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
-        ]
-
-    norm_val = max(max_val_ary)
-    scale_factor = max_val_ary / norm_val
-    return scale_factor
-
-
-def get_enabled_filename(model):
-    data = model.get_current_data()
-    ary = []
-    for f, flag in zip(data['filenames'], data['enable_flags']):
-        if not flag:
-            continue
-        ary.append(f)
-
-    del data
-    return ary
-
+from FSECplotter.utils import *
