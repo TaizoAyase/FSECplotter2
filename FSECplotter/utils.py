@@ -33,6 +33,12 @@ def calc_yscale_factor(model, min_vol, max_vol):
     # select enabled data
     data = model.get_current_data()
     data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
+    num_data = len(data['filenames'])
+
+    # convert x-axis value to volume
+    for i in range(num_data):
+        x = data['data'][i][:, 0]
+        x *= data['flowrate'][i]
 
     # get nearest indices to the min/max value
     min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
