@@ -31,8 +31,14 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 
+
 # FigureCanvas inherits QWidget
 class Figurecanvas(FigureCanvas):
+    """
+    This class receives the data from model, and plots the figure.
+    The class does not have the model pointer.
+    plot_fig method gets the dictionary of data from PlotArea widgets.
+    """
 
     SEABORN_STYLE = ['darkgrid', 'whitegrid', 'dark', 'white', 'ticks']
     SEABORN_CONTEXT = [None, 'paper', 'notebook', 'talk', 'poster']

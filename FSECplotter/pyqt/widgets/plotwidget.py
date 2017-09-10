@@ -30,6 +30,12 @@ import time
 
 # FigureCanvas inherits QWidget
 class PlotArea(QtWidgets.QWidget):
+    """
+    This class defines the interface of the plot area.
+    And this class has the model of dataset.
+    The actual data will be handed to the Figurecanvas class,
+    and will be plotted in the Figurecanvas class.
+    """
 
     updateParameters = QtCore.pyqtSlot()
 
@@ -166,6 +172,9 @@ class PlotArea(QtWidgets.QWidget):
         # modified flag
         self.modified = False
 
+        # update flag for x-axis unit setting
+        self.update_xlab_flag()
+
     def updateDefaultParameters(self, **kwargs):
         self.xlim_min_box.setText(str(kwargs['x_min']))
         self.xlim_max_box.setText(str(kwargs['x_max']))
@@ -185,14 +194,15 @@ class PlotArea(QtWidgets.QWidget):
                                           QtWidgets.QMessageBox.Ok)
             return
 
-        xlab = True if self.timevolume_comboBox.currentIndex() == 0 else False
+        self.xlab = True if self.timevolume_comboBox.currentIndex() == 0 else False
 
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
                                 self.ylim_max_box.text())
         self.linewidth = self.linewidth_spinbox.value()
-        self.figcanvas.plot_fig(data, self.linewidth, volume_x=xlab)
+        self.update_xlab_flag()
+        self.figcanvas.plot_fig(data, self.linewidth, volume_x=self.xlab)
         self.modified = True
 
     def save_figure(self):
@@ -246,7 +256,11 @@ class PlotArea(QtWidgets.QWidget):
 
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
-        self.figcanvas.plot_fig(data, self.linewidth)
+        self.update_xlab_flag()
+        self.figcanvas.plot_fig(data, self.linewidth, volume_x=self.xlab)
+
+    def update_xlab_flag(self):
+        self.xlab = True if self.timevolume_comboBox.currentIndex() == 0 else False
 
 
 if __name__ == '__main__':
