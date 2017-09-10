@@ -30,6 +30,12 @@ import time
 
 # FigureCanvas inherits QWidget
 class PlotArea(QtWidgets.QWidget):
+    """
+    This class defines the interface of the plot area.
+    And this class has the model of dataset.
+    The actual data will be handed to the Figurecanvas class,
+    and will be plotted in the Figurecanvas class.
+    """
 
     updateParameters = QtCore.pyqtSlot()
 
