@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # Form implementation generated from reading ui file 'tmcalc_dialog.ui'
 #
-# Created by: PyQt5 UI code generator 5.5
+# Created by: PyQt5 UI code generator 5.6
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -31,13 +31,27 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_TmCalcDialog(object):
     def setupUi(self, TmCalcDialog):
         TmCalcDialog.setObjectName("TmCalcDialog")
-        TmCalcDialog.resize(347, 487)
-        self.verticalLayout = QtWidgets.QVBoxLayout(TmCalcDialog)
+        TmCalcDialog.resize(455, 493)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout(TmCalcDialog)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.treeWidget = QtWidgets.QTreeWidget(TmCalcDialog)
         self.treeWidget.setObjectName("treeWidget")
         self.treeWidget.headerItem().setText(0, "1")
         self.verticalLayout.addWidget(self.treeWidget)
+        self.horizontalLayout_6 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.removeFileExtensionCheckBox = QtWidgets.QCheckBox(TmCalcDialog)
+        self.removeFileExtensionCheckBox.setChecked(True)
+        self.removeFileExtensionCheckBox.setObjectName("removeFileExtensionCheckBox")
+        self.horizontalLayout_6.addWidget(self.removeFileExtensionCheckBox)
+        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem)
+        self.updateListButton = QtWidgets.QPushButton(TmCalcDialog)
+        self.updateListButton.setObjectName("updateListButton")
+        self.horizontalLayout_6.addWidget(self.updateListButton)
+        self.verticalLayout.addLayout(self.horizontalLayout_6)
         self.label_7 = QtWidgets.QLabel(TmCalcDialog)
         self.label_7.setScaledContents(False)
         self.label_7.setWordWrap(True)
@@ -45,6 +59,8 @@ class Ui_TmCalcDialog(object):
         self.verticalLayout.addWidget(self.label_7)
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem1)
         self.label_4 = QtWidgets.QLabel(TmCalcDialog)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_4.addWidget(self.label_4)
@@ -55,13 +71,13 @@ class Ui_TmCalcDialog(object):
         self.set_temp_button.setObjectName("set_temp_button")
         self.horizontalLayout_4.addWidget(self.set_temp_button)
         self.verticalLayout.addLayout(self.horizontalLayout_4)
-        spacerItem = QtWidgets.QSpacerItem(20, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout.addItem(spacerItem)
         self.label = QtWidgets.QLabel(TmCalcDialog)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
+        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem2)
         self.label_2 = QtWidgets.QLabel(TmCalcDialog)
         self.label_2.setObjectName("label_2")
         self.horizontalLayout.addWidget(self.label_2)
@@ -74,6 +90,8 @@ class Ui_TmCalcDialog(object):
         self.verticalLayout.addLayout(self.horizontalLayout)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        spacerItem3 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem3)
         self.label_5 = QtWidgets.QLabel(TmCalcDialog)
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_2.addWidget(self.label_5)
@@ -89,9 +107,13 @@ class Ui_TmCalcDialog(object):
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout.addWidget(self.buttonBox)
+        self.verticalLayout_2.addLayout(self.verticalLayout)
+        self.treeWidget.raise_()
+        self.buttonBox.raise_()
         self.label.raise_()
         self.label_7.raise_()
-        self.lineEdit_temp.raise_()
+        self.removeFileExtensionCheckBox.raise_()
+        self.updateListButton.raise_()
         self.label_2.setBuddy(self.lineEdit)
         self.label_3.setBuddy(self.lineEdit)
         self.label_5.setBuddy(self.lineEdit)
@@ -105,6 +127,8 @@ class Ui_TmCalcDialog(object):
     def retranslateUi(self, TmCalcDialog):
         _translate = QtCore.QCoreApplication.translate
         TmCalcDialog.setWindowTitle(_translate("TmCalcDialog", "Tm calculation"))
+        self.removeFileExtensionCheckBox.setText(_translate("TmCalcDialog", "Remove the last number in filename"))
+        self.updateListButton.setText(_translate("TmCalcDialog", "update list"))
         self.label_7.setText(_translate("TmCalcDialog", "Select the file, enter the temperature, and click set button."))
         self.label_4.setText(_translate("TmCalcDialog", "Temperature"))
         self.set_temp_button.setText(_translate("TmCalcDialog", "Set"))

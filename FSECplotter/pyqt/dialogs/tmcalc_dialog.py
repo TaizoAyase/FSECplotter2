@@ -27,6 +27,7 @@ from FSECplotter import calc_yscale_factor, get_enabled_filename
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
 import numpy as np
 import re
+import os
 
 class TmCalcDialog(QtWidgets.QDialog):
 
@@ -94,13 +95,15 @@ class TmCalcDialog(QtWidgets.QDialog):
 
     # private
 
-    def __guess_temp(self, f):
+    def __guess_temp(self, filename):
         # TODO: first, replace the last (_\d+) to empty string ""
         # TODO: add check-box to select 
         # whether removing the suffix of the filename
+        basename = os.path.splitext(filename)[0]
+        rep_basename = re.sub(r'_\d+$', basename)
 
-        # find all float numbers from the given file name
-        matched = re.findall('\d+\.?\d*', f)
+        # find all int/float numbers from the given file name
+        matched = re.findall(r'\d+\.?\d*', rep_basename)
 
         if not matched:
             return ""
