@@ -47,14 +47,17 @@ class TmCalcDialog(QtWidgets.QDialog):
         self.filenames = get_enabled_filename(self.model)
         for f in self.filenames:
             # self.ui.comboBox.addItem(f)
-            temp = self.__guess_temp(f)
+            temp = self.guess_temperature_from(f,
+                self.ui.removeFileExtensionCheckBox.isChecked())
             item = QtWidgets.QTreeWidgetItem([f, temp], 0)
             self.ui.treeWidget.addTopLevelItem(item)
 
         self.ui.treeWidget.setColumnWidth(0, 150)
         self.ui.treeWidget.setColumnWidth(1, 100)
 
+        # signal slot connection
         self.ui.set_temp_button.clicked.connect(self.set_temperature)
+        self.ui.updateListButton.clicked.connect(self.update_filelist)
 
     def set_temperature(self):
         item = self.ui.treeWidget.selectedItems()[0]
@@ -69,6 +72,22 @@ class TmCalcDialog(QtWidgets.QDialog):
             list_.append(float(temp))
 
         return list_
+
+    def update_filelist(self):
+        n = len(self.filenames)
+        # TODO: debug
+        for i in range(n):
+            # TODO: improper item selection
+            item = self.ui.treeWidget.itemAt(1, i)
+            print(item)
+            print(item.text(0), item.text(1))
+            f = self.filenames[i]
+            temp = self.guess_temperature_from(f,
+                self.ui.removeFileExtensionCheckBox.isChecked())
+            print(f)
+            print(temp)
+            # TODO: coordinate is wrong
+            item.setData(1, 0, temp)
 
     def accept(self):
         # not accept when text box(es) are empty
@@ -95,15 +114,16 @@ class TmCalcDialog(QtWidgets.QDialog):
 
     # private
 
-    def __guess_temp(self, filename):
-        # TODO: first, replace the last (_\d+) to empty string ""
-        # TODO: add check-box to select 
-        # whether removing the suffix of the filename
+    def guess_temperature_from(self, filename, rm_num=True):
+        # remove file extensions
         basename = os.path.splitext(filename)[0]
-        rep_basename = re.sub(r'_\d+$', basename)
+
+        # remove the last number if removeFileExtensionCheckBox is checked
+        if rm_num:
+            basename = re.sub(r'_\d+$', '', basename)
 
         # find all int/float numbers from the given file name
-        matched = re.findall(r'\d+\.?\d*', rep_basename)
+        matched = re.findall(r'\d+\.?\d*', basename)
 
         if not matched:
             return ""
