@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter import calc_yscale_factor, get_enabled_filename
+from FSECplotter import *
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
@@ -289,7 +289,8 @@ class MainWindow(QtWidgets.QMainWindow):
             min_volume = integrator_dialog.ui.lineEdit.text()
             max_volume = integrator_dialog.ui.lineEdit_2.text()
 
-            int_ary = self.__peak_integrate(float(min_volume), float(max_volume))
+            int_ary = peak_integrate(self.treeview.model,
+                float(min_volume), float(max_volume))
             plot_dialog = IntegratePlotDialog(self)
             plot_dialog.plot(filenames, int_ary)
             plot_dialog.exec_()
@@ -305,39 +306,6 @@ class MainWindow(QtWidgets.QMainWindow):
             self.defaults = dialog.get_params()
             self.plotarea.updateDefaultParameters(**self.defaults)
             self.treeview.model.updateDefaultParameters(**self.defaults)
-
-    # private
-
-    # TODO: this method is also refering the time for x-axis
-    # FIXME: move this method to utils.py
-    def __peak_integrate(self, min_vol, max_vol):
-        # select enebled data
-        data = self.treeview.model.get_current_data()
-        data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
-        num_data = len(data['filenames'])
-
-        # convert x-axis value to volume
-        for i in range(num_data):
-            x = data['data'][i][:, 0]
-            x *= data['flowrate'][i]
-
-        # get nearest indices to the min/max value
-        min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
-        max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
-
-        delx_val_ary = [
-            d[min_x+1:max_x+1, 0] - d[min_x:max_x, 0] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
-        ]
-        y_val_ary = [
-            d[min_x:max_x, 1] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
-        ]
-
-        # sum over the product of (delta * y) for each data
-        prod_val = [
-            sum(delta * val) for delta, val in zip(delx_val_ary, y_val_ary)
-        ]
-
-        return prod_val
 
 
 if __name__ == '__main__':
