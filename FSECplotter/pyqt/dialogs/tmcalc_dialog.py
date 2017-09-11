@@ -95,6 +95,10 @@ class TmCalcDialog(QtWidgets.QDialog):
     # private
 
     def __guess_temp(self, f):
+        # TODO: first, replace the last (_\d+) to empty string ""
+        # TODO: add check-box to select 
+        # whether removing the suffix of the filename
+
         # find all float numbers from the given file name
         matched = re.findall('\d+\.?\d*', f)
 
