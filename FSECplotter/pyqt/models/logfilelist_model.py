@@ -171,6 +171,7 @@ Flow rate will be set %.2f ml/min.''' % (abspath, self.def_flowrate)).strip()
     def get_current_data(self):
         data = {}
         data['total_data'] = self.rowCount()
+        data['id'] = []
         data['filenames'] = []
         data['flowrate'] = []
         data['data'] = []
@@ -201,6 +202,7 @@ In the file '%s', Detector '%s' and Channel '%s' is not exist.\
             d = data_table.copy()
             #d[:, 0] = data_table[:, 0] * flowrate
             
+            data['id'].append(log_id)
             data['data'].append(d)
             data['filenames'].append(filename)
             data['flowrate'].append(flowrate)
