@@ -42,8 +42,6 @@ class TmCalcDialog(QtWidgets.QDialog):
         self.ui.lineEdit_2.setValidator(valid)
         self.ui.lineEdit_temp.setValidator(valid)
 
-        self.ui.treeWidget.setHeaderLabels(["Filename", "Temperature"])
-
         self.filenames = get_enabled_filename(self.model)
         for f in self.filenames:
             # self.ui.comboBox.addItem(f)
@@ -51,9 +49,6 @@ class TmCalcDialog(QtWidgets.QDialog):
                 self.ui.removeFileExtensionCheckBox.isChecked())
             item = QtWidgets.QTreeWidgetItem([f, temp], 0)
             self.ui.treeWidget.addTopLevelItem(item)
-
-        self.ui.treeWidget.setColumnWidth(0, 150)
-        self.ui.treeWidget.setColumnWidth(1, 100)
 
         # signal slot connection
         self.ui.set_temp_button.clicked.connect(self.set_temperature)

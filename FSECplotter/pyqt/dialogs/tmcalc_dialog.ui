@@ -26,8 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>455</width>
-    <height>493</height>
+    <width>437</width>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,9 +38,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QTreeWidget" name="treeWidget">
+       <property name="columnCount">
+        <number>2</number>
+       </property>
+       <attribute name="headerDefaultSectionSize">
+        <number>280</number>
+       </attribute>
+       <attribute name="headerMinimumSectionSize">
+        <number>280</number>
+       </attribute>
+       <attribute name="headerShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
        <column>
         <property name="text">
-         <string notr="true">1</string>
+         <string notr="true">Filename</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>Temperature</string>
         </property>
        </column>
       </widget>
@@ -226,12 +243,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     </layout>
    </item>
   </layout>
-  <zorder>treeWidget</zorder>
-  <zorder>buttonBox</zorder>
-  <zorder>label</zorder>
-  <zorder>label_7</zorder>
-  <zorder>removeFileExtensionCheckBox</zorder>
-  <zorder>updateListButton</zorder>
  </widget>
  <resources/>
  <connections>
