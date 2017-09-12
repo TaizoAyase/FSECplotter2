@@ -75,18 +75,12 @@ class TmCalcDialog(QtWidgets.QDialog):
 
     def update_filelist(self):
         n = len(self.filenames)
-        # TODO: debug
+
         for i in range(n):
-            # TODO: improper item selection
-            item = self.ui.treeWidget.itemAt(1, i)
-            print(item)
-            print(item.text(0), item.text(1))
+            item = self.ui.treeWidget.topLevelItem(i)
             f = self.filenames[i]
             temp = self.guess_temperature_from(f,
                 self.ui.removeFileExtensionCheckBox.isChecked())
-            print(f)
-            print(temp)
-            # TODO: coordinate is wrong
             item.setData(1, 0, temp)
 
     def accept(self):
