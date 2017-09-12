@@ -79,10 +79,15 @@ class IntegratePlotDialog(QtWidgets.QDialog):
 
     def plot(self, filenames, values):
         x = np.arange(len(filenames))
+
         self.axes.bar(x, values, 
             align="center", 
-            width=0.4, 
-            tick_label=filenames)
+            width=0.4)
+        self.axes.set_xticklabels(filenames, rotation=45)
+
+        self.axes.set_xlabel('file ID')
+        self.axes.set_ylabel('integrated intensity')
+
         self.canvas.draw()
 
         # set values to write out csv file

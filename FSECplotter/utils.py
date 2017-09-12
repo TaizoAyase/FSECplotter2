@@ -63,3 +63,33 @@ def get_enabled_filename(model):
 
     del data
     return ary
+
+
+def peak_integrate(model, min_vol, max_vol):
+    # select enebled data
+    data = model.get_current_data()
+    data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
+    num_data = len(data['filenames'])
+
+    # convert x-axis value to volume
+    for i in range(num_data):
+        x = data['data'][i][:, 0]
+        x *= data['flowrate'][i]
+
+    # get nearest indices to the min/max value
+    min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
+    max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
+
+    delx_val_ary = [
+        d[min_x+1:max_x+1, 0] - d[min_x:max_x, 0] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+    ]
+    y_val_ary = [
+        d[min_x:max_x, 1] for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+    ]
+
+    # sum over the product of (delta * y) for each data
+    prod_val = [
+        sum(delta * val) for delta, val in zip(delx_val_ary, y_val_ary)
+    ]
+
+    return prod_val
