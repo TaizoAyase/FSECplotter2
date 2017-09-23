@@ -21,10 +21,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+APP_VERSION = '2.0.6'
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter import *
 from FSECplotter.pyqt.widgets.logfilelist import *
 from FSECplotter.pyqt.widgets.plotwidget import *
+from FSECplotter.pyqt.dialogs.about_dialog import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
 from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
@@ -37,7 +40,7 @@ import numpy as np
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
 
-APP_VERSION = '2.0.6'
+
 
 DEFAULTS = {
     'detector': 1,
@@ -320,7 +323,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.treeview.model.updateDefaultParameters(**self.defaults)
 
     def aboutApp(self):
-        pass
+        dialog = AboutDialog(self)
+        if dialog.exec_():
+            pass
 
 
 if __name__ == '__main__':
