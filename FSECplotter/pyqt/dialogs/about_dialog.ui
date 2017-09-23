@@ -59,7 +59,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
      <item>
       <widget class="QLabel" name="labelBodyText">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Developed by @Taizo_Ayase 2015-2017&lt;/p&gt;&lt;p&gt;Github: https://github.com/TaizoAyase/FSECplotter2&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Developed by @Taizo_Ayase 2015-2017&lt;/p&gt;&lt;p&gt;Github: &lt;a href=&quot;https://github.com/TaizoAyase/FSECplotter2&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;https://github.com/TaizoAyase/FSECplotter2&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="openExternalLinks">
+        <bool>true</bool>
+       </property>
+       <property name="textInteractionFlags">
+        <set>Qt::TextBrowserInteraction</set>
        </property>
       </widget>
      </item>

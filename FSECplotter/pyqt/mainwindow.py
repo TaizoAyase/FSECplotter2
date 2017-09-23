@@ -21,7 +21,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+ORG_NAME = "TaizoAyase" # temporary org. name
+APP_NAME = "FSECplotter2"
 APP_VERSION = '2.0.6'
+
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter import *
@@ -36,10 +39,6 @@ from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
 from FSECplotter.pyqt.dialogs.peaktable_dialog import *
 import numpy as np
-
-ORG_NAME = "TaizoAyase" # temporary org. name
-APP_NAME = "FSECplotter2"
-
 
 
 DEFAULTS = {

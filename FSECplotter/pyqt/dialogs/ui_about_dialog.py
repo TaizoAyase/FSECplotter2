@@ -45,6 +45,8 @@ class Ui_AboutDialog(object):
         self.labelVersion.setObjectName("labelVersion")
         self.verticalLayout.addWidget(self.labelVersion)
         self.labelBodyText = QtWidgets.QLabel(AboutDialog)
+        self.labelBodyText.setOpenExternalLinks(True)
+        self.labelBodyText.setTextInteractionFlags(QtCore.Qt.TextBrowserInteraction)
         self.labelBodyText.setObjectName("labelBodyText")
         self.verticalLayout.addWidget(self.labelBodyText)
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -57,5 +59,5 @@ class Ui_AboutDialog(object):
         AboutDialog.setWindowTitle(_translate("AboutDialog", "Dialog"))
         self.labelAppName.setText(_translate("AboutDialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:36pt;\">FSECplotter2</span></p></body></html>"))
         self.labelVersion.setText(_translate("AboutDialog", "<html><head/><body><p align=\"right\"><span style=\" font-size:18pt;\">version XXX</span></p></body></html>"))
-        self.labelBodyText.setText(_translate("AboutDialog", "<html><head/><body><p>Developed by @Taizo_Ayase 2015-2017</p><p>Github: https://github.com/TaizoAyase/FSECplotter2</p></body></html>"))
+        self.labelBodyText.setText(_translate("AboutDialog", "<html><head/><body><p>Developed by @Taizo_Ayase 2015-2017</p><p>Github: <a href=\"https://github.com/TaizoAyase/FSECplotter2\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/TaizoAyase/FSECplotter2</span></a></p></body></html>"))
 
