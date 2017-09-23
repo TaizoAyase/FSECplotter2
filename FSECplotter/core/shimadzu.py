@@ -21,13 +21,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from __future__ import print_function
-from FSECplotter.core.logfile import Logfile, LogfileError
 
-import numpy as np
-import codecs
 import re
 import os
+import codecs
+
+import numpy as np
+
+from FSECplotter.core import Logfile, LogfileError
 
 
 class ShimadzuLogFile(Logfile):

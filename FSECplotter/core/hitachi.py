@@ -21,10 +21,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from __future__ import print_function
-from FSECplotter.core.logfile import Logfile
 
 import numpy as np
+
+from FSECplotter.core import Logfile
 
 
 class HitachiLogFile(Logfile):

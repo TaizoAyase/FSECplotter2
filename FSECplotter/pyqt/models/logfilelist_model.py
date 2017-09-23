@@ -26,8 +26,8 @@ import string
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from FSECplotter.core.factory import LogfileFactory
-from FSECplotter.core.shimadzu import NoSectionError, NoMatchedFlowRateError
+from FSECplotter.core import LogfileFactory
+from FSECplotter.core import NoSectionError, NoMatchedFlowRateError
 
 # list background color
 COLOR_LIST = [

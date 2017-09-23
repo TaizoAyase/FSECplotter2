@@ -23,8 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from FSECplotter.pyqt.models.logfilelist_model import *
-from FSECplotter.core.logfile import LogfileError
-from FSECplotter.core.shimadzu import NoMatchedFlowRateError, NoSectionError
+from FSECplotter.core import LogfileError
+from FSECplotter.core import NoMatchedFlowRateError, NoSectionError
 import platform
 import os
 
