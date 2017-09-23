@@ -31,7 +31,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>FSECplotter2</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>

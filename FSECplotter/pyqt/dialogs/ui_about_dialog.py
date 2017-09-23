@@ -56,7 +56,7 @@ class Ui_AboutDialog(object):
 
     def retranslateUi(self, AboutDialog):
         _translate = QtCore.QCoreApplication.translate
-        AboutDialog.setWindowTitle(_translate("AboutDialog", "Dialog"))
+        AboutDialog.setWindowTitle(_translate("AboutDialog", "FSECplotter2"))
         self.labelAppName.setText(_translate("AboutDialog", "<html><head/><body><p align=\"center\"><span style=\" font-size:36pt;\">FSECplotter2</span></p></body></html>"))
         self.labelVersion.setText(_translate("AboutDialog", "<html><head/><body><p align=\"right\"><span style=\" font-size:18pt;\">version XXX</span></p></body></html>"))
         self.labelBodyText.setText(_translate("AboutDialog", "<html><head/><body><p>Developed by @Taizo_Ayase 2015-2017</p><p>Github: <a href=\"https://github.com/TaizoAyase/FSECplotter2\"><span style=\" text-decoration: underline; color:#0000ff;\">https://github.com/TaizoAyase/FSECplotter2</span></a></p></body></html>"))
