@@ -37,6 +37,8 @@ import numpy as np
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
 
+APP_VERSION = '2.0.6'
+
 DEFAULTS = {
     'detector': 1,
     'channel': 1,
@@ -131,6 +133,11 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.selectVolume.setChecked(True)
         #self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
 
+        # preference
+        self.preferenceAction = QtWidgets.QAction("Preference", self)
+        self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
+        self.preferenceAction.triggered.connect(self.preference)
+
         # tools menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
@@ -156,10 +163,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.peaktableAction.setStatusTip("Create max-peak table in selected range.")
         self.peaktableAction.triggered.connect(self.peaktable)
 
-        # option menu
-        self.preferenceAction = QtWidgets.QAction("Preference", self)
-        self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
-        self.preferenceAction.triggered.connect(self.preference)
+        # help menu
+        self.aboutAppAction = QtWidgets.QAction("About FSECplotter", self)
+        self.aboutAppAction.setMenuRole(QtWidgets.QAction.AboutRole)
+        self.aboutAppAction.triggered.connect(self.aboutApp)
 
 
     def createMenus(self):
@@ -196,6 +203,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # option menu
         #self.optionMenu = self.menuBar().addMenu("Options")
+
+        # help menu
+        # for version information in Windows or Linux
+        self.helpMenu = self.menuBar().addMenu("Help")
+        self.helpMenu.addAction(self.aboutAppAction)
 
     def createStatusBar(self):
         self.statusbar_label = QtWidgets.QLabel()
@@ -306,6 +318,9 @@ class MainWindow(QtWidgets.QMainWindow):
             self.defaults = dialog.get_params()
             self.plotarea.updateDefaultParameters(**self.defaults)
             self.treeview.model.updateDefaultParameters(**self.defaults)
+
+    def aboutApp(self):
+        pass
 
 
 if __name__ == '__main__':
