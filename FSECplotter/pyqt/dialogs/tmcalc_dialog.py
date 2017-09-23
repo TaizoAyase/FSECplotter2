@@ -21,13 +21,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import re
+import os
+
+import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from FSECplotter.pyqt.dialogs import Ui_TmCalcDialog
 from FSECplotter import calc_yscale_factor, get_enabled_filename
 from FSECplotter.pyqt.dialogs import *
-import numpy as np
-import re
-import os
 
 class TmCalcDialog(QtWidgets.QDialog):
 

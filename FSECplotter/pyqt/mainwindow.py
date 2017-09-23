@@ -27,7 +27,6 @@ APP_VERSION = '2.0.6'
 
 
 import numpy as np
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from FSECplotter import *

@@ -21,10 +21,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import re
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 from FSECplotter.pyqt.dialogs import Ui_AboutDialog
 from FSECplotter.pyqt.mainwindow import APP_VERSION
-import re
 
 class AboutDialog(QtWidgets.QDialog):
 

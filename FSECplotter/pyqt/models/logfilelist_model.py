@@ -21,11 +21,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.core.factory import LogfileFactory
-from FSECplotter.core.shimadzu import NoSectionError, NoMatchedFlowRateError
 import os
 import string
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.core.factory import LogfileFactory
+from FSECplotter.core.shimadzu import NoSectionError, NoMatchedFlowRateError
 
 # list background color
 COLOR_LIST = [

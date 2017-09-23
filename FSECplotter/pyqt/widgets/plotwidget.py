@@ -21,11 +21,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.widgets.figurecanvas import *
-from FSECplotter.core.shimadzu import NoSectionError
 import os
 import time
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.widgets.figurecanvas import *
+from FSECplotter.core.shimadzu import NoSectionError
 
 
 # FigureCanvas inherits QWidget

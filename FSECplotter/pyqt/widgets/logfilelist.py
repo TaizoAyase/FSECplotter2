@@ -21,12 +21,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.models import *
-from FSECplotter.pyqt.view import *
 import os
 import time
 import platform
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.models import *
+from FSECplotter.pyqt.view import *
 
 
 class LogfileListWidget(QtWidgets.QWidget):

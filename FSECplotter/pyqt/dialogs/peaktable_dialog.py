@@ -21,10 +21,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.dialogs import Ui_PeakTableDialog
-import numpy as np
 import os
+
+import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.dialogs import Ui_PeakTableDialog
 
 
 class PeakTableDialog(QtWidgets.QDialog):
