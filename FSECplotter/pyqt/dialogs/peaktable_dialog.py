@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.dialogs.ui_peaktable_dialog import Ui_PeakTableDialog
+from FSECplotter.pyqt.dialogs import Ui_PeakTableDialog
 import numpy as np
 import os
 

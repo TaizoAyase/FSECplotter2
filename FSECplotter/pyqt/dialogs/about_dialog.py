@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.dialogs.ui_about_dialog import Ui_AboutDialog
+from FSECplotter.pyqt.dialogs import Ui_AboutDialog
 from FSECplotter.pyqt.mainwindow import APP_VERSION
 import re
 

@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.models.logfilelist_model import *
-from FSECplotter.pyqt.view.logfilelist_view import *
+from FSECplotter.pyqt.models import *
+from FSECplotter.pyqt.view import *
 import os
 import time
 import platform
