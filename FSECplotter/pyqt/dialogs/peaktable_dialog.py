@@ -101,6 +101,11 @@ class PeakTableDialog(QtWidgets.QDialog):
         f_ary = [f for f, fl in zip(data['filenames'], flags) if fl]
         d_ary = [d for d, fl in zip(data['data'], flags) if fl]
 
+        num_data = len(data['filenames'])
+        for i in range(num_data):
+            x = data['data'][i][:, 0]
+            x *= data['flowrate'][i]
+
         n_row = sum(flags)
         self.ui.tableWidget.setRowCount(n_row)
 
