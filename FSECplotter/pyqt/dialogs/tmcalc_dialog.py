@@ -115,12 +115,10 @@ class TmCalcDialog(QtWidgets.QDialog):
 
         # find all int/float numbers from the given file name
         matched = re.findall(r'\d+\.?\d*', basename)
-
         if not matched:
             return ""
 
-        selected = [temp for temp in matched if len(temp) <= 2]
-        return selected[-1]
+        return matched[-1]
 
 if __name__ == '__main__':
     import sys
