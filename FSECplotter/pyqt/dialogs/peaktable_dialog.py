@@ -82,13 +82,13 @@ class PeakTableDialog(QtWidgets.QDialog):
             QtWidgets.QApplication.beep()
             return
 
-        min_volume = float(self.ui.lineEdit.text())
-        max_volume = float(self.ui.lineEdit_2.text())
+        min_volume = float(self.ui.lineEdit_min.text())
+        max_volume = float(self.ui.lineEdit_max.text())
         if min_volume >= max_volume:
             QtWidgets.QApplication.beep()
             return
 
-        self.__update_table(min_vol, max_vol)
+        self.__update_table(min_volume, max_volume)
 
     # private methods
     def __update_table(self, min_vol, max_vol):
