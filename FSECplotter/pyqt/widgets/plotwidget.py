@@ -196,8 +196,6 @@ class PlotArea(QtWidgets.QWidget):
                                           QtWidgets.QMessageBox.Ok)
             return
 
-        self.xlab = True if self.timevolume_comboBox.currentIndex() == 0 else False
-
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())
         self.figcanvas.set_ylim(self.ylim_min_box.text(),
