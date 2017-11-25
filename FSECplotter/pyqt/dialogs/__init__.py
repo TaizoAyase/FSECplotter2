@@ -36,6 +36,6 @@ from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
 from FSECplotter.pyqt.dialogs.integrator_dialog import *
 from FSECplotter.pyqt.dialogs.peaktable_dialog import *
 from FSECplotter.pyqt.dialogs.preference_dialog import *
-from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.tmfit_dialog import *
+from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
 from FSECplotter.pyqt.dialogs.yscale_dialog import *
