@@ -21,5 +21,21 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from FSECplotter.pyqt.view.logfilelist_view import *
+import re
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.dialogs import Ui_AboutDialog
+from FSECplotter.pyqt.mainwindow import APP_VERSION
+
+class AboutDialog(QtWidgets.QDialog):
+
+    def __init__(self, model, parent=None):
+        super().__init__(parent)
+        self.ui = Ui_AboutDialog()
+        self.ui.setupUi(self)
+
+        label_version = self.ui.labelVersion.text()
+        label_version = label_version.replace('XXX', APP_VERSION)
+        self.ui.labelVersion.setText(label_version)
 

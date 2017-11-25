@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -21,10 +21,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.dialogs.ui_peaktable_dialog import Ui_PeakTableDialog
-import numpy as np
 import os
+
+import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.dialogs import Ui_PeakTableDialog
 
 
 class PeakTableDialog(QtWidgets.QDialog):
@@ -80,13 +82,13 @@ class PeakTableDialog(QtWidgets.QDialog):
             QtWidgets.QApplication.beep()
             return
 
-        min_volume = float(self.ui.lineEdit.text())
-        max_volume = float(self.ui.lineEdit_2.text())
+        min_volume = float(self.ui.lineEdit_min.text())
+        max_volume = float(self.ui.lineEdit_max.text())
         if min_volume >= max_volume:
             QtWidgets.QApplication.beep()
             return
 
-        self.__update_table(min_vol, max_vol)
+        self.__update_table(min_volume, max_volume)
 
     # private methods
     def __update_table(self, min_vol, max_vol):
@@ -98,6 +100,11 @@ class PeakTableDialog(QtWidgets.QDialog):
         flags = data['enable_flags']
         f_ary = [f for f, fl in zip(data['filenames'], flags) if fl]
         d_ary = [d for d, fl in zip(data['data'], flags) if fl]
+
+        num_data = len(data['filenames'])
+        for i in range(num_data):
+            x = data['data'][i][:, 0]
+            x *= data['flowrate'][i]
 
         n_row = sum(flags)
         self.ui.tableWidget.setRowCount(n_row)

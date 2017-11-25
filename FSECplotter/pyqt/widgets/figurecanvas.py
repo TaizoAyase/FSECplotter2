@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -29,7 +29,6 @@ import matplotlib
 matplotlib.use("Qt5Agg")
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-
 
 
 # FigureCanvas inherits QWidget

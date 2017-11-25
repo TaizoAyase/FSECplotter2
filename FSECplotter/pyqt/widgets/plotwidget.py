@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -21,11 +21,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.widgets.figurecanvas import *
-from FSECplotter.core.shimadzu import NoSectionError
 import os
 import time
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.widgets.figurecanvas import *
+from FSECplotter.core import NoSectionError
 
 
 # FigureCanvas inherits QWidget
@@ -193,8 +195,6 @@ class PlotArea(QtWidgets.QWidget):
             QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
                                           QtWidgets.QMessageBox.Ok)
             return
-
-        self.xlab = True if self.timevolume_comboBox.currentIndex() == 0 else False
 
         self.figcanvas.set_xlim(self.xlim_min_box.text(),
                                 self.xlim_max_box.text())

@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -21,21 +21,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter import *
-from FSECplotter.pyqt.widgets.logfilelist import *
-from FSECplotter.pyqt.widgets.plotwidget import *
-from FSECplotter.pyqt.dialogs.yscale_dialog import *
-from FSECplotter.pyqt.dialogs.tmcalc_dialog import *
-from FSECplotter.pyqt.dialogs.tmfit_dialog import *
-from FSECplotter.pyqt.dialogs.integrator_dialog import *
-from FSECplotter.pyqt.dialogs.integrate_plot_dialog import *
-from FSECplotter.pyqt.dialogs.preference_dialog import *
-from FSECplotter.pyqt.dialogs.peaktable_dialog import *
-import numpy as np
-
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
+APP_VERSION = '2.0.7'
+
+
+import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter import *
+from FSECplotter.pyqt.widgets import *
+from FSECplotter.pyqt.dialogs import *
+
 
 DEFAULTS = {
     'detector': 1,
@@ -131,6 +128,11 @@ class MainWindow(QtWidgets.QMainWindow):
         #self.selectVolume.setChecked(True)
         #self.selectTime = QtWidgets.QAction("Time [min]", self, checkable=True)
 
+        # preference
+        self.preferenceAction = QtWidgets.QAction("Preference", self)
+        self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
+        self.preferenceAction.triggered.connect(self.preference)
+
         # tools menu
         # fsec-ts
         self.tsAction = QtWidgets.QAction("calc Tm", self)
@@ -156,10 +158,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.peaktableAction.setStatusTip("Create max-peak table in selected range.")
         self.peaktableAction.triggered.connect(self.peaktable)
 
-        # option menu
-        self.preferenceAction = QtWidgets.QAction("Preference", self)
-        self.preferenceAction.setMenuRole(QtWidgets.QAction.PreferencesRole)
-        self.preferenceAction.triggered.connect(self.preference)
+        # help menu
+        self.aboutAppAction = QtWidgets.QAction("About FSECplotter", self)
+        self.aboutAppAction.setMenuRole(QtWidgets.QAction.AboutRole)
+        self.aboutAppAction.triggered.connect(self.aboutApp)
 
 
     def createMenus(self):
@@ -196,6 +198,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # option menu
         #self.optionMenu = self.menuBar().addMenu("Options")
+
+        # help menu
+        # for version information in Windows or Linux
+        self.helpMenu = self.menuBar().addMenu("Help")
+        self.helpMenu.addAction(self.aboutAppAction)
 
     def createStatusBar(self):
         self.statusbar_label = QtWidgets.QLabel()
@@ -306,6 +313,11 @@ class MainWindow(QtWidgets.QMainWindow):
             self.defaults = dialog.get_params()
             self.plotarea.updateDefaultParameters(**self.defaults)
             self.treeview.model.updateDefaultParameters(**self.defaults)
+
+    def aboutApp(self):
+        dialog = AboutDialog(self)
+        if dialog.exec_():
+            pass
 
 
 if __name__ == '__main__':

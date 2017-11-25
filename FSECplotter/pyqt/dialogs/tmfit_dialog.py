@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -21,6 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
+import os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from scipy.optimize import curve_fit
 import numpy as np
@@ -30,7 +32,6 @@ import matplotlib
 matplotlib.use("Qt5Agg")
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import os
 
 class TmFitDialog(QtWidgets.QDialog):
 

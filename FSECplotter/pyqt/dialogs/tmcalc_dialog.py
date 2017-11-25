@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -21,13 +21,15 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.dialogs.ui_tmcalc_dialog import Ui_TmCalcDialog
-from FSECplotter import calc_yscale_factor, get_enabled_filename
-from FSECplotter.pyqt.dialogs.tmfit_dialog import *
-import numpy as np
 import re
 import os
+
+import numpy as np
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.pyqt.dialogs import Ui_TmCalcDialog
+from FSECplotter import calc_yscale_factor, get_enabled_filename
+from FSECplotter.pyqt.dialogs import *
 
 class TmCalcDialog(QtWidgets.QDialog):
 
@@ -113,12 +115,10 @@ class TmCalcDialog(QtWidgets.QDialog):
 
         # find all int/float numbers from the given file name
         matched = re.findall(r'\d+\.?\d*', basename)
-
         if not matched:
             return ""
 
-        selected = [temp for temp in matched if len(temp) <= 2]
-        return selected[-1]
+        return matched[-1]
 
 if __name__ == '__main__':
     import sys

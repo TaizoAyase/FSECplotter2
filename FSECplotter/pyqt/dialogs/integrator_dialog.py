@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -22,7 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.pyqt.dialogs.ui_integrator_dialog import Ui_IntegratorDialog
+
+from FSECplotter.pyqt.dialogs import Ui_IntegratorDialog
 
 class IntegratorDialog(QtWidgets.QDialog):
 

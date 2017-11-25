@@ -3,7 +3,7 @@
 '''
 FSECplotter2 - The interactive plotting application for FSEC.
 
-Copyright 2015-2016, TaizoAyase, tikuta, biochem-fan
+Copyright 2015-2017, TaizoAyase, tikuta, biochem-fan
 
 This file is part of FSECplotter2.
 
@@ -21,11 +21,13 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from FSECplotter.core.factory import LogfileFactory
-from FSECplotter.core.shimadzu import NoSectionError, NoMatchedFlowRateError
 import os
 import string
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+from FSECplotter.core import LogfileFactory
+from FSECplotter.core import NoSectionError, NoMatchedFlowRateError
 
 # list background color
 COLOR_LIST = [

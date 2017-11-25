@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from FSECplotter.core.factory import *
+from FSECplotter.core import LogfileFactory
 from unittest import TestCase
 from nose.tools import ok_, eq_, raises
 
