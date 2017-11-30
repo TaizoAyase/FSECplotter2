@@ -101,6 +101,5 @@ class PeakTableDialogTestCase(TestCase):
         del self.form
 
 
-
 if __name__ == "__main__":
     unittest.main()
