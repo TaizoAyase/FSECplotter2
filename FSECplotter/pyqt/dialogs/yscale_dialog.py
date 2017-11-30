@@ -27,7 +27,7 @@ from FSECplotter.pyqt.dialogs import Ui_YaxisScalingDialog
 
 class YaxisScaleDialog(QtWidgets.QDialog):
 
-    def __init__(self, filenames, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_YaxisScalingDialog()
         self.ui.setupUi(self)
@@ -35,6 +35,8 @@ class YaxisScaleDialog(QtWidgets.QDialog):
         valid = QtGui.QDoubleValidator()
         self.ui.lineEdit.setValidator(valid)
         self.ui.lineEdit_2.setValidator(valid)
+
+        self.scale_accepted = False
 
         #for f in filenames:
             #self.ui.filename_for_normal.addItem(f)
@@ -45,12 +47,13 @@ class YaxisScaleDialog(QtWidgets.QDialog):
             QtWidgets.QApplication.beep()
             return
 
-        min_volume = float(self.ui.lineEdit.text())
-        max_volume = float(self.ui.lineEdit_2.text())
-        if min_volume >= max_volume:
+        self.min_volume = float(self.ui.lineEdit.text())
+        self.max_volume = float(self.ui.lineEdit_2.text())
+        if self.min_volume >= self.max_volume:
             QtWidgets.QApplication.beep()
             return
 
+        self.scale_accepted = True
         super().accept()
 
 

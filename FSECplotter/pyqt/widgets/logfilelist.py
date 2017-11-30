@@ -53,6 +53,8 @@ class LogfileListWidget(QtWidgets.QWidget):
         )
         self.selection_model.clear()
 
+        self.file_dialog = None
+
         # set buttons
         self.label1 = QtWidgets.QLabel(self)
         self.label1.setText("Change all detector to:")
@@ -153,7 +155,8 @@ class LogfileListWidget(QtWidgets.QWidget):
     def open_file(self):
         # open the file selection dialog
         # enable multiple selection
-        filename = QtWidgets.QFileDialog.getOpenFileNames(
+        self.file_dialog = QtWidgets.QFileDialog()
+        filename = self.file_dialog.getOpenFileNames(
             self, "Open file", os.path.expanduser('~'))
         self.treeview.add_items(filename[0])
 

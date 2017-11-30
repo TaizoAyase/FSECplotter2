@@ -30,7 +30,7 @@ from FSECplotter.pyqt.mainwindow import APP_VERSION
 
 class AboutDialog(QtWidgets.QDialog):
 
-    def __init__(self, model, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)
