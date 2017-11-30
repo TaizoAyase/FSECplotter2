@@ -27,7 +27,7 @@ from FSECplotter.pyqt.dialogs import Ui_IntegratorDialog
 
 class IntegratorDialog(QtWidgets.QDialog):
 
-    def __init__(self, filenames, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_IntegratorDialog()
         self.ui.setupUi(self)
@@ -36,18 +36,21 @@ class IntegratorDialog(QtWidgets.QDialog):
         self.ui.lineEdit.setValidator(valid)
         self.ui.lineEdit_2.setValidator(valid)
 
+        self.integrate_accepted = False
+
     def accept(self):
         # not accept when text box(es) are empty
         if not (self.ui.lineEdit.text() and self.ui.lineEdit_2.text()):
             QtWidgets.QApplication.beep()
             return
 
-        min_volume = float(self.ui.lineEdit.text())
-        max_volume = float(self.ui.lineEdit_2.text())
-        if min_volume >= max_volume:
+        self.min_volume = float(self.ui.lineEdit.text())
+        self.max_volume = float(self.ui.lineEdit_2.text())
+        if self.min_volume >= self.max_volume:
             QtWidgets.QApplication.beep()
             return
 
+        self.integrate_accepted = True
         super().accept()
 
 

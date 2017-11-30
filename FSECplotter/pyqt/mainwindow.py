@@ -281,8 +281,6 @@ class MainWindow(QtWidgets.QMainWindow):
         if y_scale_dialog.exec_():
             min_volume = y_scale_dialog.min_volume
             max_volume = y_scale_dialog.max_volume
-            #c_volume = y_scale_dialog.ui.lineEdit.text()
-            #file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
 
             scale_factor = calc_yscale_factor(self.treeview.model, min_volume, max_volume)
             self.plotarea.rescale(scale_factor)
@@ -293,11 +291,11 @@ class MainWindow(QtWidgets.QMainWindow):
 
         # show in modal dialog
         if integrator_dialog.exec_():
-            min_volume = integrator_dialog.ui.lineEdit.text()
-            max_volume = integrator_dialog.ui.lineEdit_2.text()
+            min_volume = integrator_dialog.min_volume
+            max_volume = integrator_dialog.max_volume
 
             int_ary = peak_integrate(self.treeview.model,
-                float(min_volume), float(max_volume))
+                min_volume, max_volume)
             plot_dialog = IntegratePlotDialog(self)
             plot_dialog.plot(filenames, int_ary)
             plot_dialog.exec_()
