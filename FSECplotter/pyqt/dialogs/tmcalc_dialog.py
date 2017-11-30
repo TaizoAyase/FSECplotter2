@@ -52,12 +52,22 @@ class TmCalcDialog(QtWidgets.QDialog):
             item = QtWidgets.QTreeWidgetItem([f, temp], 0)
             self.ui.treeWidget.addTopLevelItem(item)
 
+        self.tmplot_dialog = TmFitDialog(self.model, self)
+
         # signal slot connection
         self.ui.set_temp_button.clicked.connect(self.set_temperature)
         self.ui.updateListButton.clicked.connect(self.update_filelist)
 
     def set_temperature(self):
-        item = self.ui.treeWidget.selectedItems()[0]
+        try:
+            item = self.ui.treeWidget.selectedItems()[0]
+        except IndexError as e:
+            QtWidgets.QApplication.beep()
+            mes = 'Select one file from the list above!'
+            QtWidgets.QMessageBox.warning(self, "FSEC plotter 2", mes,
+                QtWidgets.QMessageBox.Ok)
+            return
+
         temp = self.ui.lineEdit_temp.text()
         item.setData(1, 0, temp)
 
@@ -95,12 +105,11 @@ class TmCalcDialog(QtWidgets.QDialog):
         temp_list = np.array(self.get_temperature())
         scale_factor = calc_yscale_factor(self.model, min_volume, max_volume)
 
-        tmplot_dialog = TmFitDialog(self.model, self)
         try:
-            tmplot_dialog.fit(temp_list, scale_factor)
+            self.tmplot_dialog.fit(temp_list, scale_factor)
         except RuntimeError as e:
             return
-        tmplot_dialog.exec_()
+        self.tmplot_dialog.exec_()
         super().accept()
 
     # private

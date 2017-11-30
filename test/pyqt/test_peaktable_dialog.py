@@ -22,6 +22,7 @@ MAX_VALUE = 676124.0
 app = QtWidgets.QApplication(sys.argv)
 
 class PeakTableDialogTestCase(TestCase):
+
     def setUp(self):
         self.model = LogfileModel(0, 6, None)
         self.model.add_item(testfile)
