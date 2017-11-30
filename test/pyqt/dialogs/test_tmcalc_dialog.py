@@ -146,6 +146,9 @@ class TmCalcDialogTestCase(TestCase):
 
         ok_(self.form.tmplot_dialog.fit_complete)
 
+    def tearDown(self):
+        del self.form
+
 
 if __name__ == "__main__":
     unittest.main()

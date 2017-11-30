@@ -81,7 +81,6 @@ class IntegratePlotDialog(QtWidgets.QDialog):
     def plot(self, filenames, values):
         x = np.arange(len(filenames))
 
-
         width = 0.4
         self.axes.bar(x, values, align="center", width=width)
         self.axes.set_xticks(x)

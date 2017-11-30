@@ -97,6 +97,10 @@ class PeakTableDialogTestCase(TestCase):
         eq_(self.form.ui.tableWidget.item(0, 1).text(), str(MAX_VOLUME))
         eq_(self.form.ui.tableWidget.item(0, 2).text(), "1.0")
 
+    def tearDown(self):
+        del self.form
+
+
 
 if __name__ == "__main__":
     unittest.main()

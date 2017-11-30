@@ -20,15 +20,15 @@ testfiles = glob('./test/fixture/shimadzu/test*.txt')
 
 app = QtWidgets.QApplication(sys.argv)
 
-class IntegratorDialogTestCase(TestCase):
+class YaxisScaleDialogTestCase(TestCase):
 
     def setUp(self):
-        self.form = IntegratorDialog()
+        self.form = YaxisScaleDialog()
 
     def reset_form_empty(self):
         self.form.ui.lineEdit.setText("")
         self.form.ui.lineEdit_2.setText("")
-        self.form.integrate_accepted = False
+        self.form.scale_accepted = False
 
     def test_defaults(self):
         eq_(self.form.ui.lineEdit.text(), "")
@@ -42,7 +42,7 @@ class IntegratorDialogTestCase(TestCase):
         okWidget = self.form.ui.buttonBox.button(self.form.ui.buttonBox.Ok)
         QTest.mouseClick(okWidget, Qt.LeftButton)
 
-        ok_(not self.form.integrate_accepted)
+        ok_(not self.form.scale_accepted)
 
     def test_min_volume_empty(self):
         self.reset_form_empty()
@@ -51,7 +51,7 @@ class IntegratorDialogTestCase(TestCase):
         okWidget = self.form.ui.buttonBox.button(self.form.ui.buttonBox.Ok)
         QTest.mouseClick(okWidget, Qt.LeftButton)
 
-        ok_(not self.form.integrate_accepted)
+        ok_(not self.form.scale_accepted)
 
     def test_max_volume_empty(self):
         self.reset_form_empty()
@@ -60,7 +60,7 @@ class IntegratorDialogTestCase(TestCase):
         okWidget = self.form.ui.buttonBox.button(self.form.ui.buttonBox.Ok)
         QTest.mouseClick(okWidget, Qt.LeftButton)
 
-        ok_(not self.form.integrate_accepted)
+        ok_(not self.form.scale_accepted)
 
     def test_volume_empty(self):
         self.reset_form_empty()
@@ -68,7 +68,7 @@ class IntegratorDialogTestCase(TestCase):
         okWidget = self.form.ui.buttonBox.button(self.form.ui.buttonBox.Ok)
         QTest.mouseClick(okWidget, Qt.LeftButton)
 
-        ok_(not self.form.integrate_accepted)
+        ok_(not self.form.scale_accepted)
 
     def test_accept(self):
         self.reset_form_empty()
@@ -79,9 +79,12 @@ class IntegratorDialogTestCase(TestCase):
         okWidget = self.form.ui.buttonBox.button(self.form.ui.buttonBox.Ok)
         QTest.mouseClick(okWidget, Qt.LeftButton)
 
-        ok_(self.form.integrate_accepted)
+        ok_(self.form.scale_accepted)
         eq_(self.form.min_volume, 0)
         eq_(self.form.max_volume, 30)
+
+    def tearDown(self):
+        del self.form
 
 
 if __name__ == "__main__":
