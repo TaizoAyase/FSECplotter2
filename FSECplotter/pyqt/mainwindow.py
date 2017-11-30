@@ -287,18 +287,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def integrate(self):
         filenames = get_enabled_filename(self.treeview.model)
-        integrator_dialog = IntegratorDialog(self)
+        integrator_dialog = IntegratorDialog(self.treeview.model, self)
 
-        # show in modal dialog
-        if integrator_dialog.exec_():
-            min_volume = integrator_dialog.min_volume
-            max_volume = integrator_dialog.max_volume
-
-            int_ary = peak_integrate(self.treeview.model,
-                min_volume, max_volume)
-            plot_dialog = IntegratePlotDialog(self)
-            plot_dialog.plot(filenames, int_ary)
-            plot_dialog.exec_()
+        # show in modeless dialog
+        integrator_dialog.show()
 
     def peaktable(self):
         peaktable_dialog = PeakTableDialog(self.treeview.model, self)

@@ -24,7 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from scipy.optimize import curve_fit
 import numpy as np
 
 # force matplotlib to use PyQt5 backends

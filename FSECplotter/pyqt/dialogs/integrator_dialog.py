@@ -23,11 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from FSECplotter.pyqt.dialogs import Ui_IntegratorDialog
+from FSECplotter import *
+from FSECplotter.pyqt.dialogs import *
 
 class IntegratorDialog(QtWidgets.QDialog):
 
-    def __init__(self, parent=None):
+    def __init__(self, model, parent=None):
         super().__init__(parent)
         self.ui = Ui_IntegratorDialog()
         self.ui.setupUi(self)
@@ -36,7 +37,10 @@ class IntegratorDialog(QtWidgets.QDialog):
         self.ui.lineEdit.setValidator(valid)
         self.ui.lineEdit_2.setValidator(valid)
 
+        self.model = model
+
         self.integrate_accepted = False
+        self.plot_dialog = IntegratePlotDialog(self)
 
     def accept(self):
         # not accept when text box(es) are empty
@@ -51,6 +55,12 @@ class IntegratorDialog(QtWidgets.QDialog):
             return
 
         self.integrate_accepted = True
+
+        int_ary = peak_integrate(self.model, self.min_volume, self.max_volume)
+        filenames = get_enabled_filename(self.model)
+        self.plot_dialog.plot(filenames, int_ary)
+        self.plot_dialog.exec_()
+
         super().accept()
 
 
