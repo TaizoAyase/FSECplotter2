@@ -275,16 +275,16 @@ class MainWindow(QtWidgets.QMainWindow):
     def y_scaling(self):
         n = self.treeview.model.rowCount()
         filenames = get_enabled_filename(self.treeview.model)
-        y_scale_dialog = YaxisScaleDialog(filenames, self)
+        y_scale_dialog = YaxisScaleDialog(self)
 
         # show in modal dialog
         if y_scale_dialog.exec_():
-            min_volume = y_scale_dialog.ui.lineEdit.text()
-            max_volume = y_scale_dialog.ui.lineEdit_2.text()
+            min_volume = y_scale_dialog.min_volume
+            max_volume = y_scale_dialog.max_volume
             #c_volume = y_scale_dialog.ui.lineEdit.text()
             #file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
 
-            scale_factor = calc_yscale_factor(self.treeview.model, float(min_volume), float(max_volume))
+            scale_factor = calc_yscale_factor(self.treeview.model, min_volume, max_volume)
             self.plotarea.rescale(scale_factor)
 
     def integrate(self):
