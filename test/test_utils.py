@@ -23,6 +23,8 @@ testfiles = glob('./test/fixture/shimadzu/test*.txt')
 SCALE_FACTOR = [1.0, 0.45022659, 0.47239708]
 INTEGRATED_PEAK = [994047.56563499896, 548488.86240500025, 712461.85801999958]
 MAX_DECIMAL = 5
+MAX_VOLUME = 15.141665
+MAX_VALUE = 676124.0
 
 app = QtWidgets.QApplication(sys.argv)
 
@@ -40,6 +42,16 @@ class FSECplotterUtilsTestCase(TestCase):
     def test_calc_yscale_factor(self):
         scale_factor = calc_yscale_factor(self.model, 0, 30)
         npt.assert_almost_equal(scale_factor, SCALE_FACTOR,
+            decimal=MAX_DECIMAL)
+
+    def test_find_peak(self):
+        filenames, peak_x, peak_y = calc_peak(self.model, 0, 30)
+
+        fname_true = [os.path.splitext(os.path.basename(f))[0] for f in testfiles]
+        eq_(filenames, fname_true)
+        npt.assert_almost_equal(peak_x[0], MAX_VOLUME,
+            decimal=MAX_DECIMAL)
+        npt.assert_almost_equal(peak_y[0], MAX_VALUE,
             decimal=MAX_DECIMAL)
 
     def test_get_enabled_filename(self):

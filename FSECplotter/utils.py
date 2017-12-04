@@ -53,6 +53,36 @@ def calc_yscale_factor(model, min_vol, max_vol):
     return scale_factor
 
 
+def calc_peak(model, min_vol, max_vol):
+    data = model.get_current_data()
+    flags = data['enable_flags']
+
+    data_ary = [d for d, f in zip(data['data'], flags) if f]
+    num_data = len(data['filenames'])
+
+    filenames = [f for f, fl in zip(data['filenames'], flags) if fl]
+
+    for i in range(num_data):
+        x = data['data'][i][:, 0]
+        x *= data['flowrate'][i]
+
+    min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
+    max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
+
+    max_vol_idx = [
+        np.argmax(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+    ]
+    max_vol_ary = [
+        d[idx, 0] + min_vol for idx, d in zip(max_vol_idx, data_ary)
+    ]
+
+    max_val_ary = [
+        max(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+    ]
+
+    return filenames, max_vol_ary, max_val_ary
+
+
 def get_enabled_filename(model):
     data = model.get_current_data()
     ary = []
