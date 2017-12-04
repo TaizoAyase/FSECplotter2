@@ -88,10 +88,9 @@ class PeakTableDialog(QtWidgets.QDialog):
             QtWidgets.QApplication.beep()
             return
 
-        self.__update_table(min_volume, max_volume)
+        self.update_table(min_volume, max_volume)
 
-    # private methods
-    def __update_table(self, min_vol, max_vol):
+    def update_table(self, min_vol, max_vol):
         data = self.model.get_current_data()
         # if no data, exit
         if len(data['filenames']) == 0:
@@ -112,19 +111,13 @@ class PeakTableDialog(QtWidgets.QDialog):
         row = 0
         ary = []
         for f, d in zip(f_ary, d_ary):
-            minidx = np.argmin(np.abs(d[:, 0] - min_vol))
-            maxidx = np.argmin(np.abs(d[:, 0] - max_vol))
-
-            # get max volume and intensity
-            max_value = max(d[minidx:maxidx, 1])
-            max_volume_idx = np.argmax(d[minidx:maxidx, 1])
-            max_volume = d[max_volume_idx, 0] + min_vol
-            # alternative implementation
-            # max_volume = d[max_volume_idx+minidx, 0]
+            max_volume, max_value = self.calc_peak(
+                d, min_vol, max_vol)
 
             ary.append(max_value)
 
             # set item to table
+            # needs: f, max_volume, max_value
             item = QtWidgets.QTableWidgetItem(f)
             self.ui.tableWidget.setItem(row, 0, item)
             item = QtWidgets.QTableWidgetItem(str(max_volume))
@@ -141,6 +134,20 @@ class PeakTableDialog(QtWidgets.QDialog):
             for i in range(self.ui.tableWidget.rowCount()):
                 item = QtWidgets.QTableWidgetItem(str(max_ary[i]))
                 self.ui.tableWidget.setItem(i, 2, item)
+
+    def calc_peak(self, data, min_vol, max_vol):
+        # set the x-index of min/max value
+        minidx = np.argmin(np.abs(data[:, 0] - min_vol))
+        maxidx = np.argmin(np.abs(data[:, 0] - max_vol))
+
+        # get max volume and intensity
+        max_value = max(data[minidx:maxidx, 1])
+        max_volume_idx = np.argmax(data[minidx:maxidx, 1])
+        max_volume = data[max_volume_idx, 0] + min_vol
+        # alternative implementation
+        # max_volume = d[max_volume_idx+minidx, 0]
+
+        return max_volume, max_value
 
 
 if __name__ == '__main__':
