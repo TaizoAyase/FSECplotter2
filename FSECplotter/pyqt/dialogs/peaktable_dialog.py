@@ -92,7 +92,7 @@ class PeakTableDialog(QtWidgets.QDialog):
         self.update_table(min_volume, max_volume)
 
     def update_table(self, min_vol, max_vol):
-        f_ary, max_vol_ary, max_val_ary = calc_peak(
+        f_ary, max_vol_ary, max_val_ary = calc_max_peak(
             self.model, min_vol, max_vol)
 
         row = 0
@@ -113,7 +113,7 @@ class PeakTableDialog(QtWidgets.QDialog):
                 item = QtWidgets.QTableWidgetItem(str(max_val_ary[i]))
                 self.ui.tableWidget.setItem(i, 2, item)
 
-    def calc_peak(self, data, min_vol, max_vol):
+    def calc_max_peak(self, data, min_vol, max_vol):
         # set the x-index of min/max value
         minidx = np.argmin(np.abs(data[:, 0] - min_vol))
         maxidx = np.argmin(np.abs(data[:, 0] - max_vol))

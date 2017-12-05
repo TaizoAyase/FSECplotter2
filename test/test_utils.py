@@ -45,7 +45,7 @@ class FSECplotterUtilsTestCase(TestCase):
             decimal=MAX_DECIMAL)
 
     def test_find_peak(self):
-        filenames, peak_x, peak_y = calc_peak(self.model, 0, 30)
+        filenames, peak_x, peak_y = calc_max_peak(self.model, 0, 30)
 
         fname_true = [os.path.splitext(os.path.basename(f))[0] for f in testfiles]
         eq_(filenames, fname_true)

@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import numpy as np
 
 
-def calc_peak(model, min_vol, max_vol):
+def calc_max_peak(model, min_vol, max_vol):
     # if the same values was selected for min/max,
     # add 0.1 to max to abort app. down
     if min_vol == max_vol:
@@ -65,7 +65,7 @@ def calc_peak(model, min_vol, max_vol):
 
 
 def calc_yscale_factor(model, min_vol, max_vol):
-    _, _, max_val_ary = calc_peak(model, min_vol, max_vol)
+    _, _, max_val_ary = calc_max_peak(model, min_vol, max_vol)
 
     norm_val = max(max_val_ary)
     scale_factor = max_val_ary / norm_val
