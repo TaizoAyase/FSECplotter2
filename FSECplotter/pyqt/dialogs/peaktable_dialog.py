@@ -26,6 +26,7 @@ import os
 import numpy as np
 from PyQt5 import QtCore, QtGui, QtWidgets
 
+from FSECplotter import *
 from FSECplotter.pyqt.dialogs import Ui_PeakTableDialog
 
 
@@ -88,59 +89,43 @@ class PeakTableDialog(QtWidgets.QDialog):
             QtWidgets.QApplication.beep()
             return
 
-        self.__update_table(min_volume, max_volume)
+        self.update_table(min_volume, max_volume)
 
-    # private methods
-    def __update_table(self, min_vol, max_vol):
-        data = self.model.get_current_data()
-        # if no data, exit
-        if len(data['filenames']) == 0:
-            return
-
-        flags = data['enable_flags']
-        f_ary = [f for f, fl in zip(data['filenames'], flags) if fl]
-        d_ary = [d for d, fl in zip(data['data'], flags) if fl]
-
-        num_data = len(data['filenames'])
-        for i in range(num_data):
-            x = data['data'][i][:, 0]
-            x *= data['flowrate'][i]
-
-        n_row = sum(flags)
-        self.ui.tableWidget.setRowCount(n_row)
+    def update_table(self, min_vol, max_vol):
+        f_ary, max_vol_ary, max_val_ary = calc_max_peak(
+            self.model, min_vol, max_vol)
 
         row = 0
-        ary = []
-        for f, d in zip(f_ary, d_ary):
-            minidx = np.argmin(np.abs(d[:, 0] - min_vol))
-            maxidx = np.argmin(np.abs(d[:, 0] - max_vol))
-
-            # get max volume and intensity
-            max_value = max(d[minidx:maxidx, 1])
-            max_volume_idx = np.argmax(d[minidx:maxidx, 1])
-            max_volume = d[max_volume_idx, 0] + min_vol
-            # alternative implementation
-            # max_volume = d[max_volume_idx+minidx, 0]
-
-            ary.append(max_value)
-
+        for f, max_x, max_y in zip(f_ary, max_vol_ary, max_val_ary):
             # set item to table
             item = QtWidgets.QTableWidgetItem(f)
             self.ui.tableWidget.setItem(row, 0, item)
-            item = QtWidgets.QTableWidgetItem(str(max_volume))
+            item = QtWidgets.QTableWidgetItem(str(max_x))
             self.ui.tableWidget.setItem(row, 1, item)
-            item = QtWidgets.QTableWidgetItem(str(max_value))
+            item = QtWidgets.QTableWidgetItem(str(max_y))
             self.ui.tableWidget.setItem(row, 2, item)
 
             row += 1
 
         if self.ui.normalizeCheckBox.checkState() == 2:
-            max_ary = np.array(ary)
-            max_all = np.max(max_ary)
-            max_ary /= max_all
+            max_val_ary /= np.max(max_val_ary)
             for i in range(self.ui.tableWidget.rowCount()):
-                item = QtWidgets.QTableWidgetItem(str(max_ary[i]))
+                item = QtWidgets.QTableWidgetItem(str(max_val_ary[i]))
                 self.ui.tableWidget.setItem(i, 2, item)
+
+    def calc_max_peak(self, data, min_vol, max_vol):
+        # set the x-index of min/max value
+        minidx = np.argmin(np.abs(data[:, 0] - min_vol))
+        maxidx = np.argmin(np.abs(data[:, 0] - max_vol))
+
+        # get max volume and intensity
+        max_value = max(data[minidx:maxidx, 1])
+        max_volume_idx = np.argmax(data[minidx:maxidx, 1])
+        max_volume = data[max_volume_idx, 0] + min_vol
+        # alternative implementation
+        # max_volume = d[max_volume_idx+minidx, 0]
+
+        return max_volume, max_value
 
 
 if __name__ == '__main__':

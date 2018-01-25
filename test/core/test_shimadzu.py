@@ -6,7 +6,7 @@ from unittest import TestCase
 from nose.tools import ok_, eq_, raises
 
 
-class ShimazuLogFileTestCase(TestCase):
+class ShimadzuLogFileTestCase(TestCase):
     def setUp(self):
         self.testfile = "./test/fixture/shimadzu/test_1.txt"
         factory = LogfileFactory()

@@ -24,29 +24,48 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import numpy as np
 
 
-def calc_yscale_factor(model, min_vol, max_vol):
+def calc_max_peak(model, min_vol, max_vol):
     # if the same values was selected for min/max,
     # add 0.1 to max to abort app. down
     if min_vol == max_vol:
         max_vol += 0.1
 
-    # select enabled data
     data = model.get_current_data()
-    data_ary = [d for d, f in zip(data['data'], data['enable_flags']) if f]
+    flags = data['enable_flags']
+
+    data_ary = [d for d, f in zip(data['data'], flags) if f]
     num_data = len(data['filenames'])
 
-    # convert x-axis value to volume
+    #filenames = [f for f, fl in zip(data['filenames'], flags) if fl]
+    filenames = get_enabled_filename(model)
+
     for i in range(num_data):
         x = data['data'][i][:, 0]
         x *= data['flowrate'][i]
 
-    # get nearest indices to the min/max value
+    # get the index of min/max volume
     min_idx = [np.argmin(np.abs(d[:, 0] - min_vol)) for d in data_ary]
     max_idx = [np.argmin(np.abs(d[:, 0] - max_vol)) for d in data_ary]
 
+
+    # get the x-index and x-value of y-max
+    max_vol_idx = [
+        np.argmax(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
+    ]
+    max_vol_ary = [
+        d[idx, 0] + min_vol for idx, d in zip(max_vol_idx, data_ary)
+    ]
+
+    # get the y-max value
     max_val_ary = [
         max(d[min_x:max_x, 1]) for min_x, max_x, d in zip(min_idx, max_idx, data_ary)
-        ]
+    ]
+
+    return filenames, max_vol_ary, max_val_ary
+
+
+def calc_yscale_factor(model, min_vol, max_vol):
+    _, _, max_val_ary = calc_max_peak(model, min_vol, max_vol)
 
     norm_val = max(max_val_ary)
     scale_factor = max_val_ary / norm_val
