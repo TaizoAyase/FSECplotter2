@@ -234,7 +234,7 @@ class PlotArea(QtWidgets.QWidget):
         if not file_save_to:
             return
 
-        self.model.save_csv_table(file_save_to)
+        self.model.save_csv_table(file_save_to, self.xlab)
 
     def rescale(self, scale_factor):
         try:
