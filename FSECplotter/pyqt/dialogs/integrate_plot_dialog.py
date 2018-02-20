@@ -24,7 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from scipy.optimize import curve_fit
 import numpy as np
 
 # force matplotlib to use PyQt5 backends
@@ -81,9 +80,9 @@ class IntegratePlotDialog(QtWidgets.QDialog):
     def plot(self, filenames, values):
         x = np.arange(len(filenames))
 
-        self.axes.bar(x, values, 
-            align="center", 
-            width=0.4)
+        width = 0.4
+        self.axes.bar(x, values, align="center", width=width)
+        self.axes.set_xticks(x)
         self.axes.set_xticklabels(filenames, rotation=45)
 
         self.axes.set_xlabel('file ID')

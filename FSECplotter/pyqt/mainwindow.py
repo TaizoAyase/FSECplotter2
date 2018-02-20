@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
-APP_VERSION = '2.0.8'
+APP_VERSION = '2.0.9'
 
 
 import numpy as np
@@ -275,32 +275,22 @@ class MainWindow(QtWidgets.QMainWindow):
     def y_scaling(self):
         n = self.treeview.model.rowCount()
         filenames = get_enabled_filename(self.treeview.model)
-        y_scale_dialog = YaxisScaleDialog(filenames, self)
+        y_scale_dialog = YaxisScaleDialog(self)
 
         # show in modal dialog
         if y_scale_dialog.exec_():
-            min_volume = y_scale_dialog.ui.lineEdit.text()
-            max_volume = y_scale_dialog.ui.lineEdit_2.text()
-            #c_volume = y_scale_dialog.ui.lineEdit.text()
-            #file_norm = y_scale_dialog.ui.filename_for_normal.currentIndex()
+            min_volume = y_scale_dialog.min_volume
+            max_volume = y_scale_dialog.max_volume
 
-            scale_factor = calc_yscale_factor(self.treeview.model, float(min_volume), float(max_volume))
+            scale_factor = calc_yscale_factor(self.treeview.model, min_volume, max_volume)
             self.plotarea.rescale(scale_factor)
 
     def integrate(self):
         filenames = get_enabled_filename(self.treeview.model)
-        integrator_dialog = IntegratorDialog(self)
+        integrator_dialog = IntegratorDialog(self.treeview.model, self)
 
-        # show in modal dialog
-        if integrator_dialog.exec_():
-            min_volume = integrator_dialog.ui.lineEdit.text()
-            max_volume = integrator_dialog.ui.lineEdit_2.text()
-
-            int_ary = peak_integrate(self.treeview.model,
-                float(min_volume), float(max_volume))
-            plot_dialog = IntegratePlotDialog(self)
-            plot_dialog.plot(filenames, int_ary)
-            plot_dialog.exec_()
+        # show in modeless dialog
+        integrator_dialog.show()
 
     def peaktable(self):
         peaktable_dialog = PeakTableDialog(self.treeview.model, self)

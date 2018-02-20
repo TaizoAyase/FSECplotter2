@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from FSECplotter.core.logfile import Logfile, LogfileError
 
 from FSECplotter.core.shimadzu import ShimadzuLogFile
+from FSECplotter.core.shimadzu import Section
 from FSECplotter.core.shimadzu import NoMatchedFlowRateError
 from FSECplotter.core.shimadzu import NoSectionError
 
