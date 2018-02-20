@@ -23,7 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ORG_NAME = "TaizoAyase" # temporary org. name
 APP_NAME = "FSECplotter2"
-APP_VERSION = '2.0.8'
+APP_VERSION = '2.0.9'
 
 
 import numpy as np
